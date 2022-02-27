@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 @Autonomous(group = "#Comp")
 public class RedWarehouse extends BaseAuto{
     public void initializeMovements() {
-        initBlueStorageCam();
+        initRedStorageCam();
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(300)
                 .setRightward(-550)
