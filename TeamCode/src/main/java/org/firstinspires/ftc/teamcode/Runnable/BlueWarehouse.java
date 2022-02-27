@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 public class BlueWarehouse extends BaseAuto{
     @Override
     public void initializeMovements() {
-        initRedStorageCam();
+        initBlueStorageCam();
 
         //move up to shiiping hub
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
