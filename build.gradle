@@ -43,8 +43,6 @@ dependencies {
     doc 'org.firstinspires.ftc:FtcCommon:6.2.0'
     doc 'org.firstinspires.ftc:OnBotJava:6.2.0'
     doc 'org.firstinspires.ftc:Inspection:6.2.0'
-    // EasyOpenCV dependency
-    implementation 'org.openftc:easyopencv:1.5.1'
 }
 
 task extractJavadoc {
