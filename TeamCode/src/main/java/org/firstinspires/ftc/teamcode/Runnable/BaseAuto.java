@@ -94,7 +94,8 @@ public abstract class BaseAuto extends LinearOpMode {
             @Override
             public void onOpened()
             {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+              // Original Values: 320,240 for 1080p Logitech Webcan    
+              webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -112,7 +113,8 @@ public abstract class BaseAuto extends LinearOpMode {
             @Override
             public void onOpened()
             {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+              // Original Values: 320,240 for 1080p Logitech Webcan  
+              webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
