@@ -12,35 +12,63 @@ import org.firstinspires.ftc.teamcode.HardwareSystems.MultiPositionServo;
 import java.util.ArrayList;
 
 public abstract class BaseTele extends OpMode {
-    ElapsedTime clock;
+    ArrayList<Movement> MoveSequence = new ArrayList<>();
 
-    // Declare hardware variables{{{
-    
-    
-    
-    
-    
-    
-    // }}}
+    public DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
 
+    DcMotor carouselSpinner, intake, upExtension, inExtension;
+
+    ElapsedTime caroTimer, clock;
+
+    MultiPositionServo teGrabber, teLift1, teLift2;
+
+    MultiPositionServo dumper, intakeFlipper;
+
+    MecanumDriveTrain driveTrain;
 
     public void init(){
+        FrontLeft =  hardwareMap.dcMotor.get("frontLeft");
+        FrontRight = hardwareMap.dcMotor.get("frontRight");
+        BackLeft =   hardwareMap.dcMotor.get("backLeft");
+        BackRight =  hardwareMap.dcMotor.get("backRight");
+
+        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        driveTrain = new MecanumDriveTrain(FrontLeft, FrontRight, BackLeft, BackRight,1);
+
+        intake =            hardwareMap.dcMotor.get("intake");
+        upExtension =       hardwareMap.dcMotor.get("inExtension");
+        inExtension =       hardwareMap.dcMotor.get("upExtension");
+        carouselSpinner =   hardwareMap.dcMotor.get("carouselSpinner");
+
+        teGrabber = new MultiPositionServo(hardwareMap.servo.get("teGrabber"), 0, 1);
+        teLift1   = new MultiPositionServo(hardwareMap.servo.get("teLift1"), 0.85, 0.5, 0.35);
+        teLift2   = new MultiPositionServo(hardwareMap.servo.get("teLift2"), 0.15, 0.5, 0.59);
+
+        intakeFlipper =   new MultiPositionServo(hardwareMap.servo.get("intakeFlipper"), 0.5,0);
+        dumper =          new MultiPositionServo(hardwareMap.servo.get("dumper"), 1, 0.35, 0.25);
+
+        carouselSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        inExtension.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        caroTimer = new ElapsedTime();
         clock = new ElapsedTime();
-	// initalize hardware variables{{{
-	
-	
-	
-	
-	
-	
-	
-	// }}}
+
+        dumper.toPosition(0);
+        intakeFlipper.toPosition(0);
+
+        teGrabber.scaleRange(0,1);
+
+        teGrabber.toPosition(1);
+        teLift1.toPosition(0);
+        teLift2.toPosition(0);
     }
 
     public double scaledInput(double input,double multiplier){
-      	// map analog input quadratically
-        double positivity = 1;
-        if(input<0)positivity*=-1;
+        double positivity = Math.signum(input);
         return Math.pow(input,2)*positivity*multiplier;
+
     }
+
 }
