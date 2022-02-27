@@ -24,7 +24,7 @@ public abstract class BaseAuto extends LinearOpMode {
 
     ArrayList<Movement> MoveSequence = new ArrayList<>();
 
-    //initialize robot configuration {{{
+    //Declare hardware variables {{{
     
     
     
@@ -33,7 +33,7 @@ public abstract class BaseAuto extends LinearOpMode {
 
 
     public void initSystems(){
-	    // Robot Initalization {{{
+	    // Initalize hardware variables {{{
 	    //    ex: FrontLeft = hardwaremap.dcmotor.get("frontleft");
 	    
 	    
