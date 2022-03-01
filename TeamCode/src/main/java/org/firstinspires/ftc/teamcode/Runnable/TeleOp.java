@@ -15,7 +15,7 @@ public class TeleOp extends BaseTele {
 
         // when speedswitch toggles change drive speed
         if(speedswitch.input(gamepad1.a)){
-            if(speedswitch.get()){
+            if(!speedswitch.get()){
                 driveTrain.rightspeed=0.7;
                 driveTrain.forspeed = 0.7;
             }
@@ -68,7 +68,7 @@ public class TeleOp extends BaseTele {
         teLift1.input(gamepad2.a);
         teLift2.input(gamepad2.a);
 
-        telemetry.addData("FullSpeed: ", speedswitch.get());
+        telemetry.addData("StandardSpeed: ", !speedswitch.get());
         telemetry.addLine();
         telemetry.addData("Lift: ", upExtension.getPower());
         telemetry.addData("TeG", teGrabber.getPosition());
