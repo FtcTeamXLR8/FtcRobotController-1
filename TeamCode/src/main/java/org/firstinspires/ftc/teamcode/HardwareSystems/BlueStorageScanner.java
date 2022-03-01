@@ -20,7 +20,7 @@ public class BlueStorageScanner extends DeterminationClass
     static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(121,130);
     static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(223,150);
     static final int REGION_WIDTH = 30;
-    static final int REGION_HEIGHT = 30;
+    static final int REGION_HEIGHT = 15;
 
 
     Point region1_pointA = new Point(
