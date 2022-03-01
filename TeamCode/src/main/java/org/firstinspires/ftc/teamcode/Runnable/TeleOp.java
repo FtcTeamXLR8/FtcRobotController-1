@@ -1,27 +1,35 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.HardwareSystems.ToggleSwitch;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
 //@Disabled
 public class TeleOp extends BaseTele {
 
-    boolean lastspeed=true;
-    boolean speedswitch=true;
+    ToggleSwitch speedswitch = new ToggleSwitch();
 
     @Override
     public void loop() {
         telemetry.update();
 
-        if(gamepad1.a&&lastspeed){//control speed switch on press of a
-            lastspeed=false;
-            speedswitch=!speedswitch;
+        // when speedswitch toggles change drive speed
+        if(speedswitch.input(gamepad1.a)){
+            if(speedswitch.get()){
+                driveTrain.rightspeed=0.7;
+                driveTrain.forspeed = 0.7;
+            }
+            else {
+                driveTrain.rightspeed=1;
+                driveTrain.forspeed = 1;
+            }
         }
-        else if(!gamepad1.a) speedswitch=true;
 
         //set powers
-        if(speedswitch)driveTrain.setSpeed(scaledInput(gamepad1.left_stick_y,-.7),scaledInput(gamepad1.left_stick_x,.7),scaledInput(gamepad1.right_stick_x,.7));
-        else driveTrain.setSpeed(scaledInput(gamepad1.left_stick_y,-.25),scaledInput(gamepad1.left_stick_x,.25),scaledInput(gamepad1.right_stick_x,.25));
+        driveTrain.setSpeed(
+                scaledInput(gamepad1.left_stick_y,-.7),
+                scaledInput(gamepad1.left_stick_x,.7),
+                scaledInput(gamepad1.right_stick_x,.7));
 
         //control carousel spinner
         if(gamepad2.b) {
@@ -60,7 +68,7 @@ public class TeleOp extends BaseTele {
         teLift1.input(gamepad2.a);
         teLift2.input(gamepad2.a);
 
-        telemetry.addData("Slowmode: ", !speedswitch);
+        telemetry.addData("FullSpeed: ", speedswitch.get());
         telemetry.addLine();
         telemetry.addData("Lift: ", upExtension.getPower());
         telemetry.addData("TeG", teGrabber.getPosition());

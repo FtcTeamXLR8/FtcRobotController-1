@@ -15,6 +15,7 @@ public class MecanumDriveTrain extends HardwareSystem {
     double dists;
 
     double speedScalar=1;
+    public double turnspeed = 1, forspeed = 1, rightspeed = 1;
 
     public MecanumDriveTrain(DcMotor FL, DcMotor FR, DcMotor BL, DcMotor BR, double Scalar){
 
@@ -30,10 +31,10 @@ public class MecanumDriveTrain extends HardwareSystem {
         //input percentages intended for controllers and PIDs
         //sets speed for all motors in drivetrain
 
-        fls = Forward - Rotational - Rightward;
-        frs = Forward + Rotational + Rightward;
-        bls = Forward + Rotational - Rightward;
-        brs = Forward - Rotational + Rightward;
+        fls = Forward*forspeed - Rotational*turnspeed - Rightward*rightspeed;
+        frs = Forward*forspeed + Rotational*turnspeed + Rightward*rightspeed;
+        bls = Forward*forspeed + Rotational*turnspeed - Rightward*rightspeed;
+        brs = Forward*forspeed - Rotational*turnspeed + Rightward*rightspeed;
 
         FrontLeft.setPower(fls*speedScalar);
         FrontRight.setPower(frs*speedScalar);
