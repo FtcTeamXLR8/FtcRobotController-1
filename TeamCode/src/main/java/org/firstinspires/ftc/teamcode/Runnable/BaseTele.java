@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode.Runnable;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 import org.firstinspires.ftc.teamcode.HardwareSystems.MecanumDriveTrain;
 import org.firstinspires.ftc.teamcode.HardwareSystems.MultiPositionServo;
@@ -25,6 +27,8 @@ public abstract class BaseTele extends OpMode {
     MultiPositionServo dumper, intakeFlipper;
 
     MecanumDriveTrain driveTrain;
+
+    DistanceSensor intakeScanner;
 
     public void init(){
         FrontLeft =  hardwareMap.dcMotor.get("frontLeft");
@@ -63,6 +67,8 @@ public abstract class BaseTele extends OpMode {
         teGrabber.toPosition(1);
         teLift1.toPosition(0);
         teLift2.toPosition(0);
+
+        intakeScanner = hardwareMap.get(DistanceSensor.class, "intakescanner");
     }
 
     public double scaledInput(double input,double multiplier){
@@ -71,4 +77,7 @@ public abstract class BaseTele extends OpMode {
 
     }
 
+    public boolean hasCube(){
+        return intakeScanner.getDistance(DistanceUnit.MM)<45;
+    }
 }

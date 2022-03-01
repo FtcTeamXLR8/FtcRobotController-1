@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode.Runnable;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.HardwareSystems.*;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.*;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -45,6 +47,8 @@ public abstract class BaseAuto extends LinearOpMode {
 
     MultiPositionServo teGrabber, teLift1, teLift2;
 
+    DistanceSensor intakeScanner;
+
 
 
     public void initSystems(){
@@ -78,6 +82,7 @@ public abstract class BaseAuto extends LinearOpMode {
         teLift1   = new MultiPositionServo(hardwareMap.servo.get("teLift1"), 0.85, 0.5, 0.33);
         teLift2   = new MultiPositionServo(hardwareMap.servo.get("teLift2"), 0.15, 0.5, 0.62);
 
+        intakeScanner = hardwareMap.get(DistanceSensor.class, "intakescanner");
 
         dumper.toPosition(0);
         intakeFlipper.toPosition(0);
@@ -180,5 +185,8 @@ public abstract class BaseAuto extends LinearOpMode {
 
     public String scan(){
         return pipeline.getAnalysis().name();
+    }
+    public boolean hasCube(){
+        return intakeScanner.getDistance(DistanceUnit.MM)<45;
     }
 }

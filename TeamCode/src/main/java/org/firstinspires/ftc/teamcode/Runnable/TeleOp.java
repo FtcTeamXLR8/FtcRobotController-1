@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
 //@Disabled
 public class TeleOp extends BaseTele {
@@ -62,6 +64,7 @@ public class TeleOp extends BaseTele {
         telemetry.addLine();
         telemetry.addData("Lift: ", upExtension.getPower());
         telemetry.addData("TeG", teGrabber.getPosition());
+        telemetry.addLine("Distance: "+intakeScanner.getDistance(DistanceUnit.MM));
 //        telemetry.addData("FR",FrontRight.getCurrentPosition());
 //        telemetry.addData("FR",FrontLeft.getCurrentPosition());
     }
