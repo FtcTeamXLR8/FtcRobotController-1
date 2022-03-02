@@ -49,6 +49,8 @@ public abstract class BaseAuto extends LinearOpMode {
 
     DistanceSensor intakeScanner;
 
+    ElapsedTime caroTimer, clock;
+
 
 
     public void initSystems(){
@@ -86,6 +88,8 @@ public abstract class BaseAuto extends LinearOpMode {
 
         dumper.toPosition(0);
         intakeFlipper.toPosition(0);
+
+        clock = new ElapsedTime();
     }
 
     public void initRedStorageCam(){
@@ -128,20 +132,20 @@ public abstract class BaseAuto extends LinearOpMode {
     }
 
     public void executeSequence(){
-        for(Movement movement : MoveSequence) {
+        for (Movement movement : MoveSequence) {
 
             // if interrupted wait for robot to stop then end program
-            if(movement.getClass().equals(Interrupt.class)){
+            if (movement.getClass().equals(Interrupt.class)) {
                 driveTrain.stope();
 
                 ElapsedTime waitForEnd = new ElapsedTime();
-                while(!isStopRequested() && waitForEnd.seconds() < 1.3);
+                while (!isStopRequested() && waitForEnd.seconds() < 1.3) ;
 
                 return;
             }
 
             // execute all movements
-            while(!isStopRequested() && !movement.execute());
+            while (!isStopRequested() && !movement.execute()) ;
         }
     }
 
@@ -187,6 +191,7 @@ public abstract class BaseAuto extends LinearOpMode {
         return pipeline.getAnalysis().name();
     }
     public boolean hasCube(){
+        if(intakeScanner.getDistance(DistanceUnit.MM)>5000)return true;
         return intakeScanner.getDistance(DistanceUnit.MM)<45;
     }
 }
