@@ -3,11 +3,14 @@ package org.firstinspires.ftc.teamcode.MovementAlgorithms;
 import org.firstinspires.ftc.teamcode.HardwareSystems.HardwareSystem;
 
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends HardwareSystem {
     protected ArrayList<Runnable> preMoveFunctionList = new ArrayList<>();
     protected ArrayList<Runnable> whileMoveFunctionList = new ArrayList<>();
     protected ArrayList<Runnable> postMoveFunctionList = new ArrayList<>();
+
+    Callable<Boolean> condition = ()->true;
 
     boolean firstMove=true;
     abstract void init();
@@ -20,10 +23,20 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
         }
         for(Runnable runner : whileMoveFunctionList)runner.run();
 
-        if(moveMethod()){
-            for(Runnable runner : postMoveFunctionList)runner.run();
-            return true;
+
+
+        try {
+            if((moveMethod() || !condition.call())){
+
+                for(Runnable runner : postMoveFunctionList)runner.run();
+                return true;
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+
         return false;
     }
     abstract boolean moveMethod();
@@ -61,4 +74,8 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
         whileMoveFunctionList = new ArrayList<>();
     }
 
+    public MoveAlg setCondition(Callable<Boolean> condition) {
+        this.condition = condition;
+        return (MoveAlg) this;
+    }
 }
