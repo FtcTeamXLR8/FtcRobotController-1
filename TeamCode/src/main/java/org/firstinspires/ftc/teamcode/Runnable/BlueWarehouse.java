@@ -2,8 +2,11 @@ package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 @Autonomous(group = "#Comp")
 public class BlueWarehouse extends BaseAuto{
@@ -31,22 +34,23 @@ public class BlueWarehouse extends BaseAuto{
                     upExtension.setPower(0.58);
                     switch(cameraResults) {
                         case "CENTER":
-                            sleep(880);  break;
+                            sleep(980);  break;
                         case "LEFT" :
-                            sleep( 580); break;
+                            sleep( 680); break;
                         default:
-                            sleep(1320); break;
+                            sleep(1360); break;
                     }
                     upExtension.setPower(0.03);
 
                     dumper.toPosition(1);
+                    if(cameraResults=="RIGHT")dumper.setPosition(0.4);
                     sleep(700);
                     dumper.toPosition(0);
 
-                    upExtension.setPower(-0.45);
+                    upExtension.setPower(-0.4);
                     switch(cameraResults){
-                        case "CENTER":sleep(750); break;
-                        case "LEFT": sleep(400);break;
+                        case "CENTER":sleep(960); break;
+                        case "LEFT": sleep(760);break;
                         default:sleep(1200);
                     }
                     upExtension.setPower(0);
@@ -61,41 +65,112 @@ public class BlueWarehouse extends BaseAuto{
         //move into barrier gap
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(1120)
-            .setRightward(230)
-            .setRotational(460)
+            .setRightward(215)
+            .setRotational(503)
             .setSpeed(0.3)
         );
+//        interrupt();
+
         // move to freight and attempt pickup
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setForward(400)
+                .setForward(500)
                 .addPreMoveFunction(()->{
                     intakeFlipper.toPosition();
                     intakeFlipper.toPosition();
-                    intake.toPower(1);
+                    intake.toPower(2);
 
                     inExtension.setPower(0.7);
                     sleep(700);
                     inExtension.setPower(0);
                 })
+                .addPostMoveFunction(()-> {
+                    sleep(500);
 
-                .addPostMoveFunction(()->{
                     inExtension.setPower(-0.7);
                     sleep(700);
                     inExtension.setPower(0);
 
                     intake.toPower(0);
                     intakeFlipper.toPosition();
+
+
+                    Movement move;
+                    move = (new MecanumDistanceDrive(driveTrain)
+                            .setForward(-200)
+                            .setRightward(-70)
+                    );
+                    while(!move.execute());
+
+                    while(!hasCube()&&clock.seconds()<20) {
+                        telemetry.addLine("Grabbing");
+                        telemetry.update();
+
+                        move =
+                                new MecanumDistanceDrive(driveTrain)
+                                        .setForward(200)
+                                        .addPreMoveFunction(() -> {
+                                            intakeFlipper.toPosition(1);
+                                            intake.toPower(2);
+
+                                            inExtension.setPower(0.7);
+                                            sleep(700);
+                                            inExtension.setPower(0);
+                                        })
+                                        .addPostMoveFunction(() -> {
+                                            sleep(500);
+
+                                            inExtension.setPower(-0.7);
+                                            sleep(700);
+                                            inExtension.setPower(0);
+
+                                            intake.toPower(0);
+                                        });
+                        while (!move.execute()) ;
+
+                        move = new MecanumDistanceDrive(driveTrain).setForward(-200);
+                        while (!move.execute()) ;
+                    }
                 })
+        );
+
+        // if not hasCube park and end auto
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+            .setRightward(800)
+            .setCondition(()->!hasCube())
+            .addPostMoveFunction(()->{if(!hasCube())waitForEnd();})
+        );
+
+        AtomicReference<Double> starttime = new AtomicReference<>(0d);
+        // if hasCube exit warehouse
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+            .setForward(-700)
+            .addPreMoveFunction(()->{
+                intakeFlipper.toPosition(0);
+                starttime.set(clock.milliseconds());
+            })
+            .addMoveFunction(()->{
+                if(clock.milliseconds()>starttime.get()+300)intake.toPower(1);
+            })
+            .addPostMoveFunction(()->{
+                intake.toPower(0);
+            })
+        );
+
+        // if hasCube attempt to score
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+            .setForward(-980)
+            .setRotational(-583)
+            .setRightward(-100)
         );
 
         // global telemetry
         for(Movement movement : MoveSequence)movement.addMoveFunction(()->{
             telemetry.addLine(cameraResults);
+            telemetry.addLine(""+intakeScanner.getDistance(DistanceUnit.MM));
             telemetry.update();
         });
 
         waitWhileScanning();
 //        RunWithOnlyMovements();
-        cameraResults="LEFT";
     }
 }
