@@ -26,7 +26,10 @@ public class MultiPositionServo extends HardwareSystem {
         addPosition(Pos);
     }
     public double getPos(){
-        return positions.get(cpos);
+        return cpos;
+    }
+    public double getPosition(int index){
+        return positions.get(index);
     }
     public ArrayList<Double> getPositions(){
         return positions;
