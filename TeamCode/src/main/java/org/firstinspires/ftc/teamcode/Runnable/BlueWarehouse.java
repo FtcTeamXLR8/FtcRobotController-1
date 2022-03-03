@@ -22,6 +22,7 @@ public class BlueWarehouse extends BaseAuto{
                 .setSpeed(0.4)
         );
 
+
         //turn to and score in shipping hub
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setRotational(1300)
@@ -35,7 +36,7 @@ public class BlueWarehouse extends BaseAuto{
                     upExtension.setPower(0.58);
                     switch(cameraResults) {
                         case "CENTER":
-                            sleep(980);  break;
+                            sleep(880);  break;
                         case "LEFT" :
                             sleep( 680); break;
                         default:
@@ -44,13 +45,13 @@ public class BlueWarehouse extends BaseAuto{
                     upExtension.setPower(0.03);
 
                     dumper.toPosition(1);
-                    if(cameraResults=="RIGHT")dumper.setPosition(0.4);
+                    if(cameraResults=="RIGHT")dumper.setPosition(0.37);
                     sleep(700);
                     dumper.toPosition(0);
 
                     upExtension.setPower(-0.4);
                     switch(cameraResults){
-                        case "CENTER":sleep(960); break;
+                        case "CENTER":sleep(1100); break;
                         case "LEFT": sleep(880);break;
                         default:sleep(1500);
                     }
@@ -95,16 +96,14 @@ public class BlueWarehouse extends BaseAuto{
                     intakeFlipper.toPosition();
 
 
-                    Movement move;
-                    move = (new MecanumDistanceDrive(driveTrain)
-                            .setForward(-200)
-                            .setRightward(-70)
-                    );
-                    move.execute();
+                   new MecanumDistanceDrive(driveTrain)
+                        .setForward(-200)
+                        .setRightward(-70)
+                        .execute();
 
-                    MoveCycle moves = new MoveCycle(this);
+                    MoveCycle grabCycle = new MoveCycle(this);
 
-                    moves.add(new MecanumDistanceDrive(driveTrain)
+                    grabCycle.add(new MecanumDistanceDrive(driveTrain)
                             .setForward(200)
                             .addPreMoveFunction(() -> {
                                 intakeFlipper.toPosition(1);
@@ -124,46 +123,65 @@ public class BlueWarehouse extends BaseAuto{
                                 intake.toPower(0);
                             })
                     );
-                    moves.add(new MecanumDistanceDrive(driveTrain).setForward(-200));
+                    grabCycle.add(new MecanumDistanceDrive(driveTrain)
+                            .setForward(-200)
+                            .setRightward(-30)
+                    );
 
-                    while(!hasCube()&&clock.seconds()<20) {
+                    while(!hasCube()&&clock.seconds()<3000) {
                         telemetry.addLine("Grabbing");
                         telemetry.update();
 
-                        moves.executeSequence();
+                        grabCycle.executeSequence();
                     }
                 })
         );
 
         // if not hasCube park and end auto
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        MoveSequence.add( new MecanumDistanceDrive(driveTrain)
+            .setForward(200)
             .setRightward(800)
             .setCondition(()->!hasCube())
-            .addPostMoveFunction(()->{if(!hasCube())waitForEnd();})
-        );
+            .ifEndedByCondition(()->waitForEnd()
+        ));
 
         AtomicReference<Double> starttime = new AtomicReference<>(0d);
         // if hasCube exit warehouse
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-700)
-            .setSpeed(0.45)
+            .setSpeed(0.4)
             .addPreMoveFunction(()->{
                 intakeFlipper.toPosition(0);
                 starttime.set(clock.milliseconds());
             })
             .addMoveFunction(()->{
-                if(clock.milliseconds()>starttime.get()+300)intake.toPower(1);
-            })
-            .addPostMoveFunction(()->{
-                intake.toPower(0);
+                if(clock.milliseconds()>starttime.get()+600)
+                    intake.toPower(1);
             })
         );
 
+//        interrupt();
+
         // if hasCube attempt to score
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(-980)
-            .setRotational(-600)
-            .setRightward(-100)
+            .setForward(-870)
+            .setRotational(-512)
+            .setRightward(60)
+            .addPostMoveFunction(()->{
+                upExtension.setPower(0.58);
+                sleep(1300);
+                upExtension.setPower(0.03);
+
+                dumper.toPosition(1);
+                sleep(700);
+                dumper.toPosition(0);
+
+                upExtension.setPower(-0.4);
+                sleep(1360);
+                upExtension.setPower(0);
+
+                intake.toPower(0);
+            })
         );
 
         // global telemetry
@@ -173,7 +191,8 @@ public class BlueWarehouse extends BaseAuto{
             telemetry.update();
         });
 
+        interrupt();
+
         waitWhileScanning();
-//        RunWithOnlyMovements();
     }
 }
