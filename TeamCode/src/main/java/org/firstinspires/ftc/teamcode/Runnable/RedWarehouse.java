@@ -47,7 +47,7 @@ public class RedWarehouse extends BaseAuto{
                     teLift2.toPosition(2);
                 })
         );
-        for(Movement movement : MoveSequence)movement.addMoveFunction(()->{
+        MoveSequence.addWhileMoveToEach(()->{
             telemetry.addLine(cameraResults);
             telemetry.update();
         });

@@ -63,20 +63,14 @@ public class AutoExplanation extends BaseAuto{
 
 
         // add telemetry listing currentmovement / totalmovements
-        for(Movement movement : MoveSequence){
-            ArrayList<Movement> withoutInterrupts = new ArrayList<>();
-            for(Movement move : MoveSequence){
-                withoutInterrupts.add(move);
-            }
-
-            movement.addMoveFunction(new Runnable() {
-                @Override
-                public void run() {
-                    telemetry.addLine("Current Movement: "+ (withoutInterrupts.indexOf(movement)+1)+"/"+withoutInterrupts.size());
-                    telemetry.addLine("Camera: "+cameraResults);
-                    telemetry.update();
-                }
-            });
+        ArrayList<Movement> withoutInterrupts = new ArrayList<>();
+        for(Movement move : MoveSequence.MoveSequence){
+            withoutInterrupts.add(move);
         }
+
+        MoveSequence.addWhileMoveToEach(()->{
+            telemetry.addLine("Camera: "+cameraResults);
+            telemetry.update();
+        });
     }
 }

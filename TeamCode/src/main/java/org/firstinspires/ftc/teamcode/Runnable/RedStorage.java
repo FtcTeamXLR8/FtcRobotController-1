@@ -79,9 +79,7 @@ public class RedStorage extends BaseAuto{
         );
 
         // add global telemetry to each movement
-        for(Movement movement : MoveSequence) {
-            movement.addMoveFunction(() -> {
-                telemetry.addLine("Movement: " + (MoveSequence.indexOf(movement) + 1) + "/" + MoveSequence.size());
+           MoveSequence.addWhileMoveToEach(() -> {
                 telemetry.addLine("Scan Results: " + cameraResults);
                 telemetry.addLine();
 
@@ -93,7 +91,6 @@ public class RedStorage extends BaseAuto{
 
                 telemetry.update();
             });
-        }
 
         waitWhileScanning();
     }

@@ -12,32 +12,26 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
 
     Callable<Boolean> condition = ()->true;
 
+
+
     boolean firstMove=true;
     abstract void init();
 
-    public boolean execute(){//will return true as long as the movement is unfinished
-        if(firstMove){
-            firstMove=false;
-            init();
-            for(Runnable runner : preMoveFunctionList)runner.run();
-        }
-        for(Runnable runner : whileMoveFunctionList)runner.run();
+    public void execute(){//will return true as long as the movement is unfinished
+        init();
+        for(Runnable runner : preMoveFunctionList)runner.run();
 
 
 
         try {
-            if((moveMethod() || !condition.call())){
-
-                for(Runnable runner : postMoveFunctionList)runner.run();
-                return true;
-
+            while((moveMethod() || !condition.call())){
+                for(Runnable runner : whileMoveFunctionList)runner.run();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
-        return false;
+        for(Runnable runner : postMoveFunctionList)runner.run();
     }
     abstract boolean moveMethod();
 

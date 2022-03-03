@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -50,8 +51,8 @@ public class BlueWarehouse extends BaseAuto{
                     upExtension.setPower(-0.4);
                     switch(cameraResults){
                         case "CENTER":sleep(960); break;
-                        case "LEFT": sleep(760);break;
-                        default:sleep(1200);
+                        case "LEFT": sleep(880);break;
+                        default:sleep(1500);
                     }
                     upExtension.setPower(0);
 
@@ -99,36 +100,37 @@ public class BlueWarehouse extends BaseAuto{
                             .setForward(-200)
                             .setRightward(-70)
                     );
-                    while(!move.execute());
+                    move.execute();
+
+                    MoveCycle moves = new MoveCycle(this);
+
+                    moves.add(new MecanumDistanceDrive(driveTrain)
+                            .setForward(200)
+                            .addPreMoveFunction(() -> {
+                                intakeFlipper.toPosition(1);
+                                intake.toPower(2);
+
+                                inExtension.setPower(0.7);
+                                sleep(700);
+                                inExtension.setPower(0);
+                            })
+                            .addPostMoveFunction(() -> {
+                                sleep(500);
+
+                                inExtension.setPower(-0.7);
+                                sleep(700);
+                                inExtension.setPower(0);
+
+                                intake.toPower(0);
+                            })
+                    );
+                    moves.add(new MecanumDistanceDrive(driveTrain).setForward(-200));
 
                     while(!hasCube()&&clock.seconds()<20) {
                         telemetry.addLine("Grabbing");
                         telemetry.update();
 
-                        move =
-                                new MecanumDistanceDrive(driveTrain)
-                                        .setForward(200)
-                                        .addPreMoveFunction(() -> {
-                                            intakeFlipper.toPosition(1);
-                                            intake.toPower(2);
-
-                                            inExtension.setPower(0.7);
-                                            sleep(700);
-                                            inExtension.setPower(0);
-                                        })
-                                        .addPostMoveFunction(() -> {
-                                            sleep(500);
-
-                                            inExtension.setPower(-0.7);
-                                            sleep(700);
-                                            inExtension.setPower(0);
-
-                                            intake.toPower(0);
-                                        });
-                        while (!move.execute()) ;
-
-                        move = new MecanumDistanceDrive(driveTrain).setForward(-200);
-                        while (!move.execute()) ;
+                        moves.executeSequence();
                     }
                 })
         );
@@ -144,6 +146,7 @@ public class BlueWarehouse extends BaseAuto{
         // if hasCube exit warehouse
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-700)
+            .setSpeed(0.45)
             .addPreMoveFunction(()->{
                 intakeFlipper.toPosition(0);
                 starttime.set(clock.milliseconds());
@@ -159,12 +162,12 @@ public class BlueWarehouse extends BaseAuto{
         // if hasCube attempt to score
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-980)
-            .setRotational(-583)
+            .setRotational(-600)
             .setRightward(-100)
         );
 
         // global telemetry
-        for(Movement movement : MoveSequence)movement.addMoveFunction(()->{
+        MoveSequence.addWhileMoveToEach(()->{
             telemetry.addLine(cameraResults);
             telemetry.addLine(""+intakeScanner.getDistance(DistanceUnit.MM));
             telemetry.update();

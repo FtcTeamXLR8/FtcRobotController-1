@@ -18,18 +18,18 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.ArrayList;
 
-public abstract class BaseAuto extends LinearOpMode {
+public abstract class BaseAuto<Auto extends BaseAuto<Auto>> extends LinearOpMode {
     public abstract void initializeMovements();
 
     public void runOpMode(){
         initSystems();
         initializeMovements();
         waitForStart();
-        executeSequence();
+        MoveSequence.executeSequence();
         waitForEnd();
     }
 
-    ArrayList<Movement> MoveSequence = new ArrayList<>();
+    MoveCycle MoveSequence = new MoveCycle((Auto) this);
 
     public DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
 
@@ -131,24 +131,6 @@ public abstract class BaseAuto extends LinearOpMode {
         });
     }
 
-    public void executeSequence(){
-        for (Movement movement : MoveSequence) {
-
-            // if interrupted wait for robot to stop then end program
-            if (movement.getClass().equals(Interrupt.class)) {
-                driveTrain.stope();
-
-                ElapsedTime waitForEnd = new ElapsedTime();
-                while (!isStopRequested() && waitForEnd.seconds() < 1.3) ;
-
-                return;
-            }
-
-            // execute all movements
-            while (!isStopRequested() && !movement.execute()) ;
-        }
-    }
-
     public void interrupt(){
         MoveSequence.add(new Interrupt());
     }
@@ -178,14 +160,6 @@ public abstract class BaseAuto extends LinearOpMode {
         while(!isStopRequested()&&opModeIsActive());
     }
 
-    public void RunWithOnlyMovements(){
-        for(Movement movement : MoveSequence){
-            movement.removeAllPostMoveFunctions();
-            movement.removeAllPreMoveFunctions();
-            movement.removeAllMoveFunctions();
-            movement.addPostMoveFunction(()->driveTrain.stope());
-        }
-    }
 
     public String scan(){
         return pipeline.getAnalysis().name();
