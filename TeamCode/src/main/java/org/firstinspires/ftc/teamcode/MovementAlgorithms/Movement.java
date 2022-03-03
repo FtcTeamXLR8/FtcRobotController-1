@@ -13,13 +13,15 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
     Callable<Boolean> condition = ()->true;
     Runnable ifEndedByCondition = ()->{};
 
-    boolean endedByCondition = false;
+    protected boolean endedByCondition = false;
 
 
 
     abstract void init();
 
     public void execute(){
+	endedByCondition = false;
+
         init();
         for(Runnable runner : preMoveFunctionList)runner.run();
 
@@ -71,6 +73,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
     public void removeAllMoveFunctions(){
         whileMoveFunctionList = new ArrayList<>();
     }
+
     public MoveAlg ifEndedByCondition(Runnable func){
         ifEndedByCondition = func;
         return (MoveAlg) this;
