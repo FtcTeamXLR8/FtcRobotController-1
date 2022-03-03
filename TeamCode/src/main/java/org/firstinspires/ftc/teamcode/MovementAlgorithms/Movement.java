@@ -14,17 +14,14 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
 
 
 
-    boolean firstMove=true;
     abstract void init();
 
-    public void execute(){//will return true as long as the movement is unfinished
+    public void execute(){
         init();
         for(Runnable runner : preMoveFunctionList)runner.run();
 
-
-
         try {
-            while((moveMethod() || !condition.call())){
+            while((!moveMethod() || !condition.call())){
                 for(Runnable runner : whileMoveFunctionList)runner.run();
             }
         } catch (Exception e) {
