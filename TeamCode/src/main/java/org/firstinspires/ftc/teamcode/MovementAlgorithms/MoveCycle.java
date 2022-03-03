@@ -40,5 +40,8 @@ public class MoveCycle {
             movement.addMoveFunction(func);
         }
     }
+    public void interrupt(){
+        MoveSequence.add(new Interrupt());
+    }
 }
 
