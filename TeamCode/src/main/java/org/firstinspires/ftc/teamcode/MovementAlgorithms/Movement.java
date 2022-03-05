@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.MovementAlgorithms;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import org.firstinspires.ftc.teamcode.HardwareSystems.HardwareSystem;
 
 import java.util.ArrayList;
@@ -10,26 +12,26 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
     protected ArrayList<Runnable> whileMoveFunctionList = new ArrayList<>();
     protected ArrayList<Runnable> postMoveFunctionList = new ArrayList<>();
 
-    Callable<Boolean> condition = ()->true;
-    Runnable ifEndedByCondition = ()->{};
-
-    protected boolean endedByCondition = false;
-
+    protected Callable<Boolean> condition = ()->true;
+    protected Runnable ifEndedByCondition = ()-> {};
+    protected Runnable ifNotEndedByCondition = () ->{};
 
 
     abstract void init();
 
     public void execute(){
-	endedByCondition = false;
-
         init();
         for(Runnable runner : preMoveFunctionList)runner.run();
 
         try {
-            while(!(moveMethod() || endedByCondition)){
+            while(true){
                 if(!condition.call()){
-                   endedByCondition = true;
                    ifEndedByCondition.run();
+                   break;
+                }
+                if(moveMethod()){
+                    ifNotEndedByCondition.run();
+                    break;
                 }
                 for(Runnable runner : whileMoveFunctionList)runner.run();
             }
@@ -39,19 +41,44 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
 
         for(Runnable runner : postMoveFunctionList)runner.run();
     }
+
+
+    public void execute(LinearOpMode opMode) {
+        init();
+        for (Runnable runner : preMoveFunctionList) runner.run();
+
+        try {
+            while (!opMode.isStopRequested()) {
+                if (!condition.call()) {
+                    ifEndedByCondition.run();
+                    break;
+                }
+                if (moveMethod()){
+                    ifNotEndedByCondition.run();
+                    break;
+                }
+
+                for (Runnable runner : whileMoveFunctionList) runner.run();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (Runnable runner : postMoveFunctionList) runner.run();
+    }
     abstract boolean moveMethod();
 
-    public MoveAlg addPreMoveFunction(Runnable func){
+    public Movement<MoveAlg> addPreMoveFunction(Runnable func){
         preMoveFunctionList.add(func);
-        return (MoveAlg) this;
+        return this;
     }
-    public MoveAlg addMoveFunction(Runnable func){
+    public Movement<MoveAlg> addMoveFunction(Runnable func){
         whileMoveFunctionList.add(func);
-        return (MoveAlg) this;
+        return this;
     }
-    public MoveAlg addPostMoveFunction(Runnable func){
+    public Movement<MoveAlg> addPostMoveFunction(Runnable func){
         postMoveFunctionList.add(func);
-        return (MoveAlg) this;
+        return this;
     }
 
     public void removePreMoveFunction(Runnable func){
@@ -74,13 +101,17 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
         whileMoveFunctionList = new ArrayList<>();
     }
 
-    public MoveAlg ifEndedByCondition(Runnable func){
+    public Movement<MoveAlg> ifEndedByCondition(Runnable func){
         ifEndedByCondition = func;
-        return (MoveAlg) this;
+        return this;
+    }
+    public Movement<MoveAlg> ifNotEndedByCondition(Runnable func){
+        ifNotEndedByCondition = func;
+        return this;
     }
 
-    public MoveAlg setCondition(Callable<Boolean> condition) {
+    public Movement<MoveAlg> setCondition(Callable<Boolean> condition) {
         this.condition = condition;
-        return (MoveAlg) this;
+        return this;
     }
 }
