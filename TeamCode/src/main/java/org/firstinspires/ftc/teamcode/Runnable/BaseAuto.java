@@ -159,7 +159,9 @@ public abstract class BaseAuto<Auto extends BaseAuto<Auto>> extends LinearOpMode
         else cameraResults="RIGHT";
     }
     public void waitForEnd(){
-        while(!isStopRequested()&&opModeIsActive());
+        telemetry.addLine("Waiting for End");
+        telemetry.update();
+        while(!isStopRequested());
     }
 
 
