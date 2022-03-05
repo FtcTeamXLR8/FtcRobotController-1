@@ -11,11 +11,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Autonomous(group = "#Comp")
 public class BlueWarehouse extends BaseAuto{
+    double starttime = 0;
+
     @Override
     public void initializeMovements() {
         initBlueStorageCam();
 
         //move up to shiiping hub
+        // 0
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(480)
                 .setRightward(450)
@@ -24,6 +27,7 @@ public class BlueWarehouse extends BaseAuto{
 
 
         //turn to and score in shipping hub
+        // 1
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setRotational(1300)
                 .setTolerance(10)
@@ -62,9 +66,10 @@ public class BlueWarehouse extends BaseAuto{
                 })
         );
 
-//        interrupt();
+        interrupt();
 
         //move into barrier gap
+        // 2
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(1120)
             .setRightward(215)
@@ -74,6 +79,7 @@ public class BlueWarehouse extends BaseAuto{
 //        interrupt();
 
         // move to freight and attempt pickup
+        // 3
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(500)
                 .addPreMoveFunction(()->{
@@ -99,7 +105,7 @@ public class BlueWarehouse extends BaseAuto{
                    new MecanumDistanceDrive(driveTrain)
                         .setForward(-200)
                         .setRightward(-70)
-                        .execute();
+                        .execute(this);
 
                     MoveCycle grabCycle = new MoveCycle(this);
 
@@ -128,7 +134,10 @@ public class BlueWarehouse extends BaseAuto{
                             .setRightward(-30)
                     );
 
-                    while(!hasCube()&&clock.seconds()<3000) {
+                    while(opModeIsActive()) {
+                        if(hasCube())break;
+                        if(clock.seconds()>23)break;
+
                         telemetry.addLine("Grabbing");
                         telemetry.update();
 
@@ -137,25 +146,31 @@ public class BlueWarehouse extends BaseAuto{
                 })
         );
 
-        // if not hasCube park and end auto
-        MoveSequence.add( new MecanumDistanceDrive(driveTrain)
+        // start park if not hasCube
+        // 4
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(200)
+            .setCondition(()->!hasCube())
+        );
+        // if not hasCube park and end auto
+        // 5
+        MoveSequence.add( new MecanumDistanceDrive(driveTrain)
             .setRightward(800)
             .setCondition(()->!hasCube())
-            .ifEndedByCondition(()->waitForEnd()
-        ));
+            .ifNotEndedByCondition(this::waitForEnd)
+        );
 
-        AtomicReference<Double> starttime = new AtomicReference<>(0d);
         // if hasCube exit warehouse
+        // 6
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-700)
             .setSpeed(0.4)
             .addPreMoveFunction(()->{
                 intakeFlipper.toPosition(0);
-                starttime.set(clock.milliseconds());
+                starttime = clock.milliseconds();
             })
             .addMoveFunction(()->{
-                if(clock.milliseconds()>starttime.get()+600)
+                if(clock.milliseconds()>starttime + 600)
                     intake.toPower(1);
             })
         );
@@ -163,6 +178,7 @@ public class BlueWarehouse extends BaseAuto{
 //        interrupt();
 
         // if hasCube attempt to score
+        // 7
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-870)
             .setRotational(-512)
@@ -186,11 +202,16 @@ public class BlueWarehouse extends BaseAuto{
 
         // global telemetry
         MoveSequence.addWhileMoveToEach(()->{
+            telemetry.addLine("Current Movement: "+moveCount +" / "+(MoveSequence.size()-1));
+            telemetry.addLine();
             telemetry.addLine(cameraResults);
-            telemetry.addLine(""+intakeScanner.getDistance(DistanceUnit.MM));
+            telemetry.addLine("Dist: "+intakeScanner.getDistance(DistanceUnit.MM));
+            telemetry.addLine("Has Cube: "+hasCube());
+
             telemetry.update();
         });
 
+        // 8
         interrupt();
 
         waitWhileScanning();
