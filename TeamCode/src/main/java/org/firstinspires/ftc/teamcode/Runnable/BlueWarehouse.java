@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Autonomous(group = "#Comp")
 public class BlueWarehouse extends BaseAuto{
     double starttime = 0;
+    int cubeCount = 0;
 
     @Override
     public void initializeMovements() {
@@ -80,11 +81,9 @@ public class BlueWarehouse extends BaseAuto{
         );
 
 //        interrupt();
-        MoveCycle cycle = new MoveCycle(this);
 
         // move to freight and attempt pickup
-        // 3
-        cycle.add(new MecanumDistanceDrive(driveTrain)
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(500)
                 .addPreMoveFunction(()->{
                     intakeFlipper.toPosition();
@@ -136,10 +135,21 @@ public class BlueWarehouse extends BaseAuto{
                     grabCycle.add(new MecanumDistanceDrive(driveTrain)
                             .setForward(-200)
                             .setRightward(-30)
+                            .addPreMoveFunction(()->{
+                                cubeCount=0;
+                            })
+                            .addMoveFunction(()->{
+                                if(hasCube())cubeCount++;
+                                telemetry.addLine(""+hasCube());
+                                telemetry.addLine("Scan Count: "+ cubeCount);
+                                telemetry.update();
+                            })
                     );
 
-                    while(opModeIsActive()) {
-                        if(hasCube())break;
+                    int i;
+                    for(i=0;i<2;i++) {
+                        if(isStopRequested())break;
+                        if(cubeCount>1000)break;
                         if(clock.seconds()>23)break;
 
                         telemetry.addLine("Grabbing");
@@ -147,26 +157,24 @@ public class BlueWarehouse extends BaseAuto{
 
                         grabCycle.executeSequence();
                     }
+                    new MecanumDistanceDrive(driveTrain).setRightward(-50*i).execute(this);
                 })
         );
 
         // start park if not hasCube
-        // 4
-        cycle.add(new MecanumDistanceDrive(driveTrain)
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(200)
-            .setCondition(()->!hasCube())
+            .setCondition(()->cubeCount>1000)
         );
         // if not hasCube park and end auto
-        // 5
-        cycle.add( new MecanumDistanceDrive(driveTrain)
+        MoveSequence.add( new MecanumDistanceDrive(driveTrain)
             .setRightward(800)
-            .setCondition(()->!hasCube())
+            .setCondition(()->cubeCount>1000)
             .ifNotEndedByCondition(this::waitForEnd)
         );
 
         // if hasCube exit warehouse
-        // 6
-        cycle.add(new MecanumDistanceDrive(driveTrain)
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-700)
             .setSpeed(0.4)
             .addPreMoveFunction(()->{
@@ -174,7 +182,7 @@ public class BlueWarehouse extends BaseAuto{
                 starttime = clock.milliseconds();
             })
             .addMoveFunction(()->{
-                if(clock.milliseconds()>starttime + 600)
+                if(clock.milliseconds()>starttime + 800)
                     intake.toPower(1);
             })
         );
@@ -182,13 +190,13 @@ public class BlueWarehouse extends BaseAuto{
 //        interrupt();
 
         // if hasCube attempt to score
-        // 7
-        cycle.add(new MecanumDistanceDrive(driveTrain)
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-870)
             .setRotational(-512)
             .setRightward(60)
             .addPostMoveFunction(()->{
                 upExtension.setPower(0.58);
+                intake.toPower(0);
                 sleep(1580);
                 upExtension.setPower(0.03);
 
@@ -204,10 +212,16 @@ public class BlueWarehouse extends BaseAuto{
             })
         );
 
-        // loop cycling MoveCycle
-        MoveSequence.add(new BlankMovement().addPostMoveFunction(()->{
-            for(int i=0;i<1;i++) cycle.executeSequence();
-        }));
+        // move back to cycle start
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+            .setForward(900)
+            .setRotational(500)
+            .setRightward(150)
+        );
+
+        // park
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain).setForward(600).setRightward(-100));
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain).setRightward(900));
 
         // global telemetry
         MoveSequence.addWhileMoveToEach(()->{
