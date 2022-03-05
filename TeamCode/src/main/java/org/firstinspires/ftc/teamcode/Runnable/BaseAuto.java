@@ -20,16 +20,18 @@ import java.util.ArrayList;
 
 public abstract class BaseAuto<Auto extends BaseAuto<Auto>> extends LinearOpMode {
     public abstract void initializeMovements();
+    protected int moveCount = 0;
 
     public void runOpMode(){
         initSystems();
         initializeMovements();
         waitForStart();
+        MoveSequence.addPostMoveToEach(()->moveCount++);
         MoveSequence.executeSequence();
         waitForEnd();
     }
 
-    MoveCycle MoveSequence = new MoveCycle((Auto) this);
+    MoveCycle MoveSequence = new MoveCycle( this);
 
     public DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
 
