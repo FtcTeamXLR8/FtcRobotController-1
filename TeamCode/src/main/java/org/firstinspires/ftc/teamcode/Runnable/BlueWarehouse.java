@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Runnable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.BlankMovement;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
@@ -33,6 +34,7 @@ public class BlueWarehouse extends BaseAuto{
                 .setTolerance(10)
                 .setSpeed(0.4)
                 .addPostMoveFunction(()->{
+//                    cameraResults = "LEFT";
                     teLift1.toPosition(0);
                     teLift2.toPosition(0);
                     sleep(400);
@@ -40,11 +42,11 @@ public class BlueWarehouse extends BaseAuto{
                     upExtension.setPower(0.58);
                     switch(cameraResults) {
                         case "CENTER":
-                            sleep(880);  break;
+                            sleep(1080); break;
                         case "LEFT" :
                             sleep( 680); break;
                         default:
-                            sleep(1360); break;
+                            sleep(1560); break;
                     }
                     upExtension.setPower(0.03);
 
@@ -66,7 +68,7 @@ public class BlueWarehouse extends BaseAuto{
                 })
         );
 
-        interrupt();
+//        interrupt();
 
         //move into barrier gap
         // 2
@@ -76,11 +78,13 @@ public class BlueWarehouse extends BaseAuto{
             .setRotational(503)
             .setSpeed(0.3)
         );
+
 //        interrupt();
+        MoveCycle cycle = new MoveCycle(this);
 
         // move to freight and attempt pickup
         // 3
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        cycle.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(500)
                 .addPreMoveFunction(()->{
                     intakeFlipper.toPosition();
@@ -148,13 +152,13 @@ public class BlueWarehouse extends BaseAuto{
 
         // start park if not hasCube
         // 4
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        cycle.add(new MecanumDistanceDrive(driveTrain)
             .setForward(200)
             .setCondition(()->!hasCube())
         );
         // if not hasCube park and end auto
         // 5
-        MoveSequence.add( new MecanumDistanceDrive(driveTrain)
+        cycle.add( new MecanumDistanceDrive(driveTrain)
             .setRightward(800)
             .setCondition(()->!hasCube())
             .ifNotEndedByCondition(this::waitForEnd)
@@ -162,7 +166,7 @@ public class BlueWarehouse extends BaseAuto{
 
         // if hasCube exit warehouse
         // 6
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        cycle.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-700)
             .setSpeed(0.4)
             .addPreMoveFunction(()->{
@@ -179,13 +183,13 @@ public class BlueWarehouse extends BaseAuto{
 
         // if hasCube attempt to score
         // 7
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        cycle.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-870)
             .setRotational(-512)
             .setRightward(60)
             .addPostMoveFunction(()->{
                 upExtension.setPower(0.58);
-                sleep(1300);
+                sleep(1580);
                 upExtension.setPower(0.03);
 
                 dumper.toPosition(1);
@@ -193,12 +197,17 @@ public class BlueWarehouse extends BaseAuto{
                 dumper.toPosition(0);
 
                 upExtension.setPower(-0.4);
-                sleep(1360);
+                sleep(1500);
                 upExtension.setPower(0);
 
                 intake.toPower(0);
             })
         );
+
+        // loop cycling MoveCycle
+        MoveSequence.add(new BlankMovement().addPostMoveFunction(()->{
+            for(int i=0;i<1;i++) cycle.executeSequence();
+        }));
 
         // global telemetry
         MoveSequence.addWhileMoveToEach(()->{
@@ -212,7 +221,7 @@ public class BlueWarehouse extends BaseAuto{
         });
 
         // 8
-        interrupt();
+//        interrupt();
 
         waitWhileScanning();
     }
