@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Runnable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 
 import java.util.ArrayList;
@@ -63,8 +64,8 @@ public class AutoExplanation extends BaseAuto{
 
 
         // add telemetry listing currentmovement / totalmovements
-        ArrayList<Movement> withoutInterrupts = new ArrayList<>();
-        for(Movement move : MoveSequence.MoveSequence){
+        MoveCycle withoutInterrupts = new MoveCycle(this);
+        for(Movement move : MoveSequence){
             withoutInterrupts.add(move);
         }
 
