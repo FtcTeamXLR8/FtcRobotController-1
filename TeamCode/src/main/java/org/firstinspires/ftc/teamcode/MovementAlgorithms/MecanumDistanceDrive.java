@@ -5,8 +5,8 @@ import org.firstinspires.ftc.teamcode.HardwareSystems.MecanumDriveTrain;
 public class MecanumDistanceDrive extends Movement {
 
     MecanumDriveTrain driveTrain;
-    int For = 0, Right = 0, Rotat = 0, Tol = 25;
-    double Spd = 0.5;
+    int For = 0, Right = 0, Rotat = 0, Tol = 30;
+    double Spd = 0.51;
 
     public void init(){
         driveTrain.resetEncoders();
