@@ -26,10 +26,12 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
         try {
             while(true){
                 if(!condition.call()){
+                   for(Runnable runner : postMoveFunctionList)runner.run();
                    ifEndedByCondition.run();
                    break;
                 }
                 if(moveMethod()){
+                    for(Runnable runner : postMoveFunctionList)runner.run();
                     ifNotEndedByCondition.run();
                     break;
                 }
@@ -39,7 +41,6 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
             e.printStackTrace();
         }
 
-        for(Runnable runner : postMoveFunctionList)runner.run();
     }
 
 
