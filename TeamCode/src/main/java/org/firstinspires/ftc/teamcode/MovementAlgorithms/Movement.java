@@ -15,6 +15,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
     protected ArrayList<Runnable> postMoveFunctionList = new ArrayList<>();
 
     protected ArrayList<Event> eventList = new ArrayList<>();
+    protected boolean endWithUntriggeredEvents = false;
 
     protected Callable<Boolean> condition = ()->true;
     protected Runnable ifEndedByCondition = ()-> {};
@@ -60,8 +61,10 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
                     break;
                 }
                 if (moveMethod()){
-                    ifNotEndedByCondition.run();
-                    break;
+                    if(endWithUntriggeredEvents || eventList.size()==0) {
+                        ifNotEndedByCondition.run();
+                        break;
+                    }
                 }
 
                 ArrayList<Event> newEventList = new ArrayList<>();
@@ -125,6 +128,10 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
         return this;
     }
 
+    public Movement<MoveAlg> toggleEndWithUntriggeredEvents(){
+        endWithUntriggeredEvents = !endWithUntriggeredEvents;
+        return this;
+    }
     public Movement<MoveAlg> createEvent(Callable condition, Runnable callback){
         eventList.add(new Event(condition, callback));
         return this;
