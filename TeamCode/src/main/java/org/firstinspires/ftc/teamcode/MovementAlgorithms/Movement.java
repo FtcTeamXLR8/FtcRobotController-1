@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.MovementAlgorithms;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.HardwareSystems.HardwareSystem;
 
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
     protected ArrayList<Runnable> preMoveFunctionList = new ArrayList<>();
     protected ArrayList<Runnable> whileMoveFunctionList = new ArrayList<>();
     protected ArrayList<Runnable> postMoveFunctionList = new ArrayList<>();
+
+    protected ArrayList<Event> eventList = new ArrayList<>();
 
     protected Callable<Boolean> condition = ()->true;
     protected Runnable ifEndedByCondition = ()-> {};
@@ -47,6 +51,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
     public void execute(LinearOpMode opMode) {
         init();
         for (Runnable runner : preMoveFunctionList) runner.run();
+        for (Event event : eventList) event.initEvent();
 
         try {
             while (!opMode.isStopRequested()) {
@@ -58,6 +63,10 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
                     ifNotEndedByCondition.run();
                     break;
                 }
+
+                ArrayList<Event> newEventList = new ArrayList<>();
+                for (Event event : eventList) if(!event.tryEvent()) newEventList.add(event);
+                eventList = newEventList;
 
                 for (Runnable runner : whileMoveFunctionList) runner.run();
             }
@@ -111,8 +120,46 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
         return this;
     }
 
-    public Movement<MoveAlg> setCondition(Callable<Boolean> condition) {
+    public Movement<MoveAlg> setEndCondition(Callable<Boolean> condition) {
         this.condition = condition;
         return this;
+    }
+
+    public Movement<MoveAlg> createEvent(Callable condition, Runnable callback){
+        eventList.add(new Event(condition, callback));
+        return this;
+    }
+    public Movement<MoveAlg> createTimedEvent(int milliseconds, Runnable callback){
+        eventList.add(new timedEvent(milliseconds, callback));
+        return this;
+    }
+
+    class Event {
+        Callable<Boolean> condition;
+        Runnable callback;
+
+        public Event(Callable condition, Runnable callback){
+            this.condition = condition;
+            this.callback = callback;
+        }
+        public void initEvent(){}
+        public boolean tryEvent() throws Exception {
+                boolean test = condition.call();
+                if(test)callback.run();
+                return test;
+        }
+    }
+    class timedEvent extends Event{
+        ElapsedTime timer = new ElapsedTime();
+
+        @Override
+        public void initEvent(){
+            timer.reset();
+        }
+
+        public timedEvent(int milliseconds, Runnable callback) {
+            super(()->false, callback);
+            condition = ()->timer.milliseconds()>milliseconds;
+        }
     }
 }

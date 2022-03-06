@@ -3,12 +3,8 @@ package org.firstinspires.ftc.teamcode.Runnable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.MovementAlgorithms.BlankMovement;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
-import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 @Autonomous(group = "#Comp")
 public class BlueWarehouse extends BaseAuto{
@@ -164,12 +160,12 @@ public class BlueWarehouse extends BaseAuto{
         // start park if not hasCube
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(200)
-            .setCondition(()->cubeCount>1000)
+            .setEndCondition(()->cubeCount>1000)
         );
         // if not hasCube park and end auto
         MoveSequence.add( new MecanumDistanceDrive(driveTrain)
             .setRightward(800)
-            .setCondition(()->cubeCount>1000)
+            .setEndCondition(()->cubeCount>1000)
             .ifNotEndedByCondition(this::waitForEnd)
         );
 
