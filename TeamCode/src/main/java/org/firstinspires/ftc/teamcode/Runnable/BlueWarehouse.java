@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
 
 @Autonomous(group = "#Comp")
 public class BlueWarehouse extends BaseAuto{
-    double starttime = 0;
     int cubeCount = 0;
 
     @Override
@@ -173,14 +172,12 @@ public class BlueWarehouse extends BaseAuto{
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-700)
             .setSpeed(0.4)
-            .addPreMoveFunction(()->{
-                intakeFlipper.toPosition(0);
-                starttime = clock.milliseconds();
-            })
-            .addMoveFunction(()->{
-                if(clock.milliseconds()>starttime + 800)
-                    intake.toPower(1);
-            })
+            .addPreMoveFunction(()->
+                intakeFlipper.toPosition(0)
+            )
+            .createTimedEvent(800,()->
+                intake.toPower(1)
+            )
         );
 
 //        interrupt();
@@ -197,14 +194,6 @@ public class BlueWarehouse extends BaseAuto{
                 upExtension.setPower(0.03);
 
                 dumper.toPosition(1);
-                sleep(700);
-                dumper.toPosition(0);
-
-                upExtension.setPower(-0.4);
-                sleep(1500);
-                upExtension.setPower(0);
-
-                intake.toPower(0);
             })
         );
 
@@ -213,6 +202,14 @@ public class BlueWarehouse extends BaseAuto{
             .setForward(900)
             .setRotational(500)
             .setRightward(150)
+            .createTimedEvent(700,()-> {
+                dumper.toPosition(0);
+                upExtension.setPower(-0.4);
+            })
+            .createTimedEvent(2200,()->{
+                upExtension.setPower(0);
+                intake.toPower(0);
+            })
         );
 
         // park
