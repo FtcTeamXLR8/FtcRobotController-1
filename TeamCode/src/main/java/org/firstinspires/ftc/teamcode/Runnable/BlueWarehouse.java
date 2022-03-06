@@ -159,12 +159,12 @@ public class BlueWarehouse extends BaseAuto{
         // start park if not hasCube
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(200)
-            .setEndCondition(()->cubeCount>1000)
+            .setCondition(()->cubeCount>1000)
         );
         // if not hasCube park and end auto
         MoveSequence.add( new MecanumDistanceDrive(driveTrain)
             .setRightward(800)
-            .setEndCondition(()->cubeCount>1000)
+            .setCondition(()->cubeCount>1000)
             .ifNotEndedByCondition(this::waitForEnd)
         );
 

@@ -123,7 +123,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
         return this;
     }
 
-    public Movement<MoveAlg> setEndCondition(Callable<Boolean> condition) {
+    public Movement<MoveAlg> setCondition(Callable<Boolean> condition) {
         this.condition = condition;
         return this;
     }
