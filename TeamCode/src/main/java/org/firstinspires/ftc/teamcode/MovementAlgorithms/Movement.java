@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.MovementAlgorithms;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.HardwareSystems.HardwareSystem;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
     protected ArrayList<Event> eventList = new ArrayList<>();
     protected boolean endWithUntriggeredEvents = false;
 
-    protected Callable<Boolean> condition = ()->true;
+    protected Callable<Boolean> endCondition = ()->true;
     protected Runnable ifEndedByCondition = ()-> {};
     protected Runnable ifNotEndedByCondition = () ->{};
 
@@ -30,7 +29,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
 
         try {
             while(true){
-                if(!condition.call()){
+                if(!endCondition.call()){
                    for(Runnable runner : postMoveFunctionList)runner.run();
                    ifEndedByCondition.run();
                    break;
@@ -56,7 +55,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
 
         try {
             while (!opMode.isStopRequested()) {
-                if (!condition.call()) {
+                if (!endCondition.call()) {
                     ifEndedByCondition.run();
                     break;
                 }
@@ -123,8 +122,8 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
         return this;
     }
 
-    public Movement<MoveAlg> setCondition(Callable<Boolean> condition) {
-        this.condition = condition;
+    public Movement<MoveAlg> setEndCondition(Callable<Boolean> endCondition) {
+        this.endCondition = endCondition;
         return this;
     }
 
