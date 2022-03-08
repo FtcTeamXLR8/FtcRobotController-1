@@ -18,9 +18,8 @@ public class RedStorage extends BaseAuto{
 
         // drive up to and spin carousel
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(190)
+            .setForward(160)
             .setSpeed(0.1)
-            .setTolerance(45)
             .addPostMoveFunction(() -> {
                 carouselSpinner.setPower(-0.6);
                 sleep(6000);
@@ -30,14 +29,14 @@ public class RedStorage extends BaseAuto{
 
         // drive around barcode
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(-650)
+            .setForward(-750)
             .setRightward(850)
         );
 
         // drive up and deposit cube
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-800)
-            .setRotational(320)
+            .setRotational(420)
             .setRightward(-65)
             .setTolerance(40)
             .addPostMoveFunction(() -> {
@@ -73,10 +72,12 @@ public class RedStorage extends BaseAuto{
 
         // park
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(1125)
-            .setRotational(-610)
+            .setForward(1215)
+            .setRotational(-760)
             .setRightward(220)
         );
+//        MoveSequence.add(new MecanumDistanceDrive(driveTrain).setForward(20).setSpeed(0.2));
+        
 
         // add global telemetry to each movement
            MoveSequence.addWhileMoveToEach(() -> {
