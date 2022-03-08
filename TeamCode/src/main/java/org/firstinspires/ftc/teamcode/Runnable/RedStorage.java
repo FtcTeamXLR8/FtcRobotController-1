@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.*;
 public class RedStorage extends BaseAuto{
 
     public void initializeMovements() {
-        initRedStorageCam();
+        initRedCam();
 
         // line up with carousel
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)

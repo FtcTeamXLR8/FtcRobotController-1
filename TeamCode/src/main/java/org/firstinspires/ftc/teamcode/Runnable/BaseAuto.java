@@ -94,7 +94,7 @@ public abstract class BaseAuto<Auto extends BaseAuto<Auto>> extends LinearOpMode
         clock = new ElapsedTime();
     }
 
-    public void initRedStorageCam(){
+    public void initRedCam(){
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         pipeline = new RedStorageScanner();

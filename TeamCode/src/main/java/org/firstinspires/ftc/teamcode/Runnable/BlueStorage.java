@@ -72,7 +72,7 @@ public class BlueStorage extends BaseAuto {
                     teLift2.toPosition(2);
                 })
         );
-
+        
         // park
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(1280)

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
 @Autonomous(group = "#Comp")
 public class BlueWarehouse extends BaseAuto{
     int cubeCount = 0;
+    ElapsedTime droptime = new ElapsedTime();
 
     @Override
     public void initializeMovements() {
@@ -27,7 +29,7 @@ public class BlueWarehouse extends BaseAuto{
         // 1
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setRotational(1300)
-                .setTolerance(10)
+                .setTolerance(12)
                 .setSpeed(0.4)
                 .addPostMoveFunction(()->{
 //                    cameraResults = "LEFT";
@@ -38,9 +40,9 @@ public class BlueWarehouse extends BaseAuto{
                     upExtension.setPower(0.58);
                     switch(cameraResults) {
                         case "CENTER":
-                            sleep(1080); break;
+                            sleep(880); break;
                         case "LEFT" :
-                            sleep( 680); break;
+                            sleep( 580); break;
                         default:
                             sleep(1560); break;
                     }
@@ -52,12 +54,7 @@ public class BlueWarehouse extends BaseAuto{
                     dumper.toPosition(0);
 
                     upExtension.setPower(-0.4);
-                    switch(cameraResults){
-                        case "CENTER":sleep(1100); break;
-                        case "LEFT": sleep(880);break;
-                        default:sleep(1500);
-                    }
-                    upExtension.setPower(0);
+                    droptime.reset();
 
                     teLift1.toPosition(2);
                     teLift2.toPosition(2);
@@ -73,6 +70,14 @@ public class BlueWarehouse extends BaseAuto{
             .setRightward(215)
             .setRotational(503)
             .setSpeed(0.3)
+            .createEvent(()->{
+                switch (cameraResults){
+                    case "LEFT": return droptime.milliseconds()>880;
+                    case "CENTER": return droptime.milliseconds()>1100;
+                    case "RIGHT": return droptime.milliseconds()>1500;
+                    default: return true;
+                }
+            },()-> upExtension.setPower(0))
         );
 
 //        interrupt();
@@ -123,31 +128,30 @@ public class BlueWarehouse extends BaseAuto{
                                 inExtension.setPower(-0.7);
                                 sleep(700);
                                 inExtension.setPower(0);
-
-                                intake.toPower(0);
                             })
                     );
                     grabCycle.add(new MecanumDistanceDrive(driveTrain)
                             .setForward(-200)
                             .setRightward(-30)
-                            .addPreMoveFunction(()->{
-                                cubeCount=0;
-                            })
                             .addMoveFunction(()->{
                                 if(hasCube())cubeCount++;
                                 telemetry.addLine(""+hasCube());
-                                telemetry.addLine("Scan Count: "+ cubeCount);
                                 telemetry.update();
                             })
                     );
 
                     int i;
-                    for(i=0;i<2;i++) {
+                    for(i=0;i<1;i++) {
                         if(isStopRequested())break;
-                        if(cubeCount>1000)break;
+                        if(cubeCount>100)break;
                         if(clock.seconds()>23)break;
 
                         telemetry.addLine("Grabbing");
+                        telemetry.addLine("Dist: "+intakeScanner.getDistance(DistanceUnit.MM));
+                        telemetry.addLine();
+                        telemetry.addLine("Count: "+cubeCount);
+                        telemetry.addLine("Has Cube: "+(cubeCount>100));
+                        telemetry.addLine("I: "+i);
                         telemetry.update();
 
                         grabCycle.executeSequence();
@@ -194,6 +198,7 @@ public class BlueWarehouse extends BaseAuto{
                 upExtension.setPower(0.03);
 
                 dumper.toPosition(1);
+                sleep(200);
             })
         );
 
@@ -202,6 +207,7 @@ public class BlueWarehouse extends BaseAuto{
             .setForward(900)
             .setRotational(500)
             .setRightward(150)
+            .setTolerance(50)
             .createTimedEvent(700,()-> {
                 dumper.toPosition(0);
                 upExtension.setPower(-0.4);
@@ -213,8 +219,17 @@ public class BlueWarehouse extends BaseAuto{
         );
 
         // park
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain).setForward(600).setRightward(-100));
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain).setRightward(900));
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+                .setForward(700)
+                .setRightward(-100)
+                .setSpeed(0.6)
+                .setTolerance(50)
+        );
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+                .setRightward(700)
+                .setSpeed(0.6)
+                .setTolerance(50)
+        );
 
         // global telemetry
         MoveSequence.addWhileMoveToEach(()->{
@@ -222,7 +237,7 @@ public class BlueWarehouse extends BaseAuto{
             telemetry.addLine();
             telemetry.addLine(cameraResults);
             telemetry.addLine("Dist: "+intakeScanner.getDistance(DistanceUnit.MM));
-            telemetry.addLine("Has Cube: "+hasCube());
+            telemetry.addLine("Has Cube: "+(cubeCount>100));
 
             telemetry.update();
         });
