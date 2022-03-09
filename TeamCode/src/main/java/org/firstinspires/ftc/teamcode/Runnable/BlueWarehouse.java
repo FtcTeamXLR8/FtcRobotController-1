@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
 
-@Autonomous(group = "#Comp")
+@Autonomous(group = "#CompBlue")
 public class BlueWarehouse extends BaseAuto{
     int cubeCount = 0;
     ElapsedTime droptime = new ElapsedTime();

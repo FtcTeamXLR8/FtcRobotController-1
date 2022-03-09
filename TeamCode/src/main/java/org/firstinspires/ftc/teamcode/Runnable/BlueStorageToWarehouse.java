@@ -3,10 +3,9 @@ package org.firstinspires.ftc.teamcode.Runnable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
-import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 
 @Autonomous(group = "#CompBlue")
-public class BlueStorage extends BaseAuto {
+public class BlueStorageToWarehouse extends BaseAuto {
     public void initializeMovements() {
         initBlueStorageCam();
 
@@ -75,10 +74,14 @@ public class BlueStorage extends BaseAuto {
 
         // park
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(1280)
-            .setRotational(790)
-            .setRightward(90)
-            .setTolerance(70)
+            .setForward(1600)
+            .setRotational(1200)
+        );
+
+        // park
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+            .setForward(3000)
+            .addPreMoveFunction(()->sleep(0))
         );
 
         waitWhileScanning();

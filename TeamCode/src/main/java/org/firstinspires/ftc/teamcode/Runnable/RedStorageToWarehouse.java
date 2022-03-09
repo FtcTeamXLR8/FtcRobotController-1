@@ -2,10 +2,11 @@ package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.MovementAlgorithms.*;
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 
 @Autonomous(group = "#CompRed")
-public class RedStorage extends BaseAuto{
+public class RedStorageToWarehouse extends BaseAuto{
 
     public void initializeMovements() {
         initRedCam();
@@ -18,7 +19,7 @@ public class RedStorage extends BaseAuto{
 
         // drive up to and spin carousel
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(160)
+            .setForward(163)
             .setSpeed(0.1)
             .addPostMoveFunction(() -> {
                 carouselSpinner.setPower(-0.6);
@@ -70,12 +71,18 @@ public class RedStorage extends BaseAuto{
             })
         );
 
+        // line up park
+        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+            .setForward(1500)
+            .setRotational(-1200)
+        );
+
         // park
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(1215)
-            .setRotational(-760)
-            .setRightward(220)
+                .setForward(3000)
+                .addPreMoveFunction(()->sleep(0))
         );
+
 //        MoveSequence.add(new MecanumDistanceDrive(driveTrain).setForward(20).setSpeed(0.2));
 
 
