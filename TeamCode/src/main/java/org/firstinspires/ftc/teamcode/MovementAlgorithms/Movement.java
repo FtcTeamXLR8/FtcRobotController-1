@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.MovementAlgorithms;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.HardwareSystems.HardwareSystem;
 
 import java.util.ArrayList;
@@ -50,8 +51,10 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
 
     public void execute(LinearOpMode opMode) {
         init();
+        ArrayList<Event> newEventList = new ArrayList<>();
         for (Runnable runner : preMoveFunctionList) runner.run();
-        for (Event event : eventList) event.initEvent();
+        for (Event event : newEventList) event.initEvent();
+
 
         try {
             while (!opMode.isStopRequested()) {
@@ -66,9 +69,9 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
                     }
                 }
 
-                ArrayList<Event> newEventList = new ArrayList<>();
-                for (Event event : eventList) if(!event.tryEvent()) newEventList.add(event);
-                eventList = newEventList;
+                ArrayList<Event> newNewEventList = new ArrayList<>();
+                for (Event event : newEventList) if(!event.tryEvent()) newNewEventList.add(event);
+                newEventList = newNewEventList;
 
                 for (Runnable runner : whileMoveFunctionList) runner.run();
             }
