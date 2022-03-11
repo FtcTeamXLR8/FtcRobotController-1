@@ -13,7 +13,18 @@ public class MoveCycle extends java.util.ArrayList<Movement>{
     }
 
     public void executeSequence(){
+        int startMove=0;
+        int i=0;
+        for(Movement movement : this){
+            if(movement.getClass().equals(JumpHere.class))startMove=i;
+            i++;
+        }
+        i=0;
         for (Movement movement : this) {
+            if(i<startMove){
+                i++;
+                continue;
+            }
 
             // if interrupted wait for robot to stop then end program
             if (movement.getClass().equals(Interrupt.class)) {
@@ -26,6 +37,7 @@ public class MoveCycle extends java.util.ArrayList<Movement>{
 
             // execute movement
             movement.execute(opMode);
+            i++;
         }
     }
     public void addWhileMoveToEach(Runnable func){
@@ -40,6 +52,9 @@ public class MoveCycle extends java.util.ArrayList<Movement>{
     }
     public void interrupt(){
         this.add(new Interrupt());
+    }
+    public void jumpToHere(){
+        this.add(new JumpHere());
     }
 }
 

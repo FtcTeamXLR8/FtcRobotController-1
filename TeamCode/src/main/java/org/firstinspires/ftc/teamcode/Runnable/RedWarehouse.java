@@ -43,7 +43,7 @@ public class RedWarehouse extends BaseAuto{
                         .createEvent(()->{
                             switch(cameraResults) {
                                 case "CENTER": return raisetime.milliseconds()>680;
-                                case "LEFT" : return raisetime.milliseconds()>380;
+                                case "LEFT" : return raisetime.milliseconds()>420;
                                 default: return raisetime.milliseconds()>1560;
                             }
                         },()->upExtension.setPower(0.03))
@@ -74,6 +74,8 @@ public class RedWarehouse extends BaseAuto{
                 .setRightward(-215)
                 .setRotational(-503)
                 .setSpeed(0.3)
+                .toggleEndWithUntriggeredEvents()
+                .addPreMoveFunction(()->droptime.reset())
                 .createEvent(()->{
                     switch (cameraResults){
                         case "LEFT": return droptime.milliseconds()>880;
@@ -88,6 +90,14 @@ public class RedWarehouse extends BaseAuto{
 
         grabCycle.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(700)
+                .createEvent(()->{
+                    switch (cameraResults){
+                        case "LEFT": return droptime.milliseconds()>880;
+                        case "CENTER": return droptime.milliseconds()>1100;
+                        case "RIGHT": return droptime.milliseconds()>1500;
+                        default: return true;
+                    }
+                },()-> upExtension.setPower(0))
                 .addPreMoveFunction(() -> {
                     intakeFlipper.toPosition(1);
                     intake.toPower(2);
@@ -124,25 +134,14 @@ public class RedWarehouse extends BaseAuto{
                 })
         );
 
-        // start park if not hasCube
-        scoreCycle.add(new MecanumDistanceDrive(driveTrain)
-                .setForward(200)
-                .setEndCondition(()->cubeCount>1000)
-        );
-        // if not hasCube park and end auto
-        scoreCycle.add( new MecanumDistanceDrive(driveTrain)
-                .setRightward(-800)
-                .setEndCondition(()->cubeCount>1000)
-                .ifNotEndedByCondition(this::waitForEnd)
-        );
-
-        // if hasCube exit warehouse
+        // exit warehouse
         scoreCycle.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(-700)
                 .setSpeed(0.4)
                 .addPreMoveFunction(()->
                         intakeFlipper.toPosition(0)
                 )
+                .toggleEndWithUntriggeredEvents()
                 .createTimedEvent(800,()->
                         intake.toPower(1)
                 )
@@ -155,6 +154,9 @@ public class RedWarehouse extends BaseAuto{
                 .setForward(-870)
                 .setRotational(512)
                 .setRightward(-60)
+                .createTimedEvent(300,()->
+                        intake.toPower(1)
+                )
                 .addPostMoveFunction(()->{
                     upExtension.setPower(0.58);
                     intake.toPower(0);

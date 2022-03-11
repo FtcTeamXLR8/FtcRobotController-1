@@ -19,7 +19,7 @@ public class BlueStorage extends BaseAuto {
 
         // drive up to and spin carousel
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(210)
+            .setForward(190)
             .setRightward(40)
             .setSpeed(0.1)
             .setTolerance(45)

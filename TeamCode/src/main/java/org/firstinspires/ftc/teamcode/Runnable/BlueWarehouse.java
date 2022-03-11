@@ -12,13 +12,14 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
 public class BlueWarehouse extends BaseAuto{
     int cubeCount = 0;
     ElapsedTime droptime = new ElapsedTime();
+    ElapsedTime raisetime = new ElapsedTime();
     MoveCycle scoreCycle = new MoveCycle(this);
+    MoveCycle grabCycle = new MoveCycle(this);
 
     @Override
     public void initializeMovements() {
         initBlueStorageCam();
-
-        //move up to shiiping hub
+//move up to shipping hub
         // 0
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(480)
@@ -33,22 +34,21 @@ public class BlueWarehouse extends BaseAuto{
                 .setRotational(1300)
                 .setTolerance(12)
                 .setSpeed(0.4)
+                .addPreMoveFunction(()->{
+                    upExtension.setPower(0.58);
+                    raisetime.reset();
+                })
+                .createEvent(()->{
+                    switch(cameraResults) {
+                        case "CENTER": return raisetime.milliseconds()>840;
+                        case "LEFT" : return raisetime.milliseconds()>540;
+                        default: return raisetime.milliseconds()>1560;
+                    }
+                },()->upExtension.setPower(0.03))
                 .addPostMoveFunction(()->{
-//                    cameraResults = "LEFT";
                     teLift1.toPosition(0);
                     teLift2.toPosition(0);
-                    sleep(400);
-
-                    upExtension.setPower(0.58);
-                    switch(cameraResults) {
-                        case "CENTER":
-                            sleep(880); break;
-                        case "LEFT" :
-                            sleep( 580); break;
-                        default:
-                            sleep(1560); break;
-                    }
-                    upExtension.setPower(0.03);
+                    sleep(150);
 
                     dumper.toPosition(1);
                     if(cameraResults=="RIGHT")dumper.setPosition(0.37);
@@ -68,157 +68,130 @@ public class BlueWarehouse extends BaseAuto{
         //move into barrier gap
         // 2
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(1120)
-            .setRightward(215)
-            .setRotational(503)
-            .setSpeed(0.3)
-            .createEvent(()->{
-                switch (cameraResults){
-                    case "LEFT": return droptime.milliseconds()>880;
-                    case "CENTER": return droptime.milliseconds()>1100;
-                    case "RIGHT": return droptime.milliseconds()>1500;
-                    default: return true;
-                }
-            },()-> upExtension.setPower(0))
+                .setForward(1120)
+                .setRightward(215)
+                .setRotational(503)
+                .setSpeed(0.3)
+                .toggleEndWithUntriggeredEvents()
+                .addPreMoveFunction(()->droptime.reset())
+                .createEvent(()->{
+                    switch (cameraResults){
+                        case "LEFT": return droptime.milliseconds()>880;
+                        case "CENTER": return droptime.milliseconds()>1250;
+                        case "RIGHT": return droptime.milliseconds()>1600;
+                        default: return true;
+                    }
+                },()-> upExtension.setPower(0))
         );
 
 //        interrupt();
 
-        // move to freight and attempt pickup
-        scoreCycle.add(new MecanumDistanceDrive(driveTrain)
+        grabCycle.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(500)
-                .addPreMoveFunction(()->{
-                    intakeFlipper.toPosition();
-                    intakeFlipper.toPosition();
+                .createEvent(()->{
+                    switch (cameraResults){
+                        case "LEFT": return droptime.milliseconds()>880;
+                        case "CENTER": return droptime.milliseconds()>1100;
+                        case "RIGHT": return droptime.milliseconds()>1600;
+                        default: return true;
+                    }
+                },()-> upExtension.setPower(0))
+                .addPreMoveFunction(() -> {
+                    intakeFlipper.toPosition(1);
                     intake.toPower(2);
 
                     inExtension.setPower(0.7);
                     sleep(700);
                     inExtension.setPower(0);
                 })
-                .addPostMoveFunction(()-> {
+                .addPostMoveFunction(() -> {
                     sleep(500);
 
                     inExtension.setPower(-0.7);
                     sleep(700);
                     inExtension.setPower(0);
-
-                    intake.toPower(0);
-                    intakeFlipper.toPosition();
-
-
-                   new MecanumDistanceDrive(driveTrain)
-                        .setForward(-200)
-                        .setRightward(-70)
-                        .execute(this);
-
-                    MoveCycle grabCycle = new MoveCycle(this);
-
-                    grabCycle.add(new MecanumDistanceDrive(driveTrain)
-                            .setForward(200)
-                            .addPreMoveFunction(() -> {
-                                intakeFlipper.toPosition(1);
-                                intake.toPower(2);
-
-                                inExtension.setPower(0.7);
-                                sleep(700);
-                                inExtension.setPower(0);
-                            })
-                            .addPostMoveFunction(() -> {
-                                sleep(500);
-
-                                inExtension.setPower(-0.7);
-                                sleep(700);
-                                inExtension.setPower(0);
-                            })
-                    );
-                    grabCycle.add(new MecanumDistanceDrive(driveTrain)
-                            .setForward(-200)
-                            .setRightward(-30)
-                            .addMoveFunction(()->{
-                                if(hasCube())cubeCount++;
-                                telemetry.addLine(""+hasCube());
-                                telemetry.update();
-                            })
-                    );
-
-                    int i;
-                    for(i=0;i<1;i++) {
-                        if(isStopRequested())break;
-                        if(cubeCount>100)break;
-                        if(clock.seconds()>23)break;
-
-                        telemetry.addLine("Grabbing");
-                        telemetry.addLine("Dist: "+intakeScanner.getDistance(DistanceUnit.MM));
-                        telemetry.addLine();
-                        telemetry.addLine("Count: "+cubeCount);
-                        telemetry.addLine("Has Cube: "+(cubeCount>100));
-                        telemetry.addLine("I: "+i);
-                        telemetry.update();
-
-                        grabCycle.executeSequence();
-                    }
-                    new MecanumDistanceDrive(driveTrain).setRightward(-50*i).execute(this);
+                })
+        );
+        grabCycle.add(new MecanumDistanceDrive(driveTrain)
+                .setForward(-300)
+                .setRightward(-30)
+                .addMoveFunction(()->{
+                    if(hasCube())cubeCount++;
+                    telemetry.addLine(""+hasCube());
+                    telemetry.update();
                 })
         );
 
-        // start park if not hasCube
-        scoreCycle.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(200)
-            .setEndCondition(()->cubeCount>1000)
-        );
-        // if not hasCube park and end auto
-        scoreCycle.add( new MecanumDistanceDrive(driveTrain)
-            .setRightward(800)
-            .setEndCondition(()->cubeCount>1000)
-            .ifNotEndedByCondition(this::waitForEnd)
+        // move to freight and attempt pickup
+        scoreCycle.add(new BlankMovement()
+                        .addPostMoveFunction(()-> {
+                            int i;
+                            for(i=0;i<1;i++)grabCycle.executeSequence();
+                            new MecanumDistanceDrive(driveTrain).setRightward(-i*90).execute(this);
+                        })
         );
 
-        // if hasCube exit warehouse
+        // exit warehouse
         scoreCycle.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(-700)
-            .setSpeed(0.4)
-            .addPreMoveFunction(()->
-                intakeFlipper.toPosition(0)
-            )
-            .createTimedEvent(800,()->
-                intake.toPower(1)
-            )
+                .setForward(-500)
+                .setSpeed(0.4)
+                .addPreMoveFunction(()->
+                        intakeFlipper.toPosition(0)
+                )
+                .toggleEndWithUntriggeredEvents()
+                .createTimedEvent(800,()->
+                        intake.toPower(1)
+                )
         );
 
 //        interrupt();
 
         // if hasCube attempt to score
         scoreCycle.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(-870)
-            .setRotational(-512)
-            .setRightward(60)
-            .addPostMoveFunction(()->{
-                upExtension.setPower(0.58);
-                intake.toPower(0);
-                sleep(1580);
-                upExtension.setPower(0.03);
+                .setForward(-870)
+                .setRotational(-440)
+                .setRightward(120)
+                .createTimedEvent(300,()->
+                        intake.toPower(1)
+                )
+                .addPostMoveFunction(()->{
+                    upExtension.setPower(0.58);
+                    intake.toPower(0);
+                    sleep(1580);
+                    upExtension.setPower(0.03);
 
-                dumper.toPosition(1);
-                sleep(200);
-            })
+                    dumper.toPosition(1);
+                    sleep(200);
+                })
         );
-
-        // move back to cycle start
+        // move back to warehouse entrance
         scoreCycle.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(900)
-            .setRotational(500)
-            .setRightward(150)
-            .setTolerance(50)
-            .createTimedEvent(700,()-> {
-                dumper.toPosition(0);
-                upExtension.setPower(-0.4);
-            })
-            .createTimedEvent(2200,()->{
-                upExtension.setPower(0);
-                intake.toPower(0);
-            })
+                .setForward(990)
+                .setRotational(470)
+//                .setRightward(80)
+                .setTolerance(50)
+                .createTimedEvent(700,()-> {
+                    dumper.toPosition(0);
+                    upExtension.setPower(-0.4);
+                })
+                .createTimedEvent(2200,()->{
+                    upExtension.setPower(0);
+                    intake.toPower(0);
+                })
         );
+        scoreCycle.add(new MecanumDistanceDrive(driveTrain)
+                .setForward(145)
+                .setSpeed(0.45)
+                .setRightward(-60)
+        );
+//        scoreCycle.interrupt();
+
+//        interrupt();
+//        MoveSequence.jumpToHere();
+        MoveSequence.add(new BlankMovement().addPostMoveFunction(()->scoreCycle.executeSequence()));
+//        MoveSequence.interrupt();
+        MoveSequence.add(new BlankMovement().addPostMoveFunction(()->scoreCycle.executeSequence()));
+//        interrupt();
 
         // park
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
@@ -232,9 +205,6 @@ public class BlueWarehouse extends BaseAuto{
                 .setSpeed(0.6)
                 .setTolerance(50)
         );
-
-//        interrupt();
-        MoveSequence.add(new BlankMovement().addPostMoveFunction(()-> scoreCycle.executeSequence()));
 
         // global telemetry
         scoreCycle.addWhileMoveToEach(()->{

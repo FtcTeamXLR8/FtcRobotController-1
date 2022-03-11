@@ -51,7 +51,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
 
     public void execute(LinearOpMode opMode) {
         init();
-        ArrayList<Event> newEventList = new ArrayList<>();
+        ArrayList<Event> newEventList = eventList;
         for (Runnable runner : preMoveFunctionList) runner.run();
         for (Event event : newEventList) event.initEvent();
 
@@ -63,7 +63,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
                     break;
                 }
                 if (moveMethod()){
-                    if(endWithUntriggeredEvents || eventList.size()==0) {
+                    if(endWithUntriggeredEvents || newEventList.size()==0) {
                         ifNotEndedByCondition.run();
                         break;
                     }
