@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.BlankMovement;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
 
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
 public class BlueWarehouse extends BaseAuto{
     int cubeCount = 0;
     ElapsedTime droptime = new ElapsedTime();
+    MoveCycle scoreCycle = new MoveCycle(this);
 
     @Override
     public void initializeMovements() {
@@ -83,7 +85,7 @@ public class BlueWarehouse extends BaseAuto{
 //        interrupt();
 
         // move to freight and attempt pickup
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        scoreCycle.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(500)
                 .addPreMoveFunction(()->{
                     intakeFlipper.toPosition();
@@ -161,19 +163,19 @@ public class BlueWarehouse extends BaseAuto{
         );
 
         // start park if not hasCube
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        scoreCycle.add(new MecanumDistanceDrive(driveTrain)
             .setForward(200)
             .setEndCondition(()->cubeCount>1000)
         );
         // if not hasCube park and end auto
-        MoveSequence.add( new MecanumDistanceDrive(driveTrain)
+        scoreCycle.add( new MecanumDistanceDrive(driveTrain)
             .setRightward(800)
             .setEndCondition(()->cubeCount>1000)
             .ifNotEndedByCondition(this::waitForEnd)
         );
 
         // if hasCube exit warehouse
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        scoreCycle.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-700)
             .setSpeed(0.4)
             .addPreMoveFunction(()->
@@ -187,7 +189,7 @@ public class BlueWarehouse extends BaseAuto{
 //        interrupt();
 
         // if hasCube attempt to score
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        scoreCycle.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-870)
             .setRotational(-512)
             .setRightward(60)
@@ -203,7 +205,7 @@ public class BlueWarehouse extends BaseAuto{
         );
 
         // move back to cycle start
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        scoreCycle.add(new MecanumDistanceDrive(driveTrain)
             .setForward(900)
             .setRotational(500)
             .setRightward(150)
@@ -231,7 +233,19 @@ public class BlueWarehouse extends BaseAuto{
                 .setTolerance(50)
         );
 
+//        interrupt();
+        MoveSequence.add(new BlankMovement().addPostMoveFunction(()-> scoreCycle.executeSequence()));
+
         // global telemetry
+        scoreCycle.addWhileMoveToEach(()->{
+            telemetry.addLine("Current Movement: "+moveCount +" / "+(MoveSequence.size()-1));
+            telemetry.addLine();
+            telemetry.addLine(cameraResults);
+            telemetry.addLine("Dist: "+intakeScanner.getDistance(DistanceUnit.MM));
+            telemetry.addLine("Has Cube: "+(cubeCount>100));
+
+            telemetry.update();
+        });
         MoveSequence.addWhileMoveToEach(()->{
             telemetry.addLine("Current Movement: "+moveCount +" / "+(MoveSequence.size()-1));
             telemetry.addLine();
