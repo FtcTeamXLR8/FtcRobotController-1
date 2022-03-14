@@ -26,7 +26,9 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
 
     public void execute(){
         init();
+        ArrayList<Event> newEventList = eventList;
         for(Runnable runner : preMoveFunctionList)runner.run();
+        for (Event event : newEventList) event.initEvent();
 
         try {
             while(true){
@@ -40,6 +42,11 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
                     ifNotEndedByCondition.run();
                     break;
                 }
+
+                ArrayList<Event> newNewEventList = new ArrayList<>();
+                for (Event event : newEventList) if(!event.tryEvent()) newNewEventList.add(event);
+                newEventList = newNewEventList;
+
                 for(Runnable runner : whileMoveFunctionList)runner.run();
             }
         } catch (Exception e) {

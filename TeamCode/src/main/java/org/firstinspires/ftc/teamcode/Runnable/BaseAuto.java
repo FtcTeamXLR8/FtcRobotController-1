@@ -63,7 +63,6 @@ public abstract class BaseAuto<Auto extends BaseAuto<Auto>> extends LinearOpMode
 
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         BackLeft .setDirection(DcMotorSimple.Direction.REVERSE);
-//        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         driveTrain = new MecanumDriveTrain(FrontLeft, FrontRight, BackLeft, BackRight,1);
         driveTrain.setAllRunModes(DcMotor.RunMode.RUN_USING_ENCODER);

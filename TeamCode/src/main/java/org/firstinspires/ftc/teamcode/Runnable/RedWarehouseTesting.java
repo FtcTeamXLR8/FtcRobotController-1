@@ -1,13 +1,17 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.MovementAlgorithms.*;
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.BlankMovement;
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
 
 @Autonomous(group = "#CompRed")
-public class RedWarehouse extends BaseAuto{
+@Disabled
+public class RedWarehouseTesting extends BaseAuto{
     int cubeCount = 0;
     ElapsedTime droptime = new ElapsedTime();
     ElapsedTime raisetime = new ElapsedTime();
@@ -172,43 +176,26 @@ public class RedWarehouse extends BaseAuto{
                 .setRotational(-500)
                 .setRightward(-150)
                 .setTolerance(50)
+                .addPreMoveFunction(()->droptime2.reset())
+                .toggleEndWithUntriggeredEvents()
                 .createTimedEvent(700,()-> {
                     dumper.toPosition(0);
                     upExtension.setPower(-0.4);
                 })
-                .createTimedEvent(2200,()->{
+                .createEvent(()-> droptime2.milliseconds()>2200,()->{
                     upExtension.setPower(0);
                     intake.toPower(0);
                 })
         );
-//        scoreCycle.add(new MecanumDistanceDrive(driveTrain)
-//                .setForward(900)
-//                .setRotational(-500)
-//                .setRightward(-150)
-//                .setTolerance(50)
-//                .addPreMoveFunction(()->droptime2.reset())
-//                .toggleEndWithUntriggeredEvents()
-//                .createTimedEvent(700,()-> {
-//                    dumper.toPosition(0);
-//                    upExtension.setPower(-0.4);
-//                })
-//                .createEvent(()-> droptime2.milliseconds()>2200,()->{
-//                    upExtension.setPower(0);
-//                    intake.toPower(0);
-//                })
-//        );
+
         scoreCycle.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(285)
                 .setRightward(60)
+                .createEvent(()-> droptime2.milliseconds()>2200,()->{
+                    upExtension.setPower(0);
+                    intake.toPower(0);
+                })
         );
-//        scoreCycle.add(new MecanumDistanceDrive(driveTrain)
-//                .setForward(285)
-//                .setRightward(60)
-//                .createEvent(()-> droptime2.milliseconds()>2200,()->{
-//                    upExtension.setPower(0);
-//                    intake.toPower(0);
-//                })
-//        );
 
 
 //        interrupt();

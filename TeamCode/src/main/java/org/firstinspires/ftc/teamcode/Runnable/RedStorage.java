@@ -21,7 +21,7 @@ public class RedStorage extends BaseAuto{
             .setForward(160)
             .setSpeed(0.1)
             .addPostMoveFunction(() -> {
-                carouselSpinner.setPower(-0.6);
+                carouselSpinner.setPower(-0.45);
                 sleep(6000);
                 carouselSpinner.setPower(0);
             })

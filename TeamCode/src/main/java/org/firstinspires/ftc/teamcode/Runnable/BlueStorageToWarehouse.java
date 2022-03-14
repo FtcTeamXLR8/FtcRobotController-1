@@ -51,14 +51,17 @@ public class BlueStorageToWarehouse extends BaseAuto {
                     teLift2.toPosition(0);
 
                     upExtension.setPower(0.6);
-
-                    if(!cameraResults.equals("LEFT") && !cameraResults.equals("CENTER"))sleep(1100);
-                    else if(cameraResults.equals("LEFT"))sleep(720);
-                    else                      sleep(750);
+                    switch(cameraResults){
+                        case "LEFT": sleep(720); break;
+                        case "CENTER": sleep(750);break;
+                        default: sleep(1100); break;
+                    }
                     upExtension.setPower(0.03);
 
-                    if(cameraResults.equals("LEFT"))dumper.toPosition(2);
-                    else                     dumper.toPosition(1);
+                    switch(cameraResults){
+                        case "LEFT": dumper.toPosition(2);break;
+                        default: dumper.toPosition(1);
+                    }
                     sleep(700);
                     dumper.toPosition(0);
 
@@ -81,7 +84,9 @@ public class BlueStorageToWarehouse extends BaseAuto {
         // park
         MoveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(3000)
-            .addPreMoveFunction(()->sleep(0))
+            .addPreMoveFunction(()->{
+                while(clock.seconds()<24 && !isStopRequested());
+            })
         );
 
         waitWhileScanning();
