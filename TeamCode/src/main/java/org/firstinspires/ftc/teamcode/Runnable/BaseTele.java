@@ -1,18 +1,14 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
-import org.firstinspires.ftc.teamcode.HardwareSystems.MecanumDriveTrain;
-import org.firstinspires.ftc.teamcode.HardwareSystems.MultiPositionServo;
+import org.firstinspires.ftc.teamcode.Events.*;
 
 import java.util.ArrayList;
 
 public abstract class BaseTele extends OpMode {
     ElapsedTime elapsedTime;
+    ArrayList<Event> eventList = new ArrayList<>();
 
     // Declare hardware variables{{{
     
@@ -36,11 +32,19 @@ public abstract class BaseTele extends OpMode {
 	
 	// }}}
     }
+    public void loop(){
+        Loop();
 
-    public double scaledInput(double input,double multiplier){
-      	// map analog input quadratically
-        double positivity = 1;
-        if(input<0)positivity*=-1;
-        return Math.pow(input,2)*positivity*multiplier;
+        try {
+            ArrayList<Event> newEventList = eventList;
+            for (Event event : eventList) {
+                if(!event.testEachCondition())newEventList.add(event);
+                else if(!event.getRemoveOnceRun())newEventList.add(event);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
+    public abstract void Loop();
 }
