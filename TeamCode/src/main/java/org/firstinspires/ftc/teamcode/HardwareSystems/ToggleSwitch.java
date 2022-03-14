@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.HardwareSystems;
 
-public class ToggleSwitch extends HardwareSystems{
+public class ToggleSwitch extends HardwareSystem{
 	boolean lastinput = false;
 	boolean out=false;
 
 	public ToggleSwitch toggle(){
 		out=!out;
+		return this;
 	}
 
 	public boolean input(boolean input){
