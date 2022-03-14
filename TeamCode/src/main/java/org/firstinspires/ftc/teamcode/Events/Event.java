@@ -1,48 +1,67 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Events;
 
-public class Event <Ev extends Event<Ev>> {}
-    ArrayList<Callable> conditions = new ArrayList();
-    Runnable callback = ()->{};
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.Callable;
 
-    boolean removeOnceRun = true;
+public class Event <Ev extends Event<Ev>> {
+    ArrayList<Callable<Boolean>> conditions = new ArrayList();
+    Runnable callback, onInit = ()->{};
 
-    public Event(Callable... conditions, Runnable callback){
-        this.conditions = conditions;
+    boolean removeOnceRun = false;
+
+    public Event(Runnable callback, Callable<Boolean>... conditions){
+        this.conditions.addAll(Arrays.asList(conditions));
         this.callback = callback;
     }
+    public Event(Runnable onInit,Runnable callback, Callable<Boolean>... conditions){
+        this.conditions.addAll(Arrays.asList(conditions));
+        this.callback = callback;
+        this.onInit = onInit;
+    }
 
-    public Event<Ev> addCondition(Callable condition){
+    public Event<Ev> addCondition(Callable<Boolean> condition){
         conditions.add(condition);
         return this;
     }
+    public void init(){
+        onInit.run();
+    }
 
-    public boolean testAllConditions(){
-        for(Boolean check : conditionCheck)if(!check){
+    public boolean testAllConditions() throws Exception {
+        for(Boolean check : conditionCheck())if(!check){
             return false;
         }
         callback.run();
         return true;
     }
-    public boolean testEachCondition(){
-        for(Boolean check : conditionCheck)if(check){
+    public boolean testEachCondition() throws Exception {
+        for(Boolean check : conditionCheck())if(check){
             callback.run();
             return true;
         }
         return false;
     }
-    public ArrayList<Boolean> conditionCheck(){
-        ArrayList<Boolean> checks = new ArrayList();
-        for(Callable condition : conditions)checks.add(condition.call());
+    public ArrayList<Boolean> conditionCheck() throws Exception {
+        ArrayList<Boolean> checks = new ArrayList<>();
+        for(Callable<Boolean> condition : conditions)checks.add(condition.call());
         return checks;
     }
 
     public boolean getRemoveOnceRun(){
         return removeOnceRun;
     }
-    public void toggleRemoveOnceRun(){
+    public Event<Ev> toggleRemoveOnceRun(){
         removeOnceRun = !removeOnceRun;
+        return this;
     }
-    public void setRemoveOnceRun(boolean setter){
+    public Event<Ev> setRemoveOnceRun(boolean setter){
         removeOnceRun = setter;
+        return this;
+    }
+
+    public Event<Ev> onInit(Runnable init){
+        this.onInit = init;
+        return this;
     }
 }
