@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.MovementAlgorithms;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -7,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Events.*;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
     protected ArrayList<Runnable> preMoveFunctionList = new ArrayList<>();
@@ -23,31 +28,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
 
     abstract void init();
 
-    public void execute(){
-        init();
-        for(Runnable runner : preMoveFunctionList)runner.run();
-
-        try {
-            while(true){
-                if(!endCondition.call()){
-                   for(Runnable runner : postMoveFunctionList)runner.run();
-                   ifEndedByCondition.run();
-                   break;
-                }
-                if(moveMethod()){
-                    for(Runnable runner : postMoveFunctionList)runner.run();
-                    ifNotEndedByCondition.run();
-                    break;
-                }
-                for(Runnable runner : whileMoveFunctionList)runner.run();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void execute(LinearOpMode opMode) {
         init();
         for (Runnable runner : preMoveFunctionList) runner.run();
@@ -67,7 +48,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
                     break;
                 }
                 if (moveMethod()){
-                    if(endWithUntriggeredEvents || newEventList.size()==0) {
+                    if(endWithUntriggeredEvents || newEventList.stream().noneMatch(Event::getRemoveOnceRun)) {
                         ifNotEndedByCondition.run();
                         break;
                     }
