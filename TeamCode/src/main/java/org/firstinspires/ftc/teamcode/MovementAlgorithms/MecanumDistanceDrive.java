@@ -17,7 +17,7 @@ public class MecanumDistanceDrive extends Movement {
 
     public MecanumDistanceDrive(MecanumDriveTrain drivetrain){
         driveTrain=drivetrain;
-        addPostMoveFunction(() -> driveTrain.stope());
+        addPostMoveFunction(() -> driveTrain.stop());
     }
 
     public MecanumDistanceDrive removeStop(){
