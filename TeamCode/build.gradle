@@ -18,6 +18,7 @@ apply from: '../build.dependencies.gradle'
 dependencies {
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
+
     // EasyOpenCV dependency
     implementation 'org.openftc:easyopencv:1.5.1'
 }

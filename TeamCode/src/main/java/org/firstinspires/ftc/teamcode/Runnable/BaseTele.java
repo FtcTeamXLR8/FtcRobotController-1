@@ -11,10 +11,14 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 import org.firstinspires.ftc.teamcode.HardwareSystems.MecanumDriveTrain;
 import org.firstinspires.ftc.teamcode.HardwareSystems.MultiPositionServo;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.Events.*;
+
 import java.util.ArrayList;
 
 public abstract class BaseTele extends OpMode {
-    ArrayList<Movement> MoveSequence = new ArrayList<>();
+    ElapsedTime elapsedTime;
+    ArrayList<Event> eventList = new ArrayList<>();
 
     public DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
 
@@ -69,15 +73,28 @@ public abstract class BaseTele extends OpMode {
         teLift2.toPosition(2);
 
         intakeScanner = hardwareMap.get(DistanceSensor.class, "intakescanner");
+        elapsedTime = new ElapsedTime();
     }
+    public void loop(){
+        Loop();
 
-    public double scaledInput(double input,double multiplier){
-        double positivity = Math.signum(input);
-        return Math.pow(input,2)*positivity*multiplier;
-
+        try {
+            ArrayList<Event> newEventList = eventList;
+            for (Event event : eventList) {
+                if(!event.testEachCondition())newEventList.add(event);
+                else if(!event.getRemoveOnceRun())newEventList.add(event);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
-
     public boolean hasCube(){
         return intakeScanner.getDistance(DistanceUnit.MM)<45;
     }
+    public double scaledInput(double input, double multiplier){
+    	multiplier*=input/Math.abs(input);
+	return input*input*multiplier;
+    }
+    public abstract void Loop();
 }

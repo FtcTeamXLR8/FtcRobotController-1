@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.MovementAlgorithms;
 
+<<<<<<< HEAD
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -8,8 +9,22 @@ import org.firstinspires.ftc.teamcode.HardwareSystems.HardwareSystem;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
+=======
+import android.os.Build;
 
-public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends HardwareSystem {
+import androidx.annotation.RequiresApi;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.Events.*;
+
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
+>>>>>>> master
+
+public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
     protected ArrayList<Runnable> preMoveFunctionList = new ArrayList<>();
     protected ArrayList<Runnable> whileMoveFunctionList = new ArrayList<>();
     protected ArrayList<Runnable> postMoveFunctionList = new ArrayList<>();
@@ -24,6 +39,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
 
     abstract void init();
 
+<<<<<<< HEAD
     public void execute(){
         init();
         ArrayList<Event> newEventList = eventList;
@@ -48,11 +64,41 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
                 newEventList = newNewEventList;
 
                 for(Runnable runner : whileMoveFunctionList)runner.run();
+=======
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void execute(LinearOpMode opMode) {
+        init();
+        for (Runnable runner : preMoveFunctionList) runner.run();
+
+
+        try {
+            while (!opMode.isStopRequested()) {
+
+                ArrayList<Event> newEventList = eventList;
+                for (Event event : eventList) {
+                    if(!event.testEachCondition())newEventList.add(event);
+                    else if(!event.getRemoveOnceRun())newEventList.add(event);
+                }
+
+                if (!endCondition.call()) {
+                    ifEndedByCondition.run();
+                    break;
+                }
+                if (moveMethod()){
+                    if(endWithUntriggeredEvents || newEventList.stream().noneMatch(Event::getRemoveOnceRun)) {
+                        ifNotEndedByCondition.run();
+                        break;
+                    }
+                }
+
+                for (Runnable runner : whileMoveFunctionList) runner.run();
+>>>>>>> master
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+<<<<<<< HEAD
     }
 
 
@@ -86,6 +132,8 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
             e.printStackTrace();
         }
 
+=======
+>>>>>>> master
         for (Runnable runner : postMoveFunctionList) runner.run();
     }
     abstract boolean moveMethod();
@@ -141,41 +189,9 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> extends Hardwa
         endWithUntriggeredEvents = !endWithUntriggeredEvents;
         return this;
     }
-    public Movement<MoveAlg> createEvent(Callable condition, Runnable callback){
-        eventList.add(new Event(condition, callback));
+
+    public Movement<MoveAlg> addEvent(Event event){
+        this.eventList.add(event);
         return this;
-    }
-    public Movement<MoveAlg> createTimedEvent(int milliseconds, Runnable callback){
-        eventList.add(new timedEvent(milliseconds, callback));
-        return this;
-    }
-
-    class Event {
-        Callable<Boolean> condition;
-        Runnable callback;
-
-        public Event(Callable condition, Runnable callback){
-            this.condition = condition;
-            this.callback = callback;
-        }
-        public void initEvent(){}
-        public boolean tryEvent() throws Exception {
-                boolean test = condition.call();
-                if(test)callback.run();
-                return test;
-        }
-    }
-    class timedEvent extends Event{
-        ElapsedTime timer = new ElapsedTime();
-
-        @Override
-        public void initEvent(){
-            timer.reset();
-        }
-
-        public timedEvent(int milliseconds, Runnable callback) {
-            super(()->false, callback);
-            condition = ()->timer.milliseconds()>milliseconds;
-        }
     }
 }

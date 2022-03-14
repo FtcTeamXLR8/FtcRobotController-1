@@ -1,15 +1,6 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.HardwareSystems.*;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.*;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -18,20 +9,16 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.ArrayList;
 
-public abstract class BaseAuto<Auto extends BaseAuto<Auto>> extends LinearOpMode {
+public abstract class BaseAuto extends LinearOpMode {
     public abstract void initializeMovements();
-    protected int moveCount = 0;
 
     public void runOpMode(){
         initSystems();
         initializeMovements();
         waitForStart();
-        MoveSequence.addPostMoveToEach(()->moveCount++);
         MoveSequence.executeSequence();
         waitForEnd();
     }
-
-    MoveCycle MoveSequence = new MoveCycle( this);
 
     public DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
 
@@ -53,6 +40,7 @@ public abstract class BaseAuto<Auto extends BaseAuto<Auto>> extends LinearOpMode
 
     ElapsedTime caroTimer, clock;
 
+    MoveSequence moveSequence = new MoveSequence(this);
 
 
     public void initSystems(){
@@ -134,7 +122,7 @@ public abstract class BaseAuto<Auto extends BaseAuto<Auto>> extends LinearOpMode
     }
 
     public void interrupt(){
-        MoveSequence.add(new Interrupt());
+        moveSequence.interrupt();
     }
 
 
