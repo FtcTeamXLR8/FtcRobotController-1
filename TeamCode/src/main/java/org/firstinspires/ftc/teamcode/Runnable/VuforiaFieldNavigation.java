@@ -108,7 +108,7 @@ public class VuforiaFieldNavigation extends LinearOpMode {
         parameters.cameraName = webcamName;
 
         // Turn off Extended tracking.  Set this true if you want Vuforia to track beyond the target.
-        parameters.useExtendedTracking = true;
+        parameters.useExtendedTracking = false;
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
