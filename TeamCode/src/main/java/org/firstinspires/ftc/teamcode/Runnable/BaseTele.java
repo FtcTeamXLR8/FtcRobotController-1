@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.HardwareSystems.MultiPositionServo;
 import java.util.ArrayList;
 
 public abstract class BaseTele extends OpMode {
-    ElapsedTime clock;
+    ElapsedTime elapsedTime;
 
     // Declare hardware variables{{{
     
@@ -25,7 +25,7 @@ public abstract class BaseTele extends OpMode {
 
 
     public void init(){
-        clock = new ElapsedTime();
+        elapsedTime = new ElapsedTime();
 	// initalize hardware variables{{{
 	
 	
