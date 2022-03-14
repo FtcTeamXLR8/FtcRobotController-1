@@ -80,7 +80,7 @@ public class MecanumDriveTrain extends HardwareSystem {
         BackRight.setTargetPosition(brd);
     }
 
-    public void stope(){
+    public void stop(){
         //stop all motors
         for(DcMotor motor : Motors)motor.setPower(0);
     }
@@ -105,15 +105,4 @@ public class MecanumDriveTrain extends HardwareSystem {
         return true;
     }
 
-    public static class driveDistSet{
-        int Forward, Rightward;
-        double Rotational;
-        double Scalar;
-
-        driveDistSet(int For,int Rig,double Rot){
-            Forward=For;
-            Rightward=Rig;
-            Rotational=Rot;
-        }
-    }
 }
