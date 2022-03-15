@@ -56,4 +56,6 @@ public class TeleOpG extends BaseTele {
         telemetry.addData("FR",FrontRight.getCurrentPosition());
         telemetry.addData("FR",FrontLeft.getCurrentPosition());
     }
+
+    public void Loop() {}
 }

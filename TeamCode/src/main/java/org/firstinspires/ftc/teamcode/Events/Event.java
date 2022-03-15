@@ -9,6 +9,7 @@ public class Event <Ev extends Event<Ev>> {
     Runnable callback, onInit = ()->{};
 
     boolean removeOnceRun = false;
+    boolean forceCompletion = true;
 
     public Event(Runnable callback, Callable<Boolean>... conditions){
         this.conditions.addAll(Arrays.asList(conditions));
@@ -63,5 +64,13 @@ public class Event <Ev extends Event<Ev>> {
     public Event<Ev> onInit(Runnable init){
         this.onInit = init;
         return this;
+    }
+
+    public Event<Ev> toggleForceCompletion(){
+        forceCompletion = !forceCompletion;
+        return this;
+    }
+    public boolean getForceCompletion(){
+        return forceCompletion;
     }
 }

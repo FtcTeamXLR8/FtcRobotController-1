@@ -1,11 +1,26 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.HardwareSystems.BlueStorageScanner;
+import org.firstinspires.ftc.teamcode.HardwareSystems.DeterminationClass;
+import org.firstinspires.ftc.teamcode.HardwareSystems.MecanumDriveTrain;
+import org.firstinspires.ftc.teamcode.HardwareSystems.MultiPositionServo;
+import org.firstinspires.ftc.teamcode.HardwareSystems.MultiPowerMotor;
+import org.firstinspires.ftc.teamcode.HardwareSystems.RedStorageScanner;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.*;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
+
 
 import java.util.ArrayList;
 
@@ -16,7 +31,7 @@ public abstract class BaseAuto extends LinearOpMode {
         initSystems();
         initializeMovements();
         waitForStart();
-        MoveSequence.executeSequence();
+        moveSequence.executeSequence();
         waitForEnd();
     }
 

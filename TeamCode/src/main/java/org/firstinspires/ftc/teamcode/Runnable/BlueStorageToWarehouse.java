@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Runnable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
 
 @Autonomous(group = "#CompBlue")
 public class BlueStorageToWarehouse extends BaseAuto {
@@ -10,14 +11,14 @@ public class BlueStorageToWarehouse extends BaseAuto {
         initBlueStorageCam();
 
        // line up with carousel
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(730)
             .setRightward(50)
             .setRotational(880)
         );
 
         // drive up to and spin carousel
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(210)
             .setRightward(40)
             .setSpeed(0.1)
@@ -30,20 +31,20 @@ public class BlueStorageToWarehouse extends BaseAuto {
         );
 
         // drive around barcode
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-650)
             .setRightward(-850)
         );
 
         // line up with tower
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-700)
             .setRotational(-400)
             .setRightward(-420)
         );
 
         // drive up to tower and deposit cube
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(-230)
                 .setRotational(-50)
                 .addPostMoveFunction(() -> {
@@ -76,13 +77,13 @@ public class BlueStorageToWarehouse extends BaseAuto {
         );
 
         // park
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(1600)
             .setRotational(1200)
         );
 
         // park
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(3000)
             .addPreMoveFunction(()->{
                 while(clock.seconds()<24 && !isStopRequested());
@@ -92,7 +93,7 @@ public class BlueStorageToWarehouse extends BaseAuto {
         waitWhileScanning();
 
         // add drive telemetry to each movement
-            MoveSequence.addWhileMoveToEach(() -> {
+            moveSequence.addWhileMoveToEach(() -> {
                 telemetry.addLine("Scan Results: " + cameraResults);
                 telemetry.addLine();
 

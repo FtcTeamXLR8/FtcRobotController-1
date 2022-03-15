@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.HardwareSystems.ToggleSwitch;
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
 //@Disabled
 public class TeleOp extends BaseTele {
+    public void Loop(){}
 
     ToggleSwitch speedswitch = new ToggleSwitch();
 

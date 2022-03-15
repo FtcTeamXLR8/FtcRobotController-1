@@ -129,7 +129,7 @@ public class Odometry extends HardwareSystem {
         return r2;
     }
 
-    public MecanumDriveTrain.driveDistSet there(){
+    public void there(){
         double x1 = currentPosition.getX();
         double y1 = currentPosition.getY();
         double r1 = currentPosition.getR();
@@ -180,7 +180,6 @@ public class Odometry extends HardwareSystem {
         rightw = distance(x1, xr, y1, yr);
         rotat = BaseDist*(r2-r1);
 
-        return new MecanumDriveTrain.driveDistSet((int)Math.floor(forw),(int)Math.floor(rightw),rotat);
     }//find and save motor speeds to reach next position
 
     public double sum(ArrayList<Double> q){

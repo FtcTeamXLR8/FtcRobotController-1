@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.BlankMovement;
 public class DepositTest extends BaseAuto{
     @Override
     public void initializeMovements() {
-        MoveSequence.add(new BlankMovement()
+        moveSequence.add(new BlankMovement()
             .addPostMoveFunction(()->{
                 teLift1.toPosition(0);
                 teLift2.toPosition(0);

@@ -1,28 +1,13 @@
 package org.firstinspires.ftc.teamcode.MovementAlgorithms;
 
-<<<<<<< HEAD
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.checkerframework.checker.units.qual.A;
-import org.firstinspires.ftc.teamcode.HardwareSystems.HardwareSystem;
-
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
-=======
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
 import org.firstinspires.ftc.teamcode.Events.*;
-
-import java.util.ArrayList;
-import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
->>>>>>> master
 
 public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
     protected ArrayList<Runnable> preMoveFunctionList = new ArrayList<>();
@@ -39,32 +24,6 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
 
     abstract void init();
 
-<<<<<<< HEAD
-    public void execute(){
-        init();
-        ArrayList<Event> newEventList = eventList;
-        for(Runnable runner : preMoveFunctionList)runner.run();
-        for (Event event : newEventList) event.initEvent();
-
-        try {
-            while(true){
-                if(!endCondition.call()){
-                   for(Runnable runner : postMoveFunctionList)runner.run();
-                   ifEndedByCondition.run();
-                   break;
-                }
-                if(moveMethod()){
-                    for(Runnable runner : postMoveFunctionList)runner.run();
-                    ifNotEndedByCondition.run();
-                    break;
-                }
-
-                ArrayList<Event> newNewEventList = new ArrayList<>();
-                for (Event event : newEventList) if(!event.tryEvent()) newNewEventList.add(event);
-                newEventList = newNewEventList;
-
-                for(Runnable runner : whileMoveFunctionList)runner.run();
-=======
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void execute(LinearOpMode opMode) {
         init();
@@ -76,66 +35,36 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
 
                 ArrayList<Event> newEventList = eventList;
                 for (Event event : eventList) {
-                    if(!event.testEachCondition())newEventList.add(event);
-                    else if(!event.getRemoveOnceRun())newEventList.add(event);
+                    if (!event.testEachCondition()) newEventList.add(event);
+                    else if (!event.getRemoveOnceRun()) newEventList.add(event);
                 }
 
                 if (!endCondition.call()) {
                     ifEndedByCondition.run();
                     break;
                 }
-                if (moveMethod()){
-                    if(endWithUntriggeredEvents || newEventList.stream().noneMatch(Event::getRemoveOnceRun)) {
+                if (moveMethod()) {
+                    ArrayList<Event> e = new ArrayList();
+                    boolean check = false;
+
+                    for(Event event : e){
+                        if(event.getRemoveOnceRun() && event.getForceCompletion())check=true;
+                    }
+
+                    if (check) {
                         ifNotEndedByCondition.run();
                         break;
                     }
                 }
 
                 for (Runnable runner : whileMoveFunctionList) runner.run();
->>>>>>> master
             }
-        } catch (Exception e) {
+            for (Runnable runner : postMoveFunctionList) runner.run();
+        }catch(Exception e){
             e.printStackTrace();
         }
-
-<<<<<<< HEAD
     }
 
-
-    public void execute(LinearOpMode opMode) {
-        init();
-        ArrayList<Event> newEventList = eventList;
-        for (Runnable runner : preMoveFunctionList) runner.run();
-        for (Event event : newEventList) event.initEvent();
-
-
-        try {
-            while (!opMode.isStopRequested()) {
-                if (!endCondition.call()) {
-                    ifEndedByCondition.run();
-                    break;
-                }
-                if (moveMethod()){
-                    if(endWithUntriggeredEvents || newEventList.size()==0) {
-                        ifNotEndedByCondition.run();
-                        break;
-                    }
-                }
-
-                ArrayList<Event> newNewEventList = new ArrayList<>();
-                for (Event event : newEventList) if(!event.tryEvent()) newNewEventList.add(event);
-                newEventList = newNewEventList;
-
-                for (Runnable runner : whileMoveFunctionList) runner.run();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-=======
->>>>>>> master
-        for (Runnable runner : postMoveFunctionList) runner.run();
-    }
     abstract boolean moveMethod();
 
     public Movement<MoveAlg> addPreMoveFunction(Runnable func){
@@ -192,6 +121,14 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
 
     public Movement<MoveAlg> addEvent(Event event){
         this.eventList.add(event);
+        return this;
+    }
+    public Movement<MoveAlg> createEvent(Callable condition, Runnable callback){
+        eventList.add(new Event(callback, condition));
+        return this;
+    }
+    public Movement<MoveAlg> createTimedEvent(int milliseconds,Runnable callback){
+        eventList.add(new TimedEvent(callback, milliseconds));
         return this;
     }
 }

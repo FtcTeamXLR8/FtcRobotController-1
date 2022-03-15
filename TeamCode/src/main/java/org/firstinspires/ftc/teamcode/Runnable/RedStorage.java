@@ -11,13 +11,13 @@ public class RedStorage extends BaseAuto{
         initRedCam();
 
         // line up with carousel
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(720)
             .setRightward(-50)
             .setRotational(-900));
 
         // drive up to and spin carousel
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(160)
             .setSpeed(0.1)
             .addPostMoveFunction(() -> {
@@ -28,13 +28,13 @@ public class RedStorage extends BaseAuto{
         );
 
         // drive around barcode
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-750)
             .setRightward(850)
         );
 
         // drive up and deposit cube
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-800)
             .setRotational(420)
             .setRightward(-65)
@@ -71,16 +71,16 @@ public class RedStorage extends BaseAuto{
         );
 
         // park
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(1215)
             .setRotational(-760)
             .setRightward(220)
         );
-//        MoveSequence.add(new MecanumDistanceDrive(driveTrain).setForward(20).setSpeed(0.2));
+//        moveSequence.add(new MecanumDistanceDrive(driveTrain).setForward(20).setSpeed(0.2));
 
 
         // add global telemetry to each movement
-           MoveSequence.addWhileMoveToEach(() -> {
+           moveSequence.addWhileMoveToEach(() -> {
                 telemetry.addLine("Scan Results: " + cameraResults);
                 telemetry.addLine();
 

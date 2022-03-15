@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 @Autonomous(group="#Comp")
 public class Park extends BaseAuto{
     public void initializeMovements() {
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(1000)
             .setSpeed(0.3));
         while(!opModeIsActive()){

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Runnable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 
 @Autonomous(group = "#CompBlue")
@@ -11,14 +12,14 @@ public class BlueStorage extends BaseAuto {
         initBlueStorageCam();
 
        // line up with carousel
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(730)
             .setRightward(50)
             .setRotational(880)
         );
 
         // drive up to and spin carousel
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(190)
             .setRightward(40)
             .setSpeed(0.1)
@@ -31,20 +32,20 @@ public class BlueStorage extends BaseAuto {
         );
 
         // drive around barcode
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-650)
             .setRightward(-850)
         );
 
         // line up with tower
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-700)
             .setRotational(-400)
             .setRightward(-420)
         );
 
         // drive up to tower and deposit cube
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(-230)
                 .setRotational(-50)
                 .addPostMoveFunction(() -> {
@@ -77,7 +78,7 @@ public class BlueStorage extends BaseAuto {
         );
 
         // park
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(1280)
             .setRotational(790)
             .setRightward(90)
@@ -87,7 +88,7 @@ public class BlueStorage extends BaseAuto {
         waitWhileScanning();
 
         // add drive telemetry to each movement
-            MoveSequence.addWhileMoveToEach(() -> {
+            moveSequence.addWhileMoveToEach(() -> {
                 telemetry.addLine("Scan Results: " + cameraResults);
                 telemetry.addLine();
 

@@ -12,8 +12,8 @@ public class RedWarehouse extends BaseAuto{
     ElapsedTime droptime = new ElapsedTime();
     ElapsedTime raisetime = new ElapsedTime();
     ElapsedTime droptime2 = new ElapsedTime();
-    MoveCycle scoreCycle = new MoveCycle(this);
-    MoveCycle grabCycle = new MoveCycle(this);
+    MoveSequence scoreCycle = new MoveSequence(this);
+    MoveSequence grabCycle = new MoveSequence(this);
 
     @Override
     public void initializeMovements() {
@@ -21,7 +21,7 @@ public class RedWarehouse extends BaseAuto{
 
         //move up to shipping hub
         // 0
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(480)
                 .setRightward(-450)
                 .setSpeed(0.4)
@@ -30,7 +30,7 @@ public class RedWarehouse extends BaseAuto{
 
         //turn to and score in shipping hub
         // 1
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
                         .setRotational(-1300)
                         .setTolerance(12)
                         .setSpeed(0.4)
@@ -67,7 +67,7 @@ public class RedWarehouse extends BaseAuto{
 
         //move into barrier gap
         // 2
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(1120)
                 .setRightward(-215)
                 .setRotational(-503)
@@ -212,27 +212,27 @@ public class RedWarehouse extends BaseAuto{
 
 
 //        interrupt();
-//        MoveSequence.jumpToHere();
-        MoveSequence.add(new BlankMovement().addPostMoveFunction(()->scoreCycle.executeSequence()));
-        MoveSequence.add(new BlankMovement().addPostMoveFunction(()->scoreCycle.executeSequence()));
+//        moveSequence.jumpToHere();
+        moveSequence.add(new BlankMovement().addPostMoveFunction(()->scoreCycle.executeSequence()));
+        moveSequence.add(new BlankMovement().addPostMoveFunction(()->scoreCycle.executeSequence()));
 //        interrupt();
 
         // park
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(700)
                 .setRightward(100)
                 .setSpeed(0.6)
                 .setTolerance(50)
         );
-        MoveSequence.add(new MecanumDistanceDrive(driveTrain)
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setRightward(-700)
                 .setSpeed(0.6)
                 .setTolerance(50)
         );
 
         // global telemetry
-        MoveSequence.addWhileMoveToEach(()->{
-            telemetry.addLine("Current Movement: "+moveCount +" / "+(MoveSequence.size()-1));
+        moveSequence.addWhileMoveToEach(()->{
+            telemetry.addLine("Current Movement: "+moveSequence.getCurrentMovementIndex() +" / "+(moveSequence.size()-1));
             telemetry.addLine();
             telemetry.addLine(cameraResults);
             telemetry.addLine("Dist: "+intakeScanner.getDistance(DistanceUnit.MM));

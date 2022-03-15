@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveCycle;
+import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class AutoExplanation extends BaseAuto{
 
 
         /*   Example Movement
-            MoveSequence.add(new HolonomicDistanceDrive(driveTrain)
+            moveSequence.add(new HolonomicDistanceDrive(driveTrain)
                 .setForward(100)
                 .setRightward(-100)
                 .setRotational(30)
@@ -34,7 +35,7 @@ public class AutoExplanation extends BaseAuto{
         //   Speed = 0.5
         //   Tolerance = 80
 
-        // call interrupt(); to add an end to the auto into MoveSequence
+        // call interrupt(); to add an end to the auto into moveSequence
 
         /* call Movement.addPreMove, Movement.addMove, or Movement.addPostMove to add events that
          *    occur before, during, or after the movement respectively
@@ -56,7 +57,7 @@ public class AutoExplanation extends BaseAuto{
 
 
 
-        // add an interrupt at end of MoveSequence
+        // add an interrupt at end of moveSequence
         interrupt();
         waitWhileScanning();
 //        waitForStart();
@@ -65,11 +66,11 @@ public class AutoExplanation extends BaseAuto{
 
         // add telemetry listing currentmovement / totalmovements
         MoveCycle withoutInterrupts = new MoveCycle(this);
-        for(Movement move : MoveSequence){
+        for(Movement move : moveSequence){
             withoutInterrupts.add(move);
         }
 
-        MoveSequence.addWhileMoveToEach(()->{
+        moveSequence.addWhileMoveToEach(()->{
             telemetry.addLine("Camera: "+cameraResults);
             telemetry.update();
         });
