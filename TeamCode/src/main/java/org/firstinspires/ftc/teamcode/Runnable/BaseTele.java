@@ -7,11 +7,9 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 import org.firstinspires.ftc.teamcode.HardwareSystems.MecanumDriveTrain;
 import org.firstinspires.ftc.teamcode.HardwareSystems.MultiPositionServo;
 
-import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Events.*;
 
 import java.util.ArrayList;
@@ -82,7 +80,7 @@ public abstract class BaseTele extends OpMode {
             ArrayList<Event> newEventList = eventList;
             for (Event event : eventList) {
                 if(!event.testEachCondition())newEventList.add(event);
-                else if(!event.getRemoveOnceRun())newEventList.add(event);
+                else if(!event.getDisableOnceRun())newEventList.add(event);
             }
         }
         catch(Exception e){

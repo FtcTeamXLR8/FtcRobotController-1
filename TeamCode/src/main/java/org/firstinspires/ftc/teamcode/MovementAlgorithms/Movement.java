@@ -24,7 +24,6 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
 
     abstract void init();
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void execute(LinearOpMode opMode) {
         init();
         for (Runnable runner : preMoveFunctionList) runner.run();
@@ -36,7 +35,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
                 ArrayList<Event> newEventList = eventList;
                 for (Event event : eventList) {
                     if (!event.testEachCondition()) newEventList.add(event);
-                    else if (!event.getRemoveOnceRun()) newEventList.add(event);
+                    else if (!event.getDisableOnceRun()) newEventList.add(event);
                 }
 
                 if (!endCondition.call()) {
@@ -44,11 +43,14 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
                     break;
                 }
                 if (moveMethod()) {
-                    ArrayList<Event> e = new ArrayList();
+                    ArrayList<Event> e = eventList;
                     boolean check = false;
 
                     for(Event event : e){
-                        if(event.getRemoveOnceRun() && event.getForceCompletion())check=true;
+                        if((!event.getDisableOnceRun()||event.isDisabled()) || !event.getForceCompletion()){
+                            check=true;
+                            break;
+                        }
                     }
 
                     if (check) {
