@@ -79,8 +79,6 @@ public abstract class BaseTele extends OpMode {
         Init();
     }
     public void loop(){
-        Loop();
-
         try {
             ArrayList<Event> newEventList = eventList;
             for (Event event : eventList) {
@@ -91,6 +89,8 @@ public abstract class BaseTele extends OpMode {
         catch(Exception e){
             e.printStackTrace();
         }
+        
+        Loop();
     }
     public boolean hasCube(){
         return intakeScanner.getDistance(DistanceUnit.MM)<45;
