@@ -72,8 +72,8 @@ public abstract class BaseAuto extends LinearOpMode {
 
         intake =  new MultiPowerMotor(hardwareMap.dcMotor.get("intake"),0,.9,-.7);
 
-        upExtension =       hardwareMap.dcMotor.get("inExtension");
-        inExtension =       hardwareMap.dcMotor.get("upExtension");
+        upExtension =       hardwareMap.dcMotor.get("upExtension");
+        inExtension =       hardwareMap.dcMotor.get("inExtension");
         carouselSpinner =   hardwareMap.dcMotor.get("carouselSpinner");
 
         intakeFlipper = new MultiPositionServo(hardwareMap.get(Servo.class, "intakeFlipper"), 0,.5);

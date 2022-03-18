@@ -104,6 +104,10 @@ public class Event <Ev extends Event<Ev>> {
     public boolean isDisabled() {
         return disable;
     }
+    public Event<Ev> disable(){
+        this.disable = true;
+        return this;
+    }
 
     public boolean getForceCompletion(){
         return forceCompletion;

@@ -32,6 +32,8 @@ public abstract class BaseTele extends OpMode {
 
     DistanceSensor intakeScanner;
 
+    Event InFullIn,LiftFullIn;
+
     public void init(){
         FrontLeft =  hardwareMap.dcMotor.get("frontLeft");
         FrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -44,8 +46,8 @@ public abstract class BaseTele extends OpMode {
         driveTrain = new MecanumDriveTrain(FrontLeft, FrontRight, BackLeft, BackRight,1);
 
         intake =            hardwareMap.dcMotor.get("intake");
-        upExtension =       hardwareMap.dcMotor.get("inExtension");
-        inExtension =       hardwareMap.dcMotor.get("upExtension");
+        upExtension =       hardwareMap.dcMotor.get("upExtension");
+        inExtension =       hardwareMap.dcMotor.get("inExtension");
         carouselSpinner =   hardwareMap.dcMotor.get("carouselSpinner");
 
         teGrabber = new MultiPositionServo(hardwareMap.servo.get("teGrabber"), 0, 1);
@@ -72,6 +74,9 @@ public abstract class BaseTele extends OpMode {
 
         intakeScanner = hardwareMap.get(DistanceSensor.class, "intakescanner");
         elapsedTime = new ElapsedTime();
+
+
+        Init();
     }
     public void loop(){
         Loop();
@@ -94,5 +99,6 @@ public abstract class BaseTele extends OpMode {
     	multiplier*=input/Math.abs(input);
 	return input*input*multiplier;
     }
-    public abstract void Loop();
+    public void Loop(){}
+    public void Init(){}
 }
