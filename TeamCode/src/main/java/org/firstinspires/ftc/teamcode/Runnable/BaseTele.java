@@ -89,15 +89,14 @@ public abstract class BaseTele extends OpMode {
         catch(Exception e){
             e.printStackTrace();
         }
-        
+
         Loop();
     }
     public boolean hasCube(){
         return intakeScanner.getDistance(DistanceUnit.MM)<45;
     }
     public double scaledInput(double input, double multiplier){
-    	multiplier*=input/Math.abs(input);
-	return input*input*multiplier;
+	    return input * input * multiplier * Math.signum(input);
     }
     public void Loop(){}
     public void Init(){}
