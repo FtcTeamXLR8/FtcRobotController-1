@@ -34,7 +34,10 @@ public class Event <Ev extends Event<Ev>> {
     }
 
     public boolean testAllConditions() throws Exception {
-        if(this.reEnableCondition.call())this.disable=false;
+        if(reEnableCondition.call()){
+            this.disable=false;
+            onEnable.run();
+        }
         if(this.disable)return false;
         for(Boolean check : conditionCheck())if(!check){
             return false;
