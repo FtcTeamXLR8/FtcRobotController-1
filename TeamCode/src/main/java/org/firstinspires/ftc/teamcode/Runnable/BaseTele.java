@@ -80,10 +80,8 @@ public abstract class BaseTele extends OpMode {
     }
     public void loop(){
         try {
-            ArrayList<Event> newEventList = eventList;
             for (Event event : eventList) {
-                if(!event.testEachCondition())newEventList.add(event);
-                else if(!event.getDisableOnceRun())newEventList.add(event);
+                event.check();
             }
         }
         catch(Exception e){

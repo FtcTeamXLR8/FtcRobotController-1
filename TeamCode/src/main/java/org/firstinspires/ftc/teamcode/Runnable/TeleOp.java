@@ -1,34 +1,33 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Events.Event;
 import org.firstinspires.ftc.teamcode.HardwareSystems.ToggleSwitch;
-
-import java.security.cert.Extension;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
 //@Disabled
 public class TeleOp extends BaseTele {
 
     ToggleSwitch speedswitch = new ToggleSwitch();
-    ToggleSwitch liftIn = new ToggleSwitch();
-    ToggleSwitch inIn = new ToggleSwitch();
+    ToggleSwitch liftInToggle = new ToggleSwitch();
+    ToggleSwitch inInToggle = new ToggleSwitch();
 
 
     public void Init(){
-        InFullIn = new Event(()->inExtension.setPower(0),()->inExtension.getCurrentPosition()<60);
-        InFullIn.reEnableOn(()->inIn.input(gamepad2.left_bumper));
+        InFullIn = new Event(()->inExtension.setPower(0),()->inExtension.getCurrentPosition()<30);
+        InFullIn.reEnableOn(inInToggle::getInputResult);
         InFullIn.onEnable(()->inExtension.setPower(-0.8));
         InFullIn.disable();
 
         LiftFullIn = new Event(()->upExtension.setPower(0),()->upExtension.getCurrentPosition()>-30);
-        LiftFullIn.reEnableOn(()->liftIn.input(gamepad2.right_bumper));
+        LiftFullIn.reEnableOn(liftInToggle::getInputResult);
         LiftFullIn.onEnable(()->upExtension.setPower(0.8));
         LiftFullIn.disable();
     }
     @Override
     public void Loop() {
         telemetry.update();
+        inInToggle.input(gamepad2.left_bumper);
+        liftInToggle.input(gamepad2.right_bumper);
 
         // when speedswitch toggles change drive speed
         if(speedswitch.input(gamepad1.a)){
@@ -50,10 +49,10 @@ public class TeleOp extends BaseTele {
         );
 
         //control carousel spinner
-        if(gamepad1.b) {
+        if(gamepad1.x) {
             carouselSpinner.setPower(0.6+caroTimer.seconds()*0.1);
         }
-        else if(gamepad1.x) {
+        else if(gamepad1.b) {
             carouselSpinner.setPower(-0.6-caroTimer.seconds()*0.1);
         }
         else {
@@ -65,12 +64,13 @@ public class TeleOp extends BaseTele {
         //intake extender
         if(gamepad2.right_stick_y!=0){
             if(!InFullIn.isDisabled())InFullIn.disable();
-            if     (inExtension.getCurrentPosition() <  60 && Math.signum(gamepad2.right_stick_y) ==  1)inExtension.setPower(0);
+            if     (inExtension.getCurrentPosition() <  30 && Math.signum(gamepad2.right_stick_y) ==  1)inExtension.setPower(0);
             else if(inExtension.getCurrentPosition() > 310 && Math.signum(gamepad2.right_stick_y) == -1)inExtension.setPower(0);
             else    inExtension.setPower(-scaledInput(gamepad2.right_stick_y,1));
         }
         else if(InFullIn.isDisabled())inExtension.setPower(0);
 
+        if(inExtension.getCurrentPosition() < 100 && inExtension.getPower() < 0)inExtension.setPower(inExtension.getPower()*0.8);
 
         //up extender
         if(gamepad2.left_stick_y!=0){
@@ -85,7 +85,7 @@ public class TeleOp extends BaseTele {
 
 
         //intake power
-        intake.setPower(gamepad2.left_trigger + gamepad1.left_trigger - gamepad2.right_trigger - gamepad1.right_trigger);
+        intake.setPower(Math.max(gamepad2.left_trigger, gamepad1.left_trigger) - Math.max(gamepad2.right_trigger, gamepad1.right_trigger));
 
         //dumper position
         if     (gamepad2.dpad_up)  dumper.toPosition(1);
@@ -93,29 +93,39 @@ public class TeleOp extends BaseTele {
         else                       dumper.toPosition(0);
 
         //intake flipper
-        intakeFlipper.input(gamepad2.dpad_right);
+        intakeFlipper.input(gamepad2.dpad_right || gamepad1.dpad_down);
 
         //team element grabber
-        teGrabber.input(gamepad2.dpad_down);
+        teGrabber.input(gamepad1.y || gamepad2.y);
 
         //team element lift
-        teLift1.input(gamepad2.a);
-        teLift2.input(gamepad2.a);
+        teLift1.input(gamepad2.a || gamepad1.dpad_up);
+        teLift2.input(gamepad2.a || gamepad1.dpad_up);
+
+
+
+
+
+
 
         telemetry.addData("StandardSpeed: ", !speedswitch.get());
-        telemetry.addLine("Flipper: "+intakeFlipper.getPosition());
+        telemetry.addData("Flipper: ",intakeFlipper.getPosition());
         telemetry.addLine();
-        telemetry.addLine("Up-Extend: "+upExtension.getCurrentPosition());
-        telemetry.addLine("Up-Power: "+upExtension.getPower());
+        telemetry.addData("Up-Extend: ",upExtension.getCurrentPosition());
+        telemetry.addData("Up-Power: ",upExtension.getPower());
         telemetry.addLine();
-        telemetry.addLine("In-Extend: "+inExtension.getCurrentPosition());
-        telemetry.addLine("In-Power: "+inExtension.getPower());
+        telemetry.addData("In-Extend: ",inExtension.getCurrentPosition());
+        telemetry.addData("In-Power: ",inExtension.getPower());
         telemetry.addLine();
         telemetry.addLine("Drive: ")
                 .addData("FL",FrontLeft.getPower())
                 .addData("FR",FrontRight.getPower())
                 .addData("BL",BackLeft.getPower())
                 .addData("FR",BackRight.getPower());
+        telemetry.addLine();
+        telemetry.addLine("AutoRetract ")
+                .addData("up: ",!LiftFullIn.isDisabled())
+                .addData("out: ", !InFullIn.isDisabled());
 
     }
 }

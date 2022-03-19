@@ -34,39 +34,52 @@ public class Event <Ev extends Event<Ev>> {
     }
 
     public boolean testAllConditions() throws Exception {
-        if(reEnableCondition.call()){
-            this.disable=false;
+        if(disable && reEnableCondition.call()){
+            disable=false;
             onEnable.run();
         }
-        if(this.disable)return false;
-        for(Boolean check : conditionCheck())if(!check){
+
+        if(disable)return false;
+
+        for(Boolean check : conditionsCheck())if(!check){
             return false;
         }
+
         callback.run();
+        if(disableOnceRun)disable();
         return true;
     }
     public boolean testEachCondition() throws Exception {
-        if(this.reEnableCondition.call())this.disable=false;
-        if(this.disable)return false;
-        for(Boolean check : conditionCheck())if(check){
+        if(disable && reEnableCondition.call()){
+            this.disable=false;
+            onEnable.run();
+        }
+
+        if(disable)return false;
+
+        for(Boolean check : conditionsCheck())if(check){
             callback.run();
+            if(disableOnceRun)disable();
             return true;
         }
+
         return false;
     }
-    public boolean testConditions() throws Exception {
+    public boolean check() throws Exception {
         switch(EachOrAll.toLowerCase(Locale.ROOT)){
             case "all": return testAllConditions();
             default: return testEachCondition();
         }
     }
-    public boolean testConditions(String EachOrAll) throws Exception {
-        switch(EachOrAll.toLowerCase(Locale.ROOT)){
+    public boolean check(String EachOrAllConditions) throws Exception {
+        switch(EachOrAllConditions.toLowerCase(Locale.ROOT)){
+            case "all conditions":
+            case "allconditions":
             case "all": return testAllConditions();
             default: return testEachCondition();
         }
     }
-    public ArrayList<Boolean> conditionCheck() throws Exception {
+    public ArrayList<Boolean> conditionsCheck() throws Exception {
         ArrayList<Boolean> checks = new ArrayList<>();
         for(Callable<Boolean> condition : conditions)checks.add(condition.call());
         return checks;
