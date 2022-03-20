@@ -45,7 +45,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
                             check = false;
                             break;
                         }
-                        
+
                     }
 
                     if (check) {
