@@ -32,7 +32,8 @@ public abstract class BaseTele extends OpMode {
 
     DistanceSensor intakeScanner;
 
-    Event InFullIn,LiftFullIn;
+    Event InFullIn,LiftFullIn, InFullOut, LiftFullOut;
+    Event AutoRetract, AutoTransfer;
 
     public void init(){
         FrontLeft =  hardwareMap.dcMotor.get("frontLeft");
@@ -85,9 +86,26 @@ public abstract class BaseTele extends OpMode {
 
         Loop();
     }
+
+    Double avgscan = null;
+    int scancount=0;
     public boolean hasCube(){
-        return intakeScanner.getDistance(DistanceUnit.MM)<45;
+        double dist = intakeScanner.getDistance(DistanceUnit.MM);
+
+        if(avgscan == null) {
+            avgscan=dist;
+            scancount=1;
+        }
+
+        if(dist-avgscan>10 || dist-avgscan<-10)return true;
+
+        avgscan += (dist-avgscan)/(++scancount);
+
+        if(scancount<100)return false;
+
+        return false;
     }
+
     public double scaledInput(double input, double multiplier){
 	    return input * input * multiplier * Math.signum(input);
     }
