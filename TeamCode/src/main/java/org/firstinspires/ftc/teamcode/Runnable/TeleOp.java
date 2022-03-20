@@ -14,12 +14,12 @@ public class TeleOp extends BaseTele {
 
     public void Init(){
         InFullIn = new Event(()->inExtension.setPower(0),()->inExtension.getCurrentPosition()<30);
-        InFullIn.reEnableOn(inInToggle::getInputResult);
+        InFullIn.enableOn(inInToggle::getInputResult);
         InFullIn.onEnable(()->inExtension.setPower(-0.8));
         InFullIn.disable();
 
         LiftFullIn = new Event(()->upExtension.setPower(0),()->upExtension.getCurrentPosition()>-30);
-        LiftFullIn.reEnableOn(liftInToggle::getInputResult);
+        LiftFullIn.enableOn(liftInToggle::getInputResult);
         LiftFullIn.onEnable(()->upExtension.setPower(0.8));
         LiftFullIn.disable();
     }

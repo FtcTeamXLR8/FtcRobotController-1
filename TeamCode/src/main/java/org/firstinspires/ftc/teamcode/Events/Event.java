@@ -1,91 +1,55 @@
 package org.firstinspires.ftc.teamcode.Events;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
 import java.util.concurrent.Callable;
 
 public class Event <Ev extends Event<Ev>> {
-    ArrayList<Callable<Boolean>> conditions = new ArrayList();
-    Callable<Boolean> reEnableCondition = ()->false;
+    Callable<Boolean> condition, reEnableCondition = ()->false;
     Runnable callback, onEnable = ()->{};
 
     boolean disableOnceRun = true;
     boolean disable = false;
     boolean forceCompletion = true;
-    String EachOrAll = "each";
 
-    public Event(Runnable callback, Callable<Boolean>... conditions){
-        this.conditions.addAll(Arrays.asList(conditions));
+    public Event(Runnable callback, Callable<Boolean> condition){
+        this.condition = condition;
         this.callback = callback;
     }
-    public Event(Runnable onEnable, Runnable callback, Callable<Boolean>... conditions){
-        this.conditions.addAll(Arrays.asList(conditions));
+    public Event(Runnable callback, Callable<Boolean> condition, Callable<Boolean> enableOn){
+        this.condition = condition;
+        this.callback = callback;
+        this.reEnableCondition = enableOn;
+    }
+    public Event(Runnable callback, Callable<Boolean> condition, Callable<Boolean> enableOn, Runnable onEnable){
+        this.condition = condition;
         this.callback = callback;
         this.onEnable = onEnable;
+        this.reEnableCondition = enableOn;
     }
 
-    public Event<Ev> addCondition(Callable<Boolean> condition){
-        conditions.add(condition);
-        return this;
-    }
+
     public void init(){
         onEnable.run();
     }
 
-    public boolean testAllConditions() throws Exception {
-        if(disable && reEnableCondition.call()){
-            disable=false;
-            onEnable.run();
+    public void test() {
+        try {
+            if (disable && reEnableCondition.call()) {
+                disable = false;
+                onEnable.run();
+            }
+
+            if (disable || !condition.call())return;
+
         }
-
-        if(disable)return false;
-
-        for(Boolean check : conditionsCheck())if(!check){
-            return false;
+        catch(Exception e){
+            e.printStackTrace();
         }
 
         callback.run();
         if(disableOnceRun)disable();
-        return true;
-    }
-    public boolean testEachCondition() throws Exception {
-        if(disable && reEnableCondition.call()){
-            this.disable=false;
-            onEnable.run();
-        }
-
-        if(disable)return false;
-
-        for(Boolean check : conditionsCheck())if(check){
-            callback.run();
-            if(disableOnceRun)disable();
-            return true;
-        }
-
-        return false;
-    }
-    public boolean check() throws Exception {
-        switch(EachOrAll.toLowerCase(Locale.ROOT)){
-            case "all": return testAllConditions();
-            default: return testEachCondition();
-        }
-    }
-    public boolean check(String EachOrAllConditions) throws Exception {
-        switch(EachOrAllConditions.toLowerCase(Locale.ROOT)){
-            case "all conditions":
-            case "allconditions":
-            case "all": return testAllConditions();
-            default: return testEachCondition();
-        }
-    }
-    public ArrayList<Boolean> conditionsCheck() throws Exception {
-        ArrayList<Boolean> checks = new ArrayList<>();
-        for(Callable<Boolean> condition : conditions)checks.add(condition.call());
-        return checks;
     }
 
-    public boolean getDisableOnceRun(){
+    public boolean getIfDisabledOnceRun(){
         return disableOnceRun;
     }
     public Event<Ev> toggleRemoveOnceRun(){
@@ -94,6 +58,7 @@ public class Event <Ev extends Event<Ev>> {
     }
     public Event<Ev> setDisableOnceRun(boolean setter){
         disableOnceRun = setter;
+        forceCompletion = setter;
         return this;
     }
 
@@ -107,13 +72,8 @@ public class Event <Ev extends Event<Ev>> {
         return this;
     }
 
-    public Event<Ev> reEnableOn(Callable<Boolean> callable){
+    public Event<Ev> enableOn(Callable<Boolean> callable){
         this.reEnableCondition = callable;
-        return this;
-    }
-
-    public Event<Ev> testEachOrAllConditions(String eachOrAll) {
-        EachOrAll = eachOrAll;
         return this;
     }
 
@@ -125,7 +85,15 @@ public class Event <Ev extends Event<Ev>> {
         return this;
     }
 
+    public void setCondition(Callable<Boolean> condition) {
+        this.condition = condition;
+    }
+
     public boolean getForceCompletion(){
         return forceCompletion;
+    }
+    public void trigger(){
+        if(disableOnceRun)disable();
+        callback.run();
     }
 }

@@ -3,9 +3,6 @@ package org.firstinspires.ftc.teamcode.MovementAlgorithms;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import org.firstinspires.ftc.teamcode.Events.*;
 
@@ -32,10 +29,8 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
         try {
             while (!opMode.isStopRequested()) {
 
-                ArrayList<Event> newEventList = eventList;
                 for (Event event : eventList) {
-                    if (!event.testEachCondition()) newEventList.add(event);
-                    else if (!event.getDisableOnceRun()) newEventList.add(event);
+                    event.test();
                 }
 
                 if (!endCondition.call()) {
@@ -43,14 +38,14 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
                     break;
                 }
                 if (moveMethod()) {
-                    ArrayList<Event> e = eventList;
-                    boolean check = false;
+                    boolean check = true;
 
-                    for(Event event : e){
-                        if((!event.getDisableOnceRun()||event.isDisabled()) || !event.getForceCompletion()){
-                            check=true;
+                    for(Event event : eventList){
+                        if(event.getForceCompletion() && !event.isDisabled()){
+                            check = false;
                             break;
                         }
+                        
                     }
 
                     if (check) {
