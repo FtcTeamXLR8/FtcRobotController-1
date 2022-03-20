@@ -13,11 +13,12 @@ public class MultiPositionServo extends HardwareSystem {
 
     private ArrayList<Double> positions = new ArrayList<Double>();
 
-    public void input(boolean input){
+    public boolean input(boolean input){
         // default input intended for gamepad buttons
-        if(input==lastInput)return;
+        if(input==lastInput)return false;
         if(input) toPosition();
         lastInput=input;
+        return true;
     }
 
     public MultiPositionServo(Servo servo, double... Pos){
