@@ -96,4 +96,8 @@ public class Event <Ev extends Event<Ev>> {
         if(disableOnceRun)disable();
         callback.run();
     }
+    public void enable(){
+        disable = false;
+        onEnable.run();
+    }
 }
