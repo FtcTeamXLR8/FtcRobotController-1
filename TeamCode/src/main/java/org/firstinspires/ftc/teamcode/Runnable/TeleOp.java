@@ -35,7 +35,7 @@ public class TeleOp extends BaseTele {
         InFullOut.onEnable(()->inExtension.setPower(0.8));
         InFullOut.disable();
 
-        LiftFullOut = new Event(()->upExtension.setPower(0),()->upExtension.getCurrentPosition()<-1260);
+        LiftFullOut = new Event(()->upExtension.setPower(0),()->upExtension.getCurrentPosition()<-1340);
         LiftFullOut.enableOn(liftOutToggle::getInputResult);
         LiftFullOut.onEnable(()->upExtension.setPower(-0.8));
         LiftFullOut.disable();
@@ -52,6 +52,7 @@ public class TeleOp extends BaseTele {
             LiftFullIn.enable();
         },
             ()->(hasCube()&&gamepad2.left_stick_y==0 && intake.getPower()>=0) || RetractToggle.getInputResult(),
+//            ()->RetractToggle.getInputResult(),
             ()->(inExtension.getCurrentPosition()>100 && InFullIn.isDisabled()) || intakeFlipper.getPos()==0);
 
         eventList.add(AutoRetract);
@@ -59,10 +60,10 @@ public class TeleOp extends BaseTele {
 
     public void Loop() {
         telemetry.update();
-        inInToggle.input(gamepad2.left_bumper);
-        liftInToggle.input(gamepad2.right_bumper);
-        inOutToggle.input(gamepad2.left_stick_button);
-        liftOutToggle.input(gamepad2.right_stick_button);
+        inInToggle.input(gamepad2.left_bumper || gamepad1.left_bumper);
+        liftInToggle.input(gamepad2.right_bumper || gamepad1.right_bumper);
+        inOutToggle.input(gamepad2.left_stick_button || gamepad1.left_stick_button);
+        liftOutToggle.input(gamepad2.right_stick_button || gamepad1.right_stick_button);
         RetractToggle.input(gamepad2.a);
 
         // when speedswitch toggles change drive speed
@@ -141,7 +142,7 @@ public class TeleOp extends BaseTele {
                 LiftFullIn.disable();
                 LiftFullOut.disable();
             }
-            if     (upExtension.getCurrentPosition() < -1260 && Math.signum(gamepad2.right_stick_y) == -1)upExtension.setPower(-0.1);
+            if     (upExtension.getCurrentPosition() < -1340 && Math.signum(gamepad2.right_stick_y) == -1)upExtension.setPower(-0.1);
             else if(upExtension.getCurrentPosition() >   -30 && Math.signum(gamepad2.right_stick_y) ==  1)upExtension.setPower(0);
             else    upExtension.setPower(scaledInput(gamepad2.right_stick_y,1));
         }
