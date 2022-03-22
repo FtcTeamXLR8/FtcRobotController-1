@@ -27,7 +27,7 @@ public class TeleOp extends BaseTele {
 
         LiftFullIn = new Event(()->upExtension.setPower(0),()->upExtension.getCurrentPosition()>-30);
         LiftFullIn.enableOn(liftInToggle::getInputResult);
-        LiftFullIn.onEnable(()->upExtension.setPower(0.8));
+        LiftFullIn.onEnable(()->upExtension.setPower(1));
         LiftFullIn.disable();
 
         InFullOut = new Event(()->inExtension.setPower(0),()->inExtension.getCurrentPosition()>310);
@@ -37,7 +37,7 @@ public class TeleOp extends BaseTele {
 
         LiftFullOut = new Event(()->upExtension.setPower(0),()->upExtension.getCurrentPosition()<-1340);
         LiftFullOut.enableOn(liftOutToggle::getInputResult);
-        LiftFullOut.onEnable(()->upExtension.setPower(-0.8));
+        LiftFullOut.onEnable(()->upExtension.setPower(-1));
         LiftFullOut.disable();
 
         eventList.add(InFullIn);
@@ -47,13 +47,14 @@ public class TeleOp extends BaseTele {
 
 
         AutoRetract = new Event(()->{
-            InFullIn.enable();
+            if(inExtension.getCurrentPosition()>10)InFullIn.enable();
             intakeFlipper.toPosition(1);
-            LiftFullIn.enable();
+            intake.setPower(-1);
+            if(upExtension.getCurrentPosition()>-1200)LiftFullIn.enable();
         },
-            ()->(hasCube()&&gamepad2.left_stick_y==0 && intake.getPower()>=0) || RetractToggle.getInputResult(),
-//            ()->RetractToggle.getInputResult(),
-            ()->(inExtension.getCurrentPosition()>100 && InFullIn.isDisabled()) || intakeFlipper.getPos()==0);
+            ()->(hasCube()&&gamepad2.left_stick_y==0 && intake.getPower()==0) || RetractToggle.getInputResult(),
+//            ()->RetractToggle.getInputResult()&& !(gamepad1.back || gamepad2.back)) ,
+            ()->(ejectionTimer.seconds()<1));
 
         eventList.add(AutoRetract);
     }
@@ -100,11 +101,11 @@ public class TeleOp extends BaseTele {
 
         //intake flipper
         boolean a = intakeFlipper.input(gamepad2.dpad_right || gamepad1.dpad_down);
-        if(intakeFlipper.getPos()==1 && a)ejectionTimer.reset();
 
         //intake power
-        intake.setPower(Math.max(gamepad2.left_trigger, gamepad1.left_trigger) - Math.max(gamepad2.right_trigger, gamepad1.right_trigger));
-        if(intakeFlipper.getPosition()==0 && upExtension.getCurrentPosition() > -50 && inExtension.getCurrentPosition()<30 && ejectionTimer.seconds()>1 && ejectionTimer.seconds()<4)intake.setPower(1);
+        if(!AutoRetract.isDisabled())intake.setPower(Math.max(gamepad2.left_trigger, gamepad1.left_trigger) - Math.max(gamepad2.right_trigger, gamepad1.right_trigger));
+        if(upExtension.getCurrentPosition() > -50 && inExtension.getCurrentPosition()<30)ejectionTimer.reset();
+        if(ejectionTimer.seconds()>1 && ejectionTimer.seconds()<4)intake.setPower(1);
 
         //dumper position
         if     (gamepad2.dpad_up)  dumper.toPosition(1);

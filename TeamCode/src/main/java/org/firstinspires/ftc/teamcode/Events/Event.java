@@ -7,7 +7,7 @@ public class Event <Ev extends Event<Ev>> {
     Runnable callback, onEnable = ()->{};
 
     boolean disableOnceRun = true;
-    boolean disable = false;
+    boolean disabled = false;
     boolean forceCompletion = true;
 
     public Event(Runnable callback, Callable<Boolean> condition){
@@ -33,12 +33,12 @@ public class Event <Ev extends Event<Ev>> {
 
     public void test() {
         try {
-            if (disable && reEnableCondition.call()) {
-                disable = false;
+            if (disabled && reEnableCondition.call()) {
+                disabled = false;
                 onEnable.run();
             }
 
-            if (disable || !condition.call())return;
+            if (disabled || !condition.call())return;
 
         }
         catch(Exception e){
@@ -78,10 +78,10 @@ public class Event <Ev extends Event<Ev>> {
     }
 
     public boolean isDisabled() {
-        return disable;
+        return disabled;
     }
     public Event<Ev> disable(){
-        this.disable = true;
+        this.disabled = true;
         return this;
     }
 
@@ -97,7 +97,7 @@ public class Event <Ev extends Event<Ev>> {
         callback.run();
     }
     public void enable(){
-        disable = false;
+        disabled = false;
         onEnable.run();
     }
 }

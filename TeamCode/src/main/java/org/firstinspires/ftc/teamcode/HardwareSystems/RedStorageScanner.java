@@ -15,9 +15,9 @@ public class RedStorageScanner extends DeterminationClass {
     /*
      * The core values which define the location and size of the sample regions
      */
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(40,150);
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(141,150);
-    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(243,150);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(15,110);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(141,110);
+    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(263,115);
     static final int REGION_WIDTH = 20;
     static final int REGION_HEIGHT = 30;
 
