@@ -12,8 +12,8 @@ public class DepositTest extends BaseAuto{
     public void initializeMovements() {
         moveSequence.add(new BlankMovement()
             .addPostMoveFunction(()->{
-                teLift1.toPosition(0);
-                teLift2.toPosition(0);
+//                teLift1.toPosition(0);
+//                teLift2.toPosition(0);
                 sleep(400);
 
                 upExtension.setPower(0.58);
@@ -39,8 +39,8 @@ public class DepositTest extends BaseAuto{
                 }
                 upExtension.setPower(0);
 
-                teLift1.toPosition(2);
-                teLift2.toPosition(2);
+//                teLift1.toPosition(2);
+//                teLift2.toPosition(2);
             })
         );
     }

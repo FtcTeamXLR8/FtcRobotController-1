@@ -37,25 +37,27 @@ public abstract class BaseAuto extends LinearOpMode {
 
     public DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
 
-    DcMotor carouselSpinner, upExtension, inExtension;
-    MultiPowerMotor intake;
+    protected DcMotor carouselSpinner;
+    protected DcMotor upExtension;
+    protected DcMotor inExtension;
+    protected MultiPowerMotor intake;
 
-    MultiPositionServo dumper, intakeFlipper;
+    protected MultiPositionServo dumper, intakeFlipper;
 
-    MecanumDriveTrain driveTrain;
+    protected MecanumDriveTrain driveTrain;
 
-    String cameraResults = "";
+    protected String cameraResults = "";
 
-    OpenCvWebcam webcam;
-    DeterminationClass pipeline;
+    protected OpenCvWebcam webcam;
+    protected DeterminationClass pipeline;
 
-    MultiPositionServo teGrabber, teLift1, teLift2;
+    protected MultiPositionServo teGrabber, teLift;
 
-    DistanceSensor intakeScanner;
+    protected DistanceSensor intakeScanner;
 
-    ElapsedTime caroTimer, clock;
+    protected ElapsedTime caroTimer, clock;
 
-    MoveSequence moveSequence = new MoveSequence(this);
+    protected MoveSequence moveSequence = new MoveSequence(this);
 
 
     public void initSystems(){
@@ -86,8 +88,9 @@ public abstract class BaseAuto extends LinearOpMode {
 
 
         teGrabber = new MultiPositionServo(hardwareMap.servo.get("teGrabber"), 0, 1);
-        teLift1   = new MultiPositionServo(hardwareMap.servo.get("teLift1"), 0.85, 0.5, 0.33);
-        teLift2   = new MultiPositionServo(hardwareMap.servo.get("teLift2"), 0.15, 0.5, 0.62);
+        teLift = new MultiPositionServo(hardwareMap.servo.get("teLift"),1);
+//        teLift1   = new MultiPositionServo(hardwareMap.servo.get("teLift1"), 0.85, 0.5, 0.33);
+//        teLift2   = new MultiPositionServo(hardwareMap.servo.get("teLift2"), 0.15, 0.5, 0.62);
 
         intakeScanner = hardwareMap.get(DistanceSensor.class, "intakescanner");
 

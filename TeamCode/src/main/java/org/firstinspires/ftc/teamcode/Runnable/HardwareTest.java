@@ -12,8 +12,8 @@ public class HardwareTest extends BaseAuto{
     public void initializeMovements() {
         moveSequence.add(new BlankMovement().addPostMoveFunction(()->{
 //            cameraResults = "LEFT";
-            teLift1.toPosition(0);
-            teLift2.toPosition(0);
+//            teLift1.toPosition(0);
+//            teLift2.toPosition(0);
             sleep(400);
 
             upExtension.setPower(0.58);
@@ -40,8 +40,8 @@ public class HardwareTest extends BaseAuto{
             }
             upExtension.setPower(0);
 
-            teLift1.toPosition(2);
-            teLift2.toPosition(2);
+//            teLift1.toPosition(2);
+//            teLift2.toPosition(2);
         }));
     }
 }

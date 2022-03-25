@@ -46,8 +46,8 @@ public class RedWarehouse extends BaseAuto{
                             }
                         },()->upExtension.setPower(0.03))
                         .addPostMoveFunction(()->{
-                            teLift1.toPosition(0);
-                            teLift2.toPosition(0);
+//                            teLift1.toPosition(0);
+//                            teLift2.toPosition(0);
                             sleep(100);
 
                             dumper.toPosition(1);
@@ -58,8 +58,8 @@ public class RedWarehouse extends BaseAuto{
                             upExtension.setPower(-0.4);
                             droptime.reset();
 
-                            teLift1.toPosition(2);
-                            teLift2.toPosition(2);
+//                            teLift1.toPosition(2);
+//                            teLift2.toPosition(2);
                         })
         );
 

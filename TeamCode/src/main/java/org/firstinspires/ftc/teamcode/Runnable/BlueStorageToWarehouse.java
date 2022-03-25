@@ -48,8 +48,8 @@ public class BlueStorageToWarehouse extends BaseAuto {
                 .setForward(-230)
                 .setRotational(-50)
                 .addPostMoveFunction(() -> {
-                    teLift1.toPosition(0);
-                    teLift2.toPosition(0);
+//                    teLift1.toPosition(0);
+//                    teLift2.toPosition(0);
 
                     upExtension.setPower(0.6);
                     switch(cameraResults){
@@ -71,8 +71,8 @@ public class BlueStorageToWarehouse extends BaseAuto {
                     if(cameraResults.equals("RIGHT"))sleep(200);
                     upExtension.setPower(0);
 
-                    teLift1.toPosition(2);
-                    teLift2.toPosition(2);
+//                    teLift1.toPosition(2);
+//                    teLift2.toPosition(2);
                 })
         );
 

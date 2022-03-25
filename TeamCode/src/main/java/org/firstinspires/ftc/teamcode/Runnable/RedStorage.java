@@ -40,8 +40,8 @@ public class RedStorage extends BaseAuto{
             .setRightward(-65)
             .setTolerance(40)
             .addPostMoveFunction(() -> {
-                teLift1.toPosition(0);
-                teLift2.toPosition(0);
+//                teLift1.toPosition(0);
+//                teLift2.toPosition(0);
                 sleep(400);
 
                 upExtension.setPower(0.58);
@@ -65,8 +65,8 @@ public class RedStorage extends BaseAuto{
                 if(cameraResults.equals("RIGHT"))sleep(400);
                 upExtension.setPower(0);
 
-                teLift1.toPosition(2);
-                teLift2.toPosition(2);
+//                teLift1.toPosition(2);
+//                teLift2.toPosition(2);
             })
         );
 

@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Events;
 
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 public class Event <Ev extends Event<Ev>> {
@@ -32,6 +35,8 @@ public class Event <Ev extends Event<Ev>> {
     }
 
     public void test() {
+
+
         try {
             if (disabled && reEnableCondition.call()) {
                 disabled = false;
@@ -67,11 +72,6 @@ public class Event <Ev extends Event<Ev>> {
         return this;
     }
 
-    public Event<Ev> toggleForceCompletion(){
-        forceCompletion = !forceCompletion;
-        return this;
-    }
-
     public Event<Ev> enableOn(Callable<Boolean> callable){
         this.reEnableCondition = callable;
         return this;
@@ -100,4 +100,5 @@ public class Event <Ev extends Event<Ev>> {
         disabled = false;
         onEnable.run();
     }
+
 }

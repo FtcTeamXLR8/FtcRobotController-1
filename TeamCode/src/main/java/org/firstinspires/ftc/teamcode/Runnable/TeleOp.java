@@ -45,18 +45,16 @@ public class TeleOp extends BaseTele {
         eventList.add(InFullOut);
         eventList.add(LiftFullOut);
 
+//        AutoRetract = new Event(()->{
+//            if(inExtension.getCurrentPosition()>10)InFullIn.enable();
+//            intakeFlipper.toPosition(1);
+//            intake.setPower(-1);
+//            if(upExtension.getCurrentPosition()>-1200)LiftFullIn.enable();
+//        },
+//            ()->(hasCube()&&gamepad2.left_stick_y==0 && intake.getPower()==0) || RetractToggle.getInputResult(),
+////            ()->RetractToggle.getInputResult()&& !(gamepad1.back || gamepad2.back)) ,
 
-        AutoRetract = new Event(()->{
-            if(inExtension.getCurrentPosition()>10)InFullIn.enable();
-            intakeFlipper.toPosition(1);
-            intake.setPower(-1);
-            if(upExtension.getCurrentPosition()>-1200)LiftFullIn.enable();
-        },
-            ()->(hasCube()&&gamepad2.left_stick_y==0 && intake.getPower()==0) || RetractToggle.getInputResult(),
-//            ()->RetractToggle.getInputResult()&& !(gamepad1.back || gamepad2.back)) ,
-            ()->(ejectionTimer.seconds()<1));
-
-        eventList.add(AutoRetract);
+//        eventList.add(AutoRetract);
     }
 
     public void Loop() {
@@ -99,13 +97,11 @@ public class TeleOp extends BaseTele {
             carouselSpinner.setPower(0);
         }
 
+        //intake
+        intake.setPower(Math.max(gamepad1.left_trigger,gamepad2.left_trigger)-Math.max(gamepad1.right_trigger,gamepad2.right_trigger));
+
         //intake flipper
         boolean a = intakeFlipper.input(gamepad2.dpad_right || gamepad1.dpad_down);
-
-        //intake power
-        if(!AutoRetract.isDisabled())intake.setPower(Math.max(gamepad2.left_trigger, gamepad1.left_trigger) - Math.max(gamepad2.right_trigger, gamepad1.right_trigger));
-        if(upExtension.getCurrentPosition() > -50 && inExtension.getCurrentPosition()<30)ejectionTimer.reset();
-        if(ejectionTimer.seconds()>1 && ejectionTimer.seconds()<4)intake.setPower(1);
 
         //dumper position
         if     (gamepad2.dpad_up)  dumper.toPosition(1);
@@ -116,8 +112,9 @@ public class TeleOp extends BaseTele {
         teGrabber.input(gamepad1.y || gamepad2.y);
 
         //team element lift
-        teLift1.input(gamepad2.a || gamepad1.dpad_up);
-        teLift2.input(gamepad2.a || gamepad1.dpad_up);
+        teLift.input(gamepad2.a || gamepad1.dpad_up);
+//        teLift1.input(gamepad2.a || gamepad1.dpad_up);
+//        teLift2.input(gamepad2.a || gamepad1.dpad_up);
 
 
 
@@ -180,10 +177,12 @@ public class TeleOp extends BaseTele {
                 .addData("out", !InFullOut.isDisabled());
         telemetry.addLine();
 
-        telemetry.addData("AutoRetract",AutoRetract.isDisabled());
         telemetry.addData("HasCube",hasCube());
         telemetry.addData("CubeDist",intakeScanner.getDistance(DistanceUnit.MM));
         telemetry.addData("G2 LSY",gamepad2.left_stick_y);
+
+
+//        telemetry.addLine("Test: " + new Integer(1).equals(new Integer(1)));
 
     }
 }

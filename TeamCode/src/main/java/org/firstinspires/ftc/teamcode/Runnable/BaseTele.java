@@ -24,7 +24,7 @@ public abstract class BaseTele extends OpMode {
 
     ElapsedTime caroTimer, clock;
 
-    MultiPositionServo teGrabber, teLift1, teLift2;
+    MultiPositionServo teGrabber, teLift;
 
     MultiPositionServo dumper, intakeFlipper;
 
@@ -52,8 +52,9 @@ public abstract class BaseTele extends OpMode {
         carouselSpinner =   hardwareMap.dcMotor.get("carouselSpinner");
 
         teGrabber = new MultiPositionServo(hardwareMap.servo.get("teGrabber"), 0, 1);
-        teLift1   = new MultiPositionServo(hardwareMap.servo.get("teLift1"), 0.81, 0.5, 0.35);
-        teLift2   = new MultiPositionServo(hardwareMap.servo.get("teLift2"), 0.19, 0.5, 0.59);
+        teLift = new MultiPositionServo(hardwareMap.servo.get("teLift"),0.27,0.58);
+//        teLift1   = new MultiPositionServo(hardwareMap.servo.get("teLift1"), 0.81, 0.5, 0.35);
+//        teLift2   = new MultiPositionServo(hardwareMap.servo.get("teLift2"), 0.19, 0.5, 0.59);
 
         intakeFlipper =   new MultiPositionServo(hardwareMap.servo.get("intakeFlipper"), 0.5,0);
         dumper =          new MultiPositionServo(hardwareMap.servo.get("dumper"), 1, 0.35, 0.25);
@@ -65,13 +66,14 @@ public abstract class BaseTele extends OpMode {
         clock = new ElapsedTime();
 
         dumper.toPosition(0);
-        intakeFlipper.toPosition(0);
+        intakeFlipper.toPosition(1);
 
         teGrabber.scaleRange(0,1);
 
         teGrabber.toPosition(1);
-        teLift1.toPosition(2);
-        teLift2.toPosition(2);
+        teLift.toPosition(0);
+//        teLift1.toPosition(2);
+//        teLift2.toPosition(2);
 
         intakeScanner = hardwareMap.get(DistanceSensor.class, "intakescanner");
         elapsedTime = new ElapsedTime();
