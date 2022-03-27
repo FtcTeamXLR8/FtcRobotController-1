@@ -52,7 +52,9 @@ public class RedStorageNew extends BaseAuto {
             .setRightward(90)
             .setForward(90)
             .setRotational(-180)
+
         );
+
 
         // add global telemetry to each movement
         moveSequence.addWhileMoveToEach(() -> {

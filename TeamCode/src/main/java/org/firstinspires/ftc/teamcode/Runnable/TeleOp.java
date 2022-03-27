@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -16,6 +17,7 @@ public class TeleOp extends BaseTele {
     ToggleSwitch inInToggle = new ToggleSwitch();
     ToggleSwitch inOutToggle = new ToggleSwitch();
     ToggleSwitch RetractToggle = new ToggleSwitch();
+    ToggleSwitch rumbleCheck = new ToggleSwitch();
     ElapsedTime ejectionTimer = new ElapsedTime();
 
 
@@ -132,7 +134,8 @@ public class TeleOp extends BaseTele {
 
         if(inExtension.getCurrentPosition() < 100 && inExtension.getPower() < 0)inExtension.setPower(inExtension.getPower()*0.8);
 
-
+        // rumble effect
+        if(rumbleCheck.input(hasCube()))gamepad1.rumble(50);
 
         //up extender
         if(gamepad2.right_stick_y!=0){
