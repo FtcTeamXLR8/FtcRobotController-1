@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
 @Autonomous(group = "#")
 public class RedStorageNew extends BaseAuto {
+    Integer targetLiftPosition = null;
     @Override
     public void initializeMovements() {
         // line up with carousel
