@@ -7,55 +7,52 @@ import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
 @Autonomous(group = "#")
 public class RedStorageNew extends BaseAuto {
-    Integer targetLiftPosition = null;
     @Override
     public void initializeMovements() {
         // line up with carousel
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(-70)
-            .setRightward(600)
-            .setRotational(240)
+                .setForward(70)
+                .setRightward(-600)
+                .setRotational(-240)
         );
 
         // drive up to and spin carousel
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(200)
-            .setSpeed(0.1)
-            .addPostMoveFunction(()->{
-                carouselSpinner.setPower(-0.45);
-                sleep(6000);
-                carouselSpinner.setPower(0);
-            })
+                .setForward(200)
+                .setSpeed(0.1)
+                .addPostMoveFunction(()->{
+                    carouselSpinner.setPower(-0.45);
+                    sleep(6000);
+                    carouselSpinner.setPower(0);
+                })
         );
 
         // drive around barcode
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setRightward(540)
-            .setForward(-594)
+                .setRightward(-540)
+                .setForward(-594)
         );
 
         // move up and deposit cube
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(-1100)
-            .setRotational(580)
-            .setRightward(650)
+                .setForward(-1100)
+                .setRotational(-580)
+                .setRightward(-650)
         );
 
         // park
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(1100)
-            .setRotational(-580)
-            .setRightward(-650)
+                .setForward(1100)
+                .setRotational(580)
+                .setRightward(650)
         );
 
-        // park cont.
+        // park cont
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setRightward(90)
-            .setForward(90)
-            .setRotational(-180)
-
+                .setRightward(-90)
+                .setForward(90)
+                .setRotational(180)
         );
-
 
         // add global telemetry to each movement
         moveSequence.addWhileMoveToEach(() -> {
