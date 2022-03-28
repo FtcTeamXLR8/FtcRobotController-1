@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
 @Autonomous(group = "#")
-public class RedStorageNew extends BaseAuto {
+public class BlueStorageNew extends BaseAuto {
     @Override
     public void initializeMovements() {
         // line up with carousel
