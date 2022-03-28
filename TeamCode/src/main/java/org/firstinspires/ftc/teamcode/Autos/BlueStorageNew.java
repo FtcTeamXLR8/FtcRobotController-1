@@ -11,17 +11,17 @@ public class BlueStorageNew extends BaseAuto {
     public void initializeMovements() {
         // line up with carousel
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setForward(70)
-                .setRightward(-600)
-                .setRotational(-240)
+                .setForward(60)
+                .setRightward(-770)
+                .setRotational(-270)
         );
 
         // drive up to and spin carousel
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setForward(200)
+                .setForward(40)
                 .setSpeed(0.1)
                 .addPostMoveFunction(()->{
-                    carouselSpinner.setPower(-0.45);
+                    carouselSpinner.setPower(0.45);
                     sleep(6000);
                     carouselSpinner.setPower(0);
                 })
@@ -29,11 +29,13 @@ public class BlueStorageNew extends BaseAuto {
 
         // drive around barcode
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setRightward(-540)
+//                .setRightward(-10)
+                .setRightward(-400)
                 .setForward(-594)
         );
 
         // move up and deposit cube
+        // check if this lines up properly
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(-1100)
                 .setRotational(-580)
@@ -49,9 +51,9 @@ public class BlueStorageNew extends BaseAuto {
 
         // park cont
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setRightward(-90)
-                .setForward(90)
-                .setRotational(180)
+                .setRightward(-100)
+                .setForward(125)
+                .setRotational(210)
         );
 
         // add global telemetry to each movement

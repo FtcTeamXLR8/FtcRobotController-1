@@ -95,7 +95,7 @@ public abstract class BaseAuto extends LinearOpMode {
         intakeScanner = hardwareMap.get(DistanceSensor.class, "intakescanner");
 
         dumper.toPosition(0);
-        intakeFlipper.toPosition(0);
+//        intakeFlipper.toPosition(0);
 
         clock = new ElapsedTime();
     }

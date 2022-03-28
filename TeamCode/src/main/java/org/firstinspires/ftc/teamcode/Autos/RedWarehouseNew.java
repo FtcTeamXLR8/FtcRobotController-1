@@ -1,18 +1,21 @@
-package org.firstinspires.ftc.teamcode.Runnable;
+package org.firstinspires.ftc.teamcode.Autos;
 
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
+import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
-@Autonomous(group = "#CompRed")
-public class RedWarehouse extends BaseAuto{
+@Autonomous(group = "#")
+public class RedWarehouseNew extends BaseAuto {
     @Override
     public void initializeMovements() {
-        // move up to shipping hub
+        // drive and position towards shipping hub
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setForward(480)
-                // rightward needs tuning –- delete when done
-                .setRightward(150)
-                .setSpeed(0.4)
+                .setForward(-550)
+                .setRightward(300)
+                .setRotational(-195)
         );
 
         // score in shipping hub
