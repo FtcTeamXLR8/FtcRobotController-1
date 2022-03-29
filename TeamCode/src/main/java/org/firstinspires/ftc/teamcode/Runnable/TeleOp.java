@@ -135,7 +135,10 @@ public class TeleOp extends BaseTele {
         if(inExtension.getCurrentPosition() < 100 && inExtension.getPower() < 0)inExtension.setPower(inExtension.getPower()*0.8);
 
         // rumble effect
-        if(rumbleCheck.input(hasCube()))gamepad1.rumble(50);
+        if(hasCube()){
+            gamepad1.rumble(50);
+            gamepad2.rumble(50);
+        }
 
         //up extender
         if(gamepad2.right_stick_y!=0){

@@ -56,7 +56,7 @@ public abstract class BaseTele extends OpMode {
 //        teLift1   = new MultiPositionServo(hardwareMap.servo.get("teLift1"), 0.81, 0.5, 0.35);
 //        teLift2   = new MultiPositionServo(hardwareMap.servo.get("teLift2"), 0.19, 0.5, 0.59);
 
-        intakeFlipper =   new MultiPositionServo(hardwareMap.servo.get("intakeFlipper"), 0.5,0);
+        intakeFlipper =   new MultiPositionServo(hardwareMap.servo.get("intakeFlipper"), 0.6,0.3);
         dumper =          new MultiPositionServo(hardwareMap.servo.get("dumper"), 1, 0.35, 0.25);
 
         carouselSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -93,6 +93,8 @@ public abstract class BaseTele extends OpMode {
     int scancount=0;
     public boolean hasCube(){
         double dist = intakeScanner.getDistance(DistanceUnit.MM);
+
+        if(dist>2500)return false;
 
         if(avgscan == null) {
             avgscan=dist;
