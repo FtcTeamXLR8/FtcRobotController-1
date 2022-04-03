@@ -106,7 +106,7 @@ public class TeleOp extends BaseTele {
         boolean a = intakeFlipper.input(gamepad2.dpad_right || gamepad1.dpad_down);
 
         //dumper position
-        if     (gamepad2.dpad_up)  dumper.toPosition(1);
+        if     (gamepad2.dpad_up || gamepad1.dpad_left)  dumper.toPosition(1);
         else if(gamepad2.dpad_left)dumper.toPosition(2);
         else                       dumper.toPosition(0);
 

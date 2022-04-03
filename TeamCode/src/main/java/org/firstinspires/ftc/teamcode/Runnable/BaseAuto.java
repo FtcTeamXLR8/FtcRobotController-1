@@ -84,7 +84,7 @@ public abstract class BaseAuto extends LinearOpMode {
         carouselSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         inExtension.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        upExtension.setDirection(DcMotorSimple.Direction.REVERSE);
+//        upExtension.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         teGrabber = new MultiPositionServo(hardwareMap.servo.get("teGrabber"), 0, 1);
@@ -96,6 +96,7 @@ public abstract class BaseAuto extends LinearOpMode {
 
         dumper.toPosition(0);
         intakeFlipper.toPosition(0);
+        teLift.toPosition(0);
 
         clock = new ElapsedTime();
     }

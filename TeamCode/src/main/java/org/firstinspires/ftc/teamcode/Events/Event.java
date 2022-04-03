@@ -92,6 +92,10 @@ public class Event <Ev extends Event<Ev>> {
     public boolean getForceCompletion(){
         return forceCompletion;
     }
+    public Event<Ev> dontForceCompletion(){
+        forceCompletion = false;
+        return this;
+    }
     public void trigger(){
         if(disableOnceRun)disable();
         callback.run();
