@@ -106,7 +106,7 @@ public class TeleOp extends BaseTele {
         boolean a = intakeFlipper.input(gamepad2.dpad_right || gamepad1.dpad_down);
 
         //dumper position
-        if     (gamepad2.dpad_up)  dumper.toPosition(1);
+        if     (gamepad2.dpad_up || gamepad1.dpad_left)  dumper.toPosition(1);
         else if(gamepad2.dpad_left)dumper.toPosition(2);
         else                       dumper.toPosition(0);
 
@@ -135,7 +135,10 @@ public class TeleOp extends BaseTele {
         if(inExtension.getCurrentPosition() < 100 && inExtension.getPower() < 0)inExtension.setPower(inExtension.getPower()*0.8);
 
         // rumble effect
-        if(rumbleCheck.input(hasCube()))gamepad1.rumble(50);
+        if(hasCube()){
+            gamepad1.rumble(50);
+            gamepad2.rumble(50);
+        }
 
         //up extender
         if(gamepad2.right_stick_y!=0){

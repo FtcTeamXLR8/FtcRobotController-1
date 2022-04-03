@@ -22,4 +22,13 @@ public class MotorPositionEvent extends Event{
             return false;
         });
     }
+    public MotorPositionEvent(Runnable callback, DcMotor motor, int targetPosition, int MarginOfError, Runnable onEnable) {
+        super(callback, ()->{
+            if(motor.getCurrentPosition()>targetPosition-MarginOfError && motor.getCurrentPosition()<targetPosition+MarginOfError){
+                motor.setPower(0);
+                return true;
+            }
+            return false;
+        },()->false,onEnable);
+    }
 }
