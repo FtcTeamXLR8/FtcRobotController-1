@@ -17,18 +17,18 @@ public class RedStorageToWarehouseNew extends BaseAuto {
                 .setForward(-70)
                 .setRightward(600)
                 .setRotational(240)
-                .addPreMoveFunction(()->cameraResults="LEFT")
+//                .addPreMoveFunction(()->cameraResults="LEFT")
         );
 
         // drive up to and spin carousel
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(200)
                 .setSpeed(0.1)
-//                .addPostMoveFunction(()->{
-//                    carouselSpinner.setPower(-0.45);
-//                    sleep(6000);
-//                    carouselSpinner.setPower(0);
-//                })
+                .addPostMoveFunction(()->{
+                    carouselSpinner.setPower(-0.45);
+                    sleep(6000);
+                    carouselSpinner.setPower(0);
+                })
         );
 
         // drive around barcode
@@ -42,25 +42,25 @@ public class RedStorageToWarehouseNew extends BaseAuto {
                 .setForward(-1020)
                 .setRotational(485)
                 .setRightward(260)
-//                .addPreMoveFunction(()->upExtension.setPower(-0.7))
-//                .createEvent(
-//                        ()->{
-//                            switch (cameraResults){
-//                                case "LEFT": return upExtension.getCurrentPosition()<-405;
-//                                case "CENTER": return upExtension.getCurrentPosition()<-740;
-//                                case "RIGHT": return upExtension.getCurrentPosition()<-1188;
-//                                default: return true;
-//                            }
-//                        },()->upExtension.setPower(-0.03))
-//                .addPostMoveFunction(()->{
-//                    teLift.toPosition();
-//                    teLift.toPosition();
-//                    sleep(99);
-//                    dumper.toPosition(1);
-//                    sleep(700);
-//                    teLift.toPosition();
-//                    dumper.toPosition(0);
-//                })
+                .addPreMoveFunction(()->upExtension.setPower(-0.7))
+                .createEvent(
+                        ()->{
+                            switch (cameraResults){
+                                case "LEFT": return upExtension.getCurrentPosition()<-395;
+                                case "CENTER": return upExtension.getCurrentPosition()<-740;
+                                case "RIGHT": return upExtension.getCurrentPosition()<-1188;
+                                default: return true;
+                            }
+                        },()->upExtension.setPower(-0.03))
+                .addPostMoveFunction(()->{
+                    teLift.toPosition();
+                    teLift.toPosition();
+                    sleep(99);
+                    dumper.toPosition(1);
+                    sleep(700);
+                    teLift.toPosition();
+                    dumper.toPosition(0);
+                })
         );
 
         // drive around barcode
@@ -73,11 +73,11 @@ public class RedStorageToWarehouseNew extends BaseAuto {
 
         // drive into warehouse
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setRightward(300)
-                .setForward(2500)
-
+                .setRightward(450)
+                .setForward(2600)
         );
 
-
+        initRedCam();
+        waitWhileScanning();
     }
 }
