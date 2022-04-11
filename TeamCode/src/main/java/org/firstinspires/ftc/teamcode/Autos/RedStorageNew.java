@@ -17,7 +17,7 @@ public class RedStorageNew extends BaseAuto {
             .setForward(-70)
             .setRightward(600)
             .setRotational(240)
-            .addPreMoveFunction(()->cameraResults="LEFT")
+//            .addPreMoveFunction(()->cameraResults="LEFT")
         );
 
         // drive up to and spin carousel
@@ -81,7 +81,7 @@ public class RedStorageNew extends BaseAuto {
             .setRightward(-90)
             .setForward(-60)
             .setRotational(-380)
-            .addPreMoveFunction(()->upExtension.setPower(0.6))
+//            .addPreMoveFunction(()->upExtension.setPower(0.6))
             .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
         );
 

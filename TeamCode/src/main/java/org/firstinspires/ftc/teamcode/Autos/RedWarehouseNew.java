@@ -49,33 +49,19 @@ public class RedWarehouseNew extends BaseAuto {
 
         );
 
-        // Move to warehouse; prep for second cycle (your problem evan)
-//        moveSequence.add(new MecanumDistanceDrive(driveTrain)
-//                .setForward(650)
-//                .setRotational(-200)
-//                .setRightward(30)
-//
-//        );
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setForward(400)
-
-        );
-        moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setRotational(-220)
-                .setRightward(60)
-                .setForward(200)
-
-        );
-        moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setRightward(200)
+                .setForward(700)
+                .setRotational(-390)
+                .setRightward(270)
         );
 
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
+                .setForward(700)
+        );
 
-
-        // Score in shipping hub
-
-
-
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
+                .setRightward(-700)
+        );
 
     }
 }
