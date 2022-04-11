@@ -25,7 +25,7 @@ public class BlueStorageToWarehouseNew extends BaseAuto {
                 .setForward(200)
                 .setSpeed(0.1)
                 .addPostMoveFunction(()->{
-                    carouselSpinner.setPower(-0.45);
+                    carouselSpinner.setPower(0.45);
                     sleep(6000);
                     carouselSpinner.setPower(0);
                 })
@@ -61,6 +61,7 @@ public class BlueStorageToWarehouseNew extends BaseAuto {
                     teLift.toPosition();
                     dumper.toPosition(0);
                 })
+                // make sure to retract dumper
         );
 
         // drive around barcode
