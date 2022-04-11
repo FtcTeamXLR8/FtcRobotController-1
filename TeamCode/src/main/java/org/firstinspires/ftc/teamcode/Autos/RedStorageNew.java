@@ -71,7 +71,7 @@ public class RedStorageNew extends BaseAuto {
             .setRotational(-980)
             .setRightward(260)
             .addPreMoveFunction(()->upExtension.setPower(0.6))
-            .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
+            .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
 //        interrupt();
