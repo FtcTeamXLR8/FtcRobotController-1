@@ -40,6 +40,25 @@ public class BlueStorageNew extends BaseAuto {
                 .setForward(-1100)
                 .setRotational(-580)
                 .setRightward(-650)
+                .addPreMoveFunction(()->upExtension.setPower(-0.7))
+                .createEvent(
+                       ()->{
+                           switch (cameraResults){
+                               case "LEFT": return upExtension.getCurrentPosition()<-405;
+                               case "CENTER": return upExtension.getCurrentPosition()<-740;
+                               case "RIGHT": return upExtension.getCurrentPosition()<-1188;
+                             default: return true;
+                            }
+                       },()->upExtension.setPower(-0.03))
+               .addPostMoveFunction(()->{
+                    teLift.toPosition();
+                    teLift.toPosition();
+                    sleep(99);
+                    dumper.toPosition(1);
+                    sleep(700);
+                    teLift.toPosition();
+                    dumper.toPosition(0);
+                })
         );
 
         // park
@@ -47,6 +66,8 @@ public class BlueStorageNew extends BaseAuto {
                 .setForward(1100)
                 .setRotational(580)
                 .setRightward(650)
+                .addPreMoveFunction(()->upExtension.setPower(0.6))
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
         );
 
         // park cont
