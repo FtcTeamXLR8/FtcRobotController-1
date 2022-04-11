@@ -18,7 +18,7 @@ public class RedStorageScanner extends DeterminationClass {
     static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(15,110);
     static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(141,110);
     static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(263,115);
-    static final int REGION_WIDTH = 20;
+    static final int REGION_WIDTH = 30;
     static final int REGION_HEIGHT = 30;
 
 
