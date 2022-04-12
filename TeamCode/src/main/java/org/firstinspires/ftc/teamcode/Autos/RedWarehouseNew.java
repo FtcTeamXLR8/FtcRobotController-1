@@ -17,6 +17,7 @@ public class RedWarehouseNew extends BaseAuto {
                 .setForward(-550)
                 .setRightward(300)
                 .setRotational(-130)
+                .addPreMoveFunction(()->cameraResults="LEFT")
                 .addPreMoveFunction(()->upExtension.setPower(-0.7))
                 .createEvent(
                         ()->{
@@ -43,6 +44,10 @@ public class RedWarehouseNew extends BaseAuto {
                 .setForward(900)
                 .setRotational(-420)
                 .setRightward(30)
+                .addMoveFunction(()->{
+                    telemetry.addData("Height",upExtension.getCurrentPosition());
+                    telemetry.update();
+                })
                 .addPreMoveFunction(()->upExtension.setPower(0.6))
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
@@ -50,7 +55,11 @@ public class RedWarehouseNew extends BaseAuto {
         // Do grabby thing
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(900)
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
+                .addMoveFunction(()->{
+                    telemetry.addData("Height",upExtension.getCurrentPosition());
+                    telemetry.update();
+                })
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
         // Come back out of warehouse
@@ -58,7 +67,7 @@ public class RedWarehouseNew extends BaseAuto {
                 .setForward(-1200)
 //                .setRotational(-420)
 //                .setRightward(-30)
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
         );
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setRotational(440)
@@ -70,15 +79,7 @@ public class RedWarehouseNew extends BaseAuto {
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(-400)
                 .addPreMoveFunction(()->upExtension.setPower(-0.7))
-                .createEvent(
-                        ()->{
-                            switch (cameraResults){
-                                case "LEFT": return upExtension.getCurrentPosition()<-405;
-                                case "CENTER": return upExtension.getCurrentPosition()<-740;
-                                case "RIGHT": return upExtension.getCurrentPosition()<-1188;
-                                default: return true;
-                            }
-                        },()->upExtension.setPower(-0.03))
+                .createEvent(()-> upExtension.getCurrentPosition()<-1188,()->upExtension.setPower(-0.03))
                 .addPostMoveFunction(()->{
                     teLift.toPosition();
                     teLift.toPosition();
@@ -92,20 +93,32 @@ public class RedWarehouseNew extends BaseAuto {
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(690)
-                .setRotational(-370)
-                .setRightward(280)
+                .setRotational(-340)
+                .setRightward(290)
+                .addMoveFunction(()->{
+                    telemetry.addData("Height",upExtension.getCurrentPosition());
+                    telemetry.update();
+                })
                 .addPreMoveFunction(()->upExtension.setPower(0.6))
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(700)
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
+                .addMoveFunction(()->{
+                    telemetry.addData("Height",upExtension.getCurrentPosition());
+                    telemetry.update();
+                })
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setRightward(-700)
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
+                .addMoveFunction(()->{
+                    telemetry.addData("Height",upExtension.getCurrentPosition());
+                    telemetry.update();
+                })
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
         );
 
     }
