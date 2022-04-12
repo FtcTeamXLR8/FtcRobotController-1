@@ -48,7 +48,7 @@ public class RedWarehouseNew extends BaseAuto {
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
-        /*// Do grabby thing
+        // Do grabby thing
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(900)
                 .createTimedEvent(0,()->{
@@ -94,7 +94,7 @@ public class RedWarehouseNew extends BaseAuto {
                 .setRightward(300)
                 .addPreMoveFunction(()->upExtension.setPower(0.6))
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
-        );*/
+        );
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(700)
