@@ -17,6 +17,7 @@ public class RedWarehouseNew extends BaseAuto {
                 .setForward(-550)
                 .setRightward(300)
                 .setRotational(-130)
+                .addPreMoveFunction(()->cameraResults="CENTER")
                 .addPreMoveFunction(()->upExtension.setPower(-0.7))
                 .createEvent(
                         ()->{
@@ -43,43 +44,38 @@ public class RedWarehouseNew extends BaseAuto {
                 .setForward(900)
                 .setRotational(-420)
                 .setRightward(30)
-                .addPreMoveFunction(()->upExtension.setPower(0.6))
+                .addPostMoveFunction(()->upExtension.setPower(0.6))
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
         // Do grabby thing
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(900)
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
+                .addPreMoveFunction(()-> intakeFlipper.setPosition(0.3))
+//                .createTimedEvent(0,()->intakeFlipper.toPosition(1))
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
         // Come back out of warehouse
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(-1200)
-//                .setRotational(-420)
-//                .setRightward(-30)
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
+                .setRightward(50)
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
+//                .createTimedEvent(200,()->intakeFlipper.toPosition(0))
         );
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setRotational(440)
                 .setRightward(-30)
-
+                .addPreMoveFunction(()->intake.setPower(1))
         );
 
         // Drive to shipping hub
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setForward(-400)
+                .setForward(-450)
                 .addPreMoveFunction(()->upExtension.setPower(-0.7))
-                .createEvent(
-                        ()->{
-                            switch (cameraResults){
-                                case "LEFT": return upExtension.getCurrentPosition()<-405;
-                                case "CENTER": return upExtension.getCurrentPosition()<-740;
-                                case "RIGHT": return upExtension.getCurrentPosition()<-1188;
-                                default: return true;
-                            }
-                        },()->upExtension.setPower(-0.03))
+                .createEvent(()-> upExtension.getCurrentPosition()<-1188,()->upExtension.setPower(-0.03))
                 .addPostMoveFunction(()->{
+                    intake.setPower(0);
                     teLift.toPosition();
                     teLift.toPosition();
                     sleep(99);
@@ -91,22 +87,24 @@ public class RedWarehouseNew extends BaseAuto {
         );
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setForward(690)
-                .setRotational(-370)
-                .setRightward(280)
+                .setForward(700)
+                .setRotational(-330)
+                .setRightward(300)
                 .addPreMoveFunction(()->upExtension.setPower(0.6))
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(700)
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setRightward(-700)
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
         );
 
+
+        moveSequence.addWhileMoveToEach(()-> intakeFlipper.input(gamepad1.b));
     }
 }

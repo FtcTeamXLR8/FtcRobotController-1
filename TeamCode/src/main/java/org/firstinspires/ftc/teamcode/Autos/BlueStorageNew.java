@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autos;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.Events.Event;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
@@ -67,7 +68,7 @@ public class BlueStorageNew extends BaseAuto {
                 .setRotational(580)
                 .setRightward(650)
                 .addPreMoveFunction(()->upExtension.setPower(0.6))
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
+                .createEvent(()-> upExtension.getCurrentPosition()>-70,()->upExtension.setPower(0))
         );
 
         // park cont
