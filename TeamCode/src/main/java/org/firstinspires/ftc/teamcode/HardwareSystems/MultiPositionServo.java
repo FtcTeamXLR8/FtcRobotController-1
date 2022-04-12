@@ -26,7 +26,7 @@ public class MultiPositionServo extends HardwareSystem {
         this.servo=servo;
         addPosition(Pos);
     }
-    public double getPos(){
+    public int getPos(){
         return cpos;
     }
     public double getPosition(int index){

@@ -9,7 +9,7 @@ public class TimedEvent extends Event{
 
     public TimedEvent(Runnable callback, int milliseconds) {
         super(callback, ()->false);
-        setCondition(()->elapsedTime.milliseconds()<milliseconds);
+        setCondition(()->elapsedTime.milliseconds()>milliseconds);
         onEnable(()->elapsedTime.reset());
     }
 }

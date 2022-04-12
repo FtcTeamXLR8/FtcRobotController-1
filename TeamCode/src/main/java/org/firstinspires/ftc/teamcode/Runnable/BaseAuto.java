@@ -37,27 +37,27 @@ public abstract class BaseAuto extends LinearOpMode {
 
     public DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
 
-    protected DcMotor carouselSpinner;
-    protected DcMotor upExtension;
-    protected DcMotor inExtension;
-    protected MultiPowerMotor intake;
+    public DcMotor carouselSpinner;
+    public DcMotor upExtension;
+    public DcMotor inExtension;
+    public MultiPowerMotor intake;
 
-    protected MultiPositionServo dumper, intakeFlipper;
+    public MultiPositionServo dumper, intakeFlipper;
 
-    protected MecanumDriveTrain driveTrain;
+    public MecanumDriveTrain driveTrain;
 
-    protected String cameraResults = "";
+    public String cameraResults = "";
 
-    protected OpenCvWebcam webcam;
-    protected DeterminationClass pipeline;
+    public OpenCvWebcam webcam;
+    public DeterminationClass pipeline;
 
-    protected MultiPositionServo teGrabber, teLift;
+    public MultiPositionServo teGrabber, teLift;
 
-    protected DistanceSensor intakeScanner;
+    public DistanceSensor intakeScanner;
 
-    protected ElapsedTime caroTimer, clock;
+    public ElapsedTime caroTimer, clock;
 
-    protected MoveSequence moveSequence = new MoveSequence(this);
+    public MoveSequence moveSequence = new MoveSequence(this);
 
 
     public void initSystems(){
