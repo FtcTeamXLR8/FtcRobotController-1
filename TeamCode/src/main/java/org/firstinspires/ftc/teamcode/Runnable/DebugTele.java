@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -9,7 +8,7 @@ import org.firstinspires.ftc.teamcode.HardwareSystems.ToggleSwitch;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
 //@Disabled
-public class TeleOp extends BaseTele {
+public class DebugTele extends BaseTele {
 
     ToggleSwitch speedswitch = new ToggleSwitch();
     ToggleSwitch liftInToggle = new ToggleSwitch();
@@ -61,10 +60,10 @@ public class TeleOp extends BaseTele {
 
     public void Loop() {
         telemetry.update();
-        inInToggle.input(gamepad2.left_bumper );
-        liftInToggle.input(gamepad2.right_bumper);
-        inOutToggle.input(gamepad2.left_stick_button);
-        liftOutToggle.input(gamepad2.right_stick_button );
+        inInToggle.input(gamepad2.left_bumper || gamepad1.left_bumper);
+        liftInToggle.input(gamepad2.right_bumper || gamepad1.right_bumper);
+        inOutToggle.input(gamepad2.left_stick_button || gamepad1.left_stick_button);
+        liftOutToggle.input(gamepad2.right_stick_button || gamepad1.right_stick_button);
         RetractToggle.input(gamepad2.a);
 
         // when speedswitch toggles change drive speed
@@ -100,21 +99,21 @@ public class TeleOp extends BaseTele {
         }
 
         //intake
-        intake.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
+        intake.setPower(Math.max(gamepad1.left_trigger,gamepad2.left_trigger)-Math.max(gamepad1.right_trigger,gamepad2.right_trigger));
 
         //intake flipper
-        intakeFlipper.input(gamepad2.dpad_right);
+        intakeFlipper.input(gamepad2.dpad_right || gamepad1.dpad_down);
 
         //dumper position
-        if     (gamepad2.dpad_up)  dumper.toPosition(1);
+        if     (gamepad2.dpad_up || gamepad1.dpad_left)  dumper.toPosition(1);
         else if(gamepad2.dpad_left)dumper.toPosition(2);
         else                       dumper.toPosition(0);
 
         //team element grabber
-        teGrabber.input(gamepad2.y);
+        teGrabber.input(gamepad1.y || gamepad2.y);
 
         //team element lift
-        teLift.input(gamepad2.a);
+        teLift.input(gamepad2.a || gamepad1.dpad_up);
 //        teLift1.input(gamepad2.a || gamepad1.dpad_up);
 //        teLift2.input(gamepad2.a || gamepad1.dpad_up);
 
