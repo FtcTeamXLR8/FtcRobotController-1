@@ -15,7 +15,7 @@ public class BlueStorageNew extends BaseAuto {
             .setForward(60)
             .setRightward(-770)
             .setRotational(-270)
-            .addPreMoveFunction(()->cameraResults="LEFT")
+//            .addPreMoveFunction(()->cameraResults="LEFT")
         );
 
         // drive up to and spin carousel
@@ -96,5 +96,7 @@ public class BlueStorageNew extends BaseAuto {
             telemetry.update();
         });
 
+        initBlueStorageCam();
+        waitWhileScanning();
     }
 }

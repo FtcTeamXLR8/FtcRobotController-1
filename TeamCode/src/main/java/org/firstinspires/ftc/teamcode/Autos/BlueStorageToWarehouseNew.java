@@ -18,7 +18,7 @@ public class BlueStorageToWarehouseNew extends BaseAuto {
                 .setForward(-80)
                 .setRightward(-685)
                 .setRotational(-240)
-                .addPreMoveFunction(()->cameraResults="LEFT")
+//                .addPreMoveFunction(()->cameraResults="LEFT")
         );
 
         // drive up to and spin carousel
@@ -84,7 +84,7 @@ public class BlueStorageToWarehouseNew extends BaseAuto {
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-140))
         );
 
-        initRedCam();
+        initBlueStorageCam();
         waitWhileScanning();
     }
 }
