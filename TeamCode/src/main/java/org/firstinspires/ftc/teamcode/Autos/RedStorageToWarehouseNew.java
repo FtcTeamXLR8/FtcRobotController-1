@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autos;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.Events.Event;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
@@ -68,6 +69,8 @@ public class RedStorageToWarehouseNew extends BaseAuto {
                 .setForward(2040)
                 .setRotational(-1300)
                 .setRightward(-400)
+                .addPreMoveFunction(()->upExtension.setPower(0.6))
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
 
         );
 
@@ -75,6 +78,7 @@ public class RedStorageToWarehouseNew extends BaseAuto {
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setRightward(450)
                 .setForward(2600)
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
         );
 
         initRedCam();

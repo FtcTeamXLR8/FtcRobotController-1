@@ -167,6 +167,12 @@ public class DebugTele extends BaseTele {
         telemetry.addData("In-Power",inExtension.getPower());
         telemetry.addLine();
 
+        telemetry.addLine()
+                .addData("TeLift",teLift.getPos())
+                .addData("",teLift.getPosition());
+//        telemetry.update();
+        telemetry.addLine();
+
         telemetry.addLine("Drive: ")
                 .addData("FL",FrontLeft.getPower())
                 .addData("FR",FrontRight.getPower())
