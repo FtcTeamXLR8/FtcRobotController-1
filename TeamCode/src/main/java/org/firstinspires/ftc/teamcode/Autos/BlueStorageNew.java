@@ -12,9 +12,10 @@ public class BlueStorageNew extends BaseAuto {
     public void initializeMovements() {
         // line up with carousel
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setForward(60)
-                .setRightward(-770)
-                .setRotational(-270)
+            .setForward(60)
+            .setRightward(-770)
+            .setRotational(-270)
+            .addPreMoveFunction(()->cameraResults="LEFT")
         );
 
         // drive up to and spin carousel
@@ -31,22 +32,22 @@ public class BlueStorageNew extends BaseAuto {
         // drive around barcode
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
 //                .setRightward(-10)
-                .setRightward(-400)
-                .setForward(-594)
+                .setRightward(-430)
+                .setForward(-584)
         );
 
         // move up and deposit cube
         // check if this lines up properly
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setForward(-1100)
+                .setForward(-1050)
                 .setRotational(-580)
                 .setRightward(-650)
                 .addPreMoveFunction(()->upExtension.setPower(-0.7))
                 .createEvent(
                        ()->{
                            switch (cameraResults){
-                               case "LEFT": return upExtension.getCurrentPosition()<-405;
-                               case "CENTER": return upExtension.getCurrentPosition()<-740;
+                               case "LEFT": return upExtension.getCurrentPosition()<-480;
+                               case "CENTER": return upExtension.getCurrentPosition()<-940;
                                case "RIGHT": return upExtension.getCurrentPosition()<-1188;
                              default: return true;
                             }
@@ -62,13 +63,15 @@ public class BlueStorageNew extends BaseAuto {
                 })
         );
 
+//        interrupt();
+
         // park
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(1100)
                 .setRotational(580)
                 .setRightward(650)
                 .addPreMoveFunction(()->upExtension.setPower(0.6))
-                .createEvent(()-> upExtension.getCurrentPosition()>-70,()->upExtension.setPower(0))
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
         // park cont
@@ -76,6 +79,7 @@ public class BlueStorageNew extends BaseAuto {
                 .setRightward(-100)
                 .setForward(125)
                 .setRotational(210)
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
         );
 
         // add global telemetry to each movement

@@ -16,8 +16,8 @@ public class RedStorageNew extends BaseAuto {
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-70)
             .setRightward(600)
-            .setRotational(240)
-//            .addPreMoveFunction(()->cameraResults="LEFT")
+            .setRotational(250)
+//            .addPreMoveFunction(()->cameraResults="RIGHT")
         );
 
         // drive up to and spin carousel
@@ -82,7 +82,7 @@ public class RedStorageNew extends BaseAuto {
             .setForward(-60)
             .setRotational(-380)
 //            .addPreMoveFunction(()->upExtension.setPower(0.6))
-            .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70))
+            .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
         );
 
 
@@ -101,5 +101,6 @@ public class RedStorageNew extends BaseAuto {
         });
 
         initRedCam();
+        waitWhileScanning();
     }
 }

@@ -16,25 +16,25 @@ public class BlueWarehouseNew extends BaseAuto {
                 .setForward(-550)
                 .setRightward(-300)
                 .setRotational(130)
-//                .addPreMoveFunction(()->upExtension.setPower(-0.7))
-//                .createEvent(
-//                        ()->{
-//                            switch (cameraResults){
-//                                case "LEFT": return upExtension.getCurrentPosition()<-395;
-//                                case "CENTER": return upExtension.getCurrentPosition()<-740;
-//                                case "RIGHT": return upExtension.getCurrentPosition()<-1188;
-//                                default: return true;
-//                            }
-//                        },()->upExtension.setPower(-0.03))
-//                .addPostMoveFunction(()->{
-//                    teLift.toPosition();
-//                    teLift.toPosition();
-//                    sleep(99);
-//                    dumper.toPosition(1);
-//                    sleep(700);
-//                    teLift.toPosition();
-//                    dumper.toPosition(0);
-//                })
+                .addPreMoveFunction(()->upExtension.setPower(-0.7))
+                .createEvent(
+                        ()->{
+                            switch (cameraResults){
+                                case "LEFT": return upExtension.getCurrentPosition()<-395;
+                                case "CENTER": return upExtension.getCurrentPosition()<-740;
+                                case "RIGHT": return upExtension.getCurrentPosition()<-1188;
+                                default: return true;
+                            }
+                        },()->upExtension.setPower(-0.03))
+                .addPostMoveFunction(()->{
+                    teLift.toPosition();
+                    teLift.toPosition();
+                    sleep(99);
+                    dumper.toPosition(1);
+                    sleep(700);
+                    teLift.toPosition();
+                    dumper.toPosition(0);
+                })
         // make sure to retract dumper
 
         );

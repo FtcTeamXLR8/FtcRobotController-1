@@ -70,8 +70,8 @@ public class TeleOp extends BaseTele {
         // when speedswitch toggles change drive speed
         if(speedswitch.input(gamepad1.a)){
             if(!speedswitch.get()){
-                driveTrain.rightspeed=0.7;
-                driveTrain.forspeed = 0.7;
+                driveTrain.rightspeed=0.65;
+                driveTrain.forspeed = 0.65;
             }
             else {
                 driveTrain.rightspeed=1;
@@ -81,9 +81,9 @@ public class TeleOp extends BaseTele {
 
         //set powers
         driveTrain.setSpeed(
-                scaledInput(gamepad1.left_stick_y,-.7),
-                scaledInput(gamepad1.left_stick_x,.7),
-                scaledInput(gamepad1.right_stick_x,.7)
+                scaledInput(gamepad1.left_stick_y,-.85),
+                scaledInput(gamepad1.left_stick_x,.85),
+                scaledInput(gamepad1.right_stick_x,.85)
         );
 
         //control carousel spinner
@@ -111,7 +111,7 @@ public class TeleOp extends BaseTele {
         else                       dumper.toPosition(0);
 
         //team element grabber
-        teGrabber.input(gamepad2.y);
+        teGrabber.input(gamepad2.dpad_down);
 
         //team element lift
         teLift.input(gamepad2.a);
