@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
-@Autonomous(group = "#")
+@Autonomous(group = "#CompBlue", name = "BluaStorageToWarehouse")
 public class BlueStorageToWarehouseNew extends BaseAuto {
     @Override
     public void initializeMovements() {

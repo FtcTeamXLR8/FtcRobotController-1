@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Events.Event;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
-@Autonomous(group = "#")
+@Autonomous(group = "#CompBlue",name = "BlueStorageToWarehouse")
 public class BlueStorageNew extends BaseAuto {
     @Override
     public void initializeMovements() {

@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Events.MotorPositionEvent;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
-@Autonomous(group = "#")
+@Autonomous(group = "#CompRed", name = "RedStorage")
 public class RedStorageNew extends BaseAuto {
     Integer targetLiftPosition = null;
     @Override
@@ -15,14 +15,13 @@ public class RedStorageNew extends BaseAuto {
         // line up with carousel
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-70)
-            .setRightward(600)
+            .setRightward(680)
             .setRotational(250)
-//            .addPreMoveFunction(()->cameraResults="CENTER")
         );
 
         // drive up to and spin carousel
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(200)
+            .setForward(175)
             .setSpeed(0.1)
             .addPostMoveFunction(()->{
                 carouselSpinner.setPower(-0.45);
@@ -47,18 +46,18 @@ public class RedStorageNew extends BaseAuto {
                     ()->{
                         switch (cameraResults){
                             case "LEFT": return upExtension.getCurrentPosition()<-405;
-                            case "CENTER": return upExtension.getCurrentPosition()<-740;
-                            case "RIGHT": return upExtension.getCurrentPosition()<-1188;
+                            case "CENTER": return upExtension.getCurrentPosition()<-840;
+                            case "RIGHT": return upExtension.getCurrentPosition()<-1288;
                             default: return true;
                         }
                     },()->upExtension.setPower(-0.03))
             .addPostMoveFunction(()->{
-                teLift.toPosition();
-                teLift.toPosition();
+//                teLift.toPosition();
+//                teLift.toPosition();
                 sleep(99);
                 dumper.toPosition(1);
                 sleep(700);
-                teLift.toPosition();
+//                teLift.toPosition();
                 dumper.toPosition(0);
             })
         );
@@ -82,11 +81,11 @@ public class RedStorageNew extends BaseAuto {
             .setForward(-60)
             .setRotational(-380)
 //            .addPreMoveFunction(()->upExtension.setPower(0.6))
-            .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
+            .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-140))
         );
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-            .setForward(30)
+            .setForward(-50)
         );
 
         // add global telemetry to each movement

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.BlankMovement;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
 
-@Autonomous(group = "#CompBlue")
+//@Autonomous(group = "#CompBlue")
 public class BlueWarehouse extends BaseAuto{
     int cubeCount = 0;
     ElapsedTime droptime = new ElapsedTime();

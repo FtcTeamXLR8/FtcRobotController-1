@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.*;
 
-@Autonomous(group = "#CompRed")
+//@Autonomous(group = "#CompRed")
 public class RedWarehouse extends BaseAuto{
     int cubeCount = 0;
     ElapsedTime droptime = new ElapsedTime();
