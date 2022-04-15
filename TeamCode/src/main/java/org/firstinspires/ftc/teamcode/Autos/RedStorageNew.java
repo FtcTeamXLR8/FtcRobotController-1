@@ -17,7 +17,7 @@ public class RedStorageNew extends BaseAuto {
             .setForward(-70)
             .setRightward(600)
             .setRotational(250)
-//            .addPreMoveFunction(()->cameraResults="RIGHT")
+//            .addPreMoveFunction(()->cameraResults="CENTER")
         );
 
         // drive up to and spin carousel
@@ -85,6 +85,9 @@ public class RedStorageNew extends BaseAuto {
             .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
         );
 
+        moveSequence.add(new MecanumDistanceDrive(driveTrain)
+            .setForward(30)
+        );
 
         // add global telemetry to each movement
         moveSequence.addWhileMoveToEach(() -> {
@@ -99,6 +102,8 @@ public class RedStorageNew extends BaseAuto {
 
             telemetry.update();
         });
+
+
 
         initRedCam();
         waitWhileScanning();
