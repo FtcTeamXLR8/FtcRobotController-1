@@ -4,11 +4,12 @@ package org.firstinspires.ftc.teamcode.Autos;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+import org.firstinspires.ftc.teamcode.Events.Event;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
 @Autonomous(group = "#CompBlue")
-@Disabled
+//@Disabled
 public class BlueWarehouseNew extends BaseAuto {
     @Override
     public void initializeMovements() {
@@ -45,9 +46,11 @@ public class BlueWarehouseNew extends BaseAuto {
                 .setForward(900)
                 .setRotational(420)
                 .setRightward(-140)
+                .addPostMoveFunction(()->upExtension.setPower(0.6))
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
-        // Do grabby thing
+        /*// Do grabby thing
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(900)
 
@@ -75,14 +78,17 @@ public class BlueWarehouseNew extends BaseAuto {
                 .setForward(700)
                 .setRotational(390)
                 .setRightward(-270)
-        );
+        );*/
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(700)
+            .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setRightward(700)
+            .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
+            .addPostMoveFunction(()->teLift.toPosition(0))
         );
 
         // Score in shipping hub

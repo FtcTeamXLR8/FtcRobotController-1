@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
 @Autonomous(group = "#CompRed")
-@Disabled
+//@Disabled
 public class RedWarehouseNew extends BaseAuto {
     @Override
     public void initializeMovements() {
@@ -48,17 +48,17 @@ public class RedWarehouseNew extends BaseAuto {
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
-        // Do grabby thing
+        /*// Do grabby thing
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(900)
                 .addPreMoveFunction(()-> {
-                    intakeFlipper.input(false);
-                    intakeFlipper.input(true);
-                    intakeFlipper.input(false);
-                    intakeFlipper.input(true);
-                    intakeFlipper.input(false);
-                    intakeFlipper.input(true);
-                    intakeFlipper.input(false);
+//                    intakeFlipper.input(false);
+//                    intakeFlipper.input(true);
+//                    intakeFlipper.input(false);
+//                    intakeFlipper.input(true);
+//                    intakeFlipper.input(false);
+//                    intakeFlipper.input(true);
+//                    intakeFlipper.input(false);
                 })
 //                .createTimedEvent(0,()->intakeFlipper.toPosition(1))
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
@@ -100,7 +100,7 @@ public class RedWarehouseNew extends BaseAuto {
                 .setRightward(300)
                 .addPreMoveFunction(()->upExtension.setPower(0.6))
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
-        );
+        );*/
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(700)
