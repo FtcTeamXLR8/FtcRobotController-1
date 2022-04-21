@@ -86,6 +86,7 @@ public class RedStorageNew extends BaseAuto {
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(-50)
+            .addPostMoveFunction(()->teLift.toPosition(0))
         );
 
         // add global telemetry to each movement

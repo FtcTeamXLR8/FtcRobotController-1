@@ -88,13 +88,13 @@ public abstract class BaseAuto extends LinearOpMode {
 
 
         teGrabber = new MultiPositionServo(hardwareMap.servo.get("teGrabber"), 0, 1);
-        teLift = new MultiPositionServo(hardwareMap.servo.get("teLift"),0.27,0.577);
+        teLift = new MultiPositionServo(hardwareMap.servo.get("teLift"),0.21,0.59);
 
         intakeScanner = hardwareMap.get(DistanceSensor.class, "intakescanner");
 
         dumper.toPosition(0);
         intakeFlipper.toPosition(0);
-//        teLift.toPosition(0);
+        teLift.toPosition(1);
 
         clock = new ElapsedTime();
     }

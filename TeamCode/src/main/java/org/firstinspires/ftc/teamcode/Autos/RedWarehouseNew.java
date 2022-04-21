@@ -18,10 +18,9 @@ public class RedWarehouseNew extends BaseAuto {
                 .setForward(-550)
                 .setRightward(300)
                 .setRotational(-130)
-                .addPreMoveFunction(()->cameraResults="CENTER")
+//                .addPreMoveFunction(()->cameraResults="CENTER")
                 .addPreMoveFunction(()->upExtension.setPower(-0.7))
-                .createEvent(
-                        ()->{
+                .createEvent(()->{
                             switch (cameraResults){
                                 case "LEFT": return upExtension.getCurrentPosition()<-405;
                                 case "CENTER": return upExtension.getCurrentPosition()<-740;
@@ -52,7 +51,15 @@ public class RedWarehouseNew extends BaseAuto {
         // Do grabby thing
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(900)
-                .addPreMoveFunction(()-> intakeFlipper.setPosition(0.3))
+                .addPreMoveFunction(()-> {
+                    intakeFlipper.input(false);
+                    intakeFlipper.input(true);
+                    intakeFlipper.input(false);
+                    intakeFlipper.input(true);
+                    intakeFlipper.input(false);
+                    intakeFlipper.input(true);
+                    intakeFlipper.input(false);
+                })
 //                .createTimedEvent(0,()->intakeFlipper.toPosition(1))
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
@@ -103,9 +110,10 @@ public class RedWarehouseNew extends BaseAuto {
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setRightward(-700)
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
+                .addPostMoveFunction(()->teLift.toPosition(0))
         );
 
 
-        moveSequence.addWhileMoveToEach(()-> intakeFlipper.input(gamepad1.b));
+//        moveSequence.addWhileMoveToEach(()-> intakeFlipper.input(gamepad1.b));
     }
 }

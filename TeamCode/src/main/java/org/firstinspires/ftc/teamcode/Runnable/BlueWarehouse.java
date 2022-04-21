@@ -49,7 +49,7 @@ public class BlueWarehouse extends BaseAuto{
                 sleep(150);
 
                 dumper.toPosition(1);
-                if(cameraResults=="RIGHT")dumper.setPosition(0.37);
+                if(cameraResults.equals("RIGHT"))dumper.setPosition(0.37);
                 sleep(700);
                 dumper.toPosition(0);
 

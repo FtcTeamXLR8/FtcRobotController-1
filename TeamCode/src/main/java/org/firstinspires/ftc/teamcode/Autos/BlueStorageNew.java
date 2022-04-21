@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Events.Event;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
-@Autonomous(group = "#CompBlue",name = "BlueStorageToWarehouse")
+@Autonomous(group = "#CompBlue",name = "BlueStorage")
 public class BlueStorageNew extends BaseAuto {
     @Override
     public void initializeMovements() {
@@ -80,6 +80,7 @@ public class BlueStorageNew extends BaseAuto {
                 .setForward(125)
                 .setRotational(210)
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
+                .addPostMoveFunction(()->teLift.toPosition(0))
         );
 
         // add global telemetry to each movement
