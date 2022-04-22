@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.*;
 
-@Autonomous(group = "#CompRed")
+//@Autonomous(group = "#CompRed")
 public class RedStorage extends BaseAuto{
 
     public void initializeMovements() {

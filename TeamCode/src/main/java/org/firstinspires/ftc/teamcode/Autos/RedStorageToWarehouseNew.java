@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
-@Autonomous(group = "#")
+@Autonomous(group = "#CompRed", name = "RedStorageToWarehouse")
 public class RedStorageToWarehouseNew extends BaseAuto {
     @Override
     public void initializeMovements() {
@@ -16,14 +16,14 @@ public class RedStorageToWarehouseNew extends BaseAuto {
         // line up with carousel
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(-70)
-                .setRightward(600)
-                .setRotational(240)
+                .setRightward(680)
+                .setRotational(250)
 //                .addPreMoveFunction(()->cameraResults="LEFT")
         );
 
         // drive up to and spin carousel
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
-                .setForward(200)
+                .setForward(175)
                 .setSpeed(0.1)
                 .addPostMoveFunction(()->{
                     carouselSpinner.setPower(-0.45);
@@ -47,9 +47,9 @@ public class RedStorageToWarehouseNew extends BaseAuto {
                 .createEvent(
                         ()->{
                             switch (cameraResults){
-                                case "LEFT": return upExtension.getCurrentPosition()<-395;
-                                case "CENTER": return upExtension.getCurrentPosition()<-740;
-                                case "RIGHT": return upExtension.getCurrentPosition()<-1188;
+                                case "LEFT": return upExtension.getCurrentPosition()<-405;
+                                case "CENTER": return upExtension.getCurrentPosition()<-840;
+                                case "RIGHT": return upExtension.getCurrentPosition()<-1288;
                                 default: return true;
                             }
                         },()->upExtension.setPower(-0.03))
@@ -69,8 +69,8 @@ public class RedStorageToWarehouseNew extends BaseAuto {
                 .setForward(2040)
                 .setRotational(-1300)
                 .setRightward(-400)
-                .addPreMoveFunction(()->upExtension.setPower(0.6))
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
+                .addMoveFunction(()->upExtension.setPower(0.6))
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100).dontForceCompletion())
 
         );
 
@@ -78,7 +78,7 @@ public class RedStorageToWarehouseNew extends BaseAuto {
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setRightward(450)
                 .setForward(2600)
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-140))
         );
 
         initRedCam();

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
-@Autonomous(group = "#")
+@Autonomous(group = "#CompBlue", name = "BlueStorageToWarehouse")
 public class BlueStorageToWarehouseNew extends BaseAuto {
     @Override
     public void initializeMovements() {
@@ -82,6 +82,7 @@ public class BlueStorageToWarehouseNew extends BaseAuto {
                 .setRightward(-490)
                 .setForward(2600)
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-140))
+                .addPostMoveFunction(()->teLift.toPosition(0))
         );
 
         initBlueStorageCam();

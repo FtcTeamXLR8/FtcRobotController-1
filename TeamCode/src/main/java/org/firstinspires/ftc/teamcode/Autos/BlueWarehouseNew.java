@@ -7,7 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
-@Autonomous(group = "#")
+@Autonomous(group = "#CompBlue")
+@Disabled
 public class BlueWarehouseNew extends BaseAuto {
     @Override
     public void initializeMovements() {

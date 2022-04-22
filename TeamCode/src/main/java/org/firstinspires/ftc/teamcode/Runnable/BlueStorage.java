@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 
-@Autonomous(group = "#CompBlue")
+//@Autonomous(group = "#CompBlue")
 public class BlueStorage extends BaseAuto {
     public void initializeMovements() {
         initBlueStorageCam();

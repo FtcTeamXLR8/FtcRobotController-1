@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
 
-@Autonomous(group = "#CompRed")
+//@Autonomous(group = "#CompRed")
 public class RedStorageToWarehouse extends BaseAuto{
 
     public void initializeMovements() {
