@@ -54,12 +54,11 @@ public class RedStorageToWarehouseNew extends BaseAuto {
                             }
                         },()->upExtension.setPower(-0.03))
                 .addPostMoveFunction(()->{
-                    teLift.toPosition();
-                    teLift.toPosition();
+                    teLift.toPosition(1);
                     sleep(99);
                     dumper.toPosition(1);
                     sleep(700);
-                    teLift.toPosition();
+                    teLift.toPosition(0);
                     dumper.toPosition(0);
                 })
         );

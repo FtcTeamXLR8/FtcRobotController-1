@@ -54,7 +54,7 @@ public abstract class BaseTele extends OpMode {
         teGrabber = new MultiPositionServo(hardwareMap.servo.get("teGrabber"), 0, 1);
         teLift = new MultiPositionServo(hardwareMap.servo.get("teLift"),0.26,0.59);
 
-        intakeFlipper =   new MultiPositionServo(hardwareMap.servo.get("intakeFlipper"), 0.45,0);
+        intakeFlipper =   new MultiPositionServo(hardwareMap.servo.get("intakeFlipper"), 0.36,.1);
         dumper =          new MultiPositionServo(hardwareMap.servo.get("dumper"), 1, 0.35, 0.25);
 
         carouselSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

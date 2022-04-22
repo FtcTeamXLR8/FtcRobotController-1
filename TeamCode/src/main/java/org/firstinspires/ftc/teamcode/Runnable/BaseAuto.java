@@ -78,7 +78,7 @@ public abstract class BaseAuto extends LinearOpMode {
         inExtension =       hardwareMap.dcMotor.get("inExtension");
         carouselSpinner =   hardwareMap.dcMotor.get("carouselSpinner");
 
-        intakeFlipper =   new MultiPositionServo(hardwareMap.servo.get("intakeFlipper"), 0.3,0.6);
+        intakeFlipper =   new MultiPositionServo(hardwareMap.servo.get("intakeFlipper"), 0.36,.1);
         dumper =        new MultiPositionServo(hardwareMap.get(Servo.class, "dumper"), 1,0.35,0.25,0.22);
 
         carouselSpinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -88,13 +88,13 @@ public abstract class BaseAuto extends LinearOpMode {
 
 
         teGrabber = new MultiPositionServo(hardwareMap.servo.get("teGrabber"), 0, 1);
-        teLift = new MultiPositionServo(hardwareMap.servo.get("teLift"),0.21,0.59);
+        teLift = new MultiPositionServo(hardwareMap.servo.get("teLift"),0.26,0.59);
 
         intakeScanner = hardwareMap.get(DistanceSensor.class, "intakescanner");
 
         dumper.toPosition(0);
-        intakeFlipper.toPosition(0);
-        teLift.toPosition(1);
+        intakeFlipper.toPosition(1);
+        teLift.toPosition(0);
 
         clock = new ElapsedTime();
     }
