@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.HardwareSystems.ToggleSwitch;
 import org.firstinspires.ftc.teamcode.R;
 import org.firstinspires.ftc.teamcode.Runnable.BaseTele;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
-//@Disabled
+@Disabled
 public class Lights extends BaseTele {
     RevBlinkinLedDriver blinkin;
     public boolean lightsOn;

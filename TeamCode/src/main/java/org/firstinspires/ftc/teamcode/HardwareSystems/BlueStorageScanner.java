@@ -16,8 +16,8 @@ public class BlueStorageScanner extends DeterminationClass
     /*
      * The core values which define the location and size of the sample regions
      */
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(10,100);
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(141,120);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(10,120);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(131,120);
     static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(260,120);
     static final int REGION_WIDTH = 30;
     static final int REGION_HEIGHT = 30;
