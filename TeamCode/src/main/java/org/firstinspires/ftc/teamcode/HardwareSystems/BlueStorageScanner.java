@@ -22,7 +22,7 @@ public class BlueStorageScanner extends DeterminationClass
     static final int REGION_WIDTH = 30;
     static final int REGION_HEIGHT = 30;
 
-
+    // Define matrices
     Point region1_pointA = new Point(
             REGION1_TOPLEFT_ANCHOR_POINT.x,
             REGION1_TOPLEFT_ANCHOR_POINT.y);
@@ -53,10 +53,9 @@ public class BlueStorageScanner extends DeterminationClass
     // Volatile since accessed by OpMode thread w/o synchronization
     private volatile Position position = Position.LEFT;
 
-    /*
-     * This function takes the RGB frame, converts to YCrCb,
-     * and extracts the Cb channel to the 'Cb' variable
-     */
+
+    // Takes the RGB frame, converts to YCrCb, and extracts the Cb channel to the 'Cb' variable
+
     void inputToCb(Mat input)
     {
         Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
@@ -127,10 +126,7 @@ public class BlueStorageScanner extends DeterminationClass
         int maxOneTwo = Math.max(avg1, avg2);
         int max = Math.max(maxOneTwo, avg3);
 
-        /*
-         * Now that we found the max, we actually need to go and
-         * figure out which sample region that value was from
-         */
+        // Find which matrix the darkest value was from
         if(max == avg1) // Was it from region 1?
         {
             position = Position.LEFT; // Record our analysis
@@ -143,22 +139,19 @@ public class BlueStorageScanner extends DeterminationClass
                     input, // Buffer to draw on
                     region1_pointA, // First point which defines the rectangle
                     region1_pointB, // Second point which defines the rectangle
-                    GREEN, // The color the rectangle is drawn in
+                    BLUE, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
         else if(max == avg2) // Was it from region 2?
         {
             position = Position.CENTER; // Record our analysis
 
-            /*
-             * Draw a solid rectangle on top of the chosen region.
-             * Simply a visual aid. Serves no functional purpose.
-             */
+            // fill in region with max with solid blue
             Imgproc.rectangle(
                     input, // Buffer to draw on
                     region2_pointA, // First point which defines the rectangle
                     region2_pointB, // Second point which defines the rectangle
-                    GREEN, // The color the rectangle is drawn in
+                    BLUE, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
         else if(max == avg3) // Was it from region 3?
@@ -173,7 +166,7 @@ public class BlueStorageScanner extends DeterminationClass
                     input, // Buffer to draw on
                     region3_pointA, // First point which defines the rectangle
                     region3_pointB, // Second point which defines the rectangle
-                    GREEN, // The color the rectangle is drawn in
+                    BLUE, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
 

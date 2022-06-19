@@ -54,7 +54,7 @@ public class BlueWarehouseNew extends BaseAuto {
                 .setForward(900)
                 .addPreMoveFunction(()->{
                     intake.setPower(-0.7);
-                    inExtension.setPower(0.7);
+                    inExtension.setPower(0.4);
                 })
                 .addPostMoveFunction(()->intakeFlipper.toPosition(1))
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100).dontForceCompletion())
@@ -64,7 +64,7 @@ public class BlueWarehouseNew extends BaseAuto {
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(-1200)
 //                .setRotational(-420)
-                .setRightward(-30)
+                .setRightward(-70)
                 .addPreMoveFunction(()->inExtension.setPower(-0.7))
                 .addEvent(new Event(()->inExtension.setPower(0),()-> inExtension.getCurrentPosition()<40).dontForceCompletion())
         );
