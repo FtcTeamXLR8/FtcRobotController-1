@@ -53,11 +53,11 @@ public class RedWarehouseNew extends BaseAuto {
                 .setSpeed(0.45)
                 .addPreMoveFunction(()->{
                     intake.setPower(-0.7);
-                    inExtension.setPower(0.7);
+                    inExtension.setPower(0.4);
                     upExtension.setPower(0.6);
                 })
                 .addPostMoveFunction(()->intakeFlipper.toPosition(1))
-                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-65))
+                .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-55))
         );
 
         // Come back out of warehouse

@@ -47,7 +47,7 @@ public class BlueStorageNew extends BaseAuto {
                        ()->{
                            switch (cameraResults){
                                case "LEFT": return upExtension.getCurrentPosition()<-480;
-                               case "CENTER": return upExtension.getCurrentPosition()<-940;
+                               case "CENTER": return upExtension.getCurrentPosition()<-98.880;
                                case "RIGHT": return upExtension.getCurrentPosition()<-1188;
                              default: return true;
                             }
