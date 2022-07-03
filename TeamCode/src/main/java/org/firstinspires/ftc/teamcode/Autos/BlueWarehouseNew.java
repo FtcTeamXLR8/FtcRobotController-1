@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Events.Event;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
-@Autonomous(group = "#CompBlue")
+@Autonomous(group = "#CompBlue", name="BlueFarWarehouse")
 //@Disabled
 public class BlueWarehouseNew extends BaseAuto {
     @Override
@@ -28,11 +28,13 @@ public class BlueWarehouseNew extends BaseAuto {
                             }
                         },()->upExtension.setPower(-0.03))
                 .addPostMoveFunction(()->{
-                    teLift.toPosition(1);
+                    teLiftL.toPosition(1);
+                    teLiftR.toPosition(1);
                     sleep(99);
                     dumper.toPosition(1);
                     sleep(700);
-                    teLift.toPosition(0);
+                    teLiftL.toPosition(0);
+                    teLiftR.toPosition(0);
                     dumper.toPosition(0);
                 })
         // make sure to retract dumper
@@ -52,6 +54,7 @@ public class BlueWarehouseNew extends BaseAuto {
         // Do grabby thing
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(900)
+                .setRightward(-50)
                 .addPreMoveFunction(()->{
                     intake.setPower(-0.7);
                     inExtension.setPower(0.4);
@@ -64,7 +67,7 @@ public class BlueWarehouseNew extends BaseAuto {
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
                 .setForward(-1200)
 //                .setRotational(-420)
-                .setRightward(-70)
+                .setRightward(-80)
                 .addPreMoveFunction(()->inExtension.setPower(-0.7))
                 .addEvent(new Event(()->inExtension.setPower(0),()-> inExtension.getCurrentPosition()<40).dontForceCompletion())
         );
@@ -86,11 +89,13 @@ public class BlueWarehouseNew extends BaseAuto {
                         .createEvent(
                                 ()-> upExtension.getCurrentPosition()<-1188,()->upExtension.setPower(-0.03))
                         .addPostMoveFunction(()->{
-                            teLift.toPosition(1);
+                            teLiftL.toPosition(1);
+                            teLiftR.toPosition(1);
                             sleep(99);
                             dumper.toPosition(1);
                             sleep(700);
-                            teLift.toPosition(0);
+                            teLiftL.toPosition(0);
+                            teLiftR.toPosition(0);
                             dumper.toPosition(0);
                         })
                 // make sure to retract dumper
@@ -111,8 +116,9 @@ public class BlueWarehouseNew extends BaseAuto {
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setRightward(700)
-            .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
-            .addPostMoveFunction(()->teLift.toPosition(0))
+//            .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
+            .addPostMoveFunction(()->teLiftL.toPosition(0))
+            .addPostMoveFunction(()->teLiftR.toPosition(0))
         );
 
         // Score in shipping hub

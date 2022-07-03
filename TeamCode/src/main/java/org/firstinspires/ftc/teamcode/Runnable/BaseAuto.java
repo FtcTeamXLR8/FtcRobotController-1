@@ -51,7 +51,7 @@ public abstract class BaseAuto extends LinearOpMode {
     public OpenCvWebcam webcam;
     public DeterminationClass pipeline;
 
-    public MultiPositionServo teGrabber, teLift;
+    public MultiPositionServo teGrabber, /* teLift, */ teLiftL, teLiftR;
 
     public DistanceSensor intakeScanner;
 
@@ -88,13 +88,17 @@ public abstract class BaseAuto extends LinearOpMode {
 
 
         teGrabber = new MultiPositionServo(hardwareMap.servo.get("teGrabber"), 0, 1);
-        teLift = new MultiPositionServo(hardwareMap.servo.get("teLift"),0.26,0.59);
+//        teLift = new MultiPositionServo(hardwareMap.servo.get("teLift"),0.26,0.59);
+        teLiftL = new MultiPositionServo(hardwareMap.servo.get("teLiftL"),0.435,.84);
+        teLiftR = new MultiPositionServo(hardwareMap.servo.get("teLiftR"),0.6,.18);
 
         intakeScanner = hardwareMap.get(DistanceSensor.class, "intakescanner");
 
         dumper.toPosition(0);
         intakeFlipper.toPosition(1);
-        teLift.toPosition(0);
+        teLiftL.toPosition(0);
+        teLiftR.toPosition(0);
+//        teLift.toPosition(0);
 
         clock = new ElapsedTime();
     }

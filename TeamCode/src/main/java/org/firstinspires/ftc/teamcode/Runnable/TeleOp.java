@@ -20,6 +20,7 @@ public class TeleOp extends BaseTele {
     ToggleSwitch rumbleCheck = new ToggleSwitch();
     ElapsedTime ejectionTimer = new ElapsedTime();
 
+    boolean dp_left_controller_toggle = false;
 
     public void Init(){
         InFullIn = new Event(()->inExtension.setPower(0),()->inExtension.getCurrentPosition()<10);
@@ -107,16 +108,31 @@ public class TeleOp extends BaseTele {
 
         //dumper position
         if     (gamepad2.dpad_up)  dumper.toPosition(1);
-        else if(gamepad2.dpad_left)dumper.toPosition(2);
-        else                       dumper.toPosition(0);
+        else if(gamepad2.dpad_left){
+            dumper.toPosition(2);
+            dp_left_controller_toggle = true;
+            teLiftL.toPosition(1);
+            teLiftR.toPosition(1);
+        }
+        else {
+            dumper.toPosition(0);
+            if(dp_left_controller_toggle) {
+                dp_left_controller_toggle = false;
+                teLiftL.toPosition(0);
+                teLiftR.toPosition(0);
+            }
+        }
+
 
         //team element grabber
         teGrabber.input(gamepad2.dpad_down);
 
         //team element lift
-        teLift.input(gamepad2.a);
+//        teLift.input(gamepad2.a);
 //        teLift1.input(gamepad2.a || gamepad1.dpad_up);
 //        teLift2.input(gamepad2.a || gamepad1.dpad_up);
+        teLiftL.input(gamepad2.a);
+        teLiftR.input(gamepad2.a);
 
 
 
