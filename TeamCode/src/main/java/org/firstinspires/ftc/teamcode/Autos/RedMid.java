@@ -54,7 +54,7 @@ public class RedMid extends BaseAuto {
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(2000)
-            .addPreMoveFunction(()->sleep(0))
+            .addPreMoveFunction(()->sleep(999999999))
             .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
