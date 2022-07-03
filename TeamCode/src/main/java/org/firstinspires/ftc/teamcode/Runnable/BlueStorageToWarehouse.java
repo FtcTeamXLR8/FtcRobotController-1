@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
 
 //@Autonomous(group = "#CompBlue")
+@Disabled
 public class BlueStorageToWarehouse extends BaseAuto {
     public void initializeMovements() {
         initBlueStorageCam();

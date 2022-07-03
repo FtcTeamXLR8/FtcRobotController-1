@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.Autos;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Events.Event;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
 @Autonomous(group = "#CompBlue",name = "BlueStorage")
+@Disabled
 public class BlueStorageNew extends BaseAuto {
     @Override
     public void initializeMovements() {
@@ -53,11 +55,13 @@ public class BlueStorageNew extends BaseAuto {
                             }
                        },()->upExtension.setPower(-0.03))
                 .addPostMoveFunction(()->{
-                    teLift.toPosition(1);
+                    teLiftL.toPosition(1);
+                    teLiftR.toPosition(1);
                     sleep(99);
                     dumper.toPosition(1);
                     sleep(700);
-                    teLift.toPosition(0);
+                    teLiftL.toPosition(0);
+                    teLiftR.toPosition(0);
                     dumper.toPosition(0);
                 })
         );
@@ -79,7 +83,8 @@ public class BlueStorageNew extends BaseAuto {
                 .setForward(125)
                 .setRotational(210)
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100))
-                .addPostMoveFunction(()->teLift.toPosition(0))
+                .addPostMoveFunction(()->teLiftL.toPosition(0))
+                .addPostMoveFunction(()->teLiftR.toPosition(0))
         );
 
         // add global telemetry to each movement

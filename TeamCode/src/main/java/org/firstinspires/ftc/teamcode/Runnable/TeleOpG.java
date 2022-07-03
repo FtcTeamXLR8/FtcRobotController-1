@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
-//@Disabled
+@Disabled
 public class TeleOpG extends BaseTele {
 
     boolean lastspeed=true;

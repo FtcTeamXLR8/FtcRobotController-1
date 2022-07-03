@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.*;
 
 //@Autonomous(group = "#CompRed")
+@Disabled
 public class RedStorage extends BaseAuto{
 
     public void initializeMovements() {

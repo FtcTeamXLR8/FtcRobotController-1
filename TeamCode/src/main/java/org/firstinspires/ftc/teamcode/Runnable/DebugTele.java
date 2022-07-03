@@ -113,9 +113,9 @@ public class DebugTele extends BaseTele {
         teGrabber.input(gamepad1.y || gamepad2.y);
 
         //team element lift
-        teLift.input(gamepad2.a || gamepad1.dpad_up);
-//        teLift1.input(gamepad2.a || gamepad1.dpad_up);
-//        teLift2.input(gamepad2.a || gamepad1.dpad_up);
+//        teLift.input(gamepad2.a || gamepad1.dpad_up);
+        teLiftL.input(gamepad2.a || gamepad1.dpad_up);
+        teLiftR.input(gamepad2.a || gamepad1.dpad_up);
 
 
 
@@ -167,11 +167,11 @@ public class DebugTele extends BaseTele {
         telemetry.addData("In-Power",inExtension.getPower());
         telemetry.addLine();
 
-        telemetry.addLine()
-                .addData("TeLift",teLift.getPos())
-                .addData("",teLift.getPosition());
+//        telemetry.addLine()
+//                .addData("TeLift",teLift.getPos())
+//                .addData("",teLift.getPosition());
 //        telemetry.update();
-        telemetry.addLine();
+//        telemetry.addLine();
 
         telemetry.addLine("Drive: ")
                 .addData("FL",FrontLeft.getPower())
