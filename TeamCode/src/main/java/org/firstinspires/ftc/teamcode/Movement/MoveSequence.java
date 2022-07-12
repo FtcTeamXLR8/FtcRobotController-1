@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.MovementAlgorithms;
+package org.firstinspires.ftc.teamcode.Movement;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
