@@ -5,63 +5,69 @@ import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 public class Event <Ev extends Event<Ev>> {
-    ArrayList<Callable<Boolean>> conditions = new ArrayList();
-    Runnable callback, onInit = ()->{};
+    Callable<Boolean> condition;
+    Runnable callback, initCallback = ()->{};
+    Runnable pInit = ()->{};
 
-    boolean removeOnceRun = false;
+    boolean fulfilled = false;
+    String name = null;
 
-    public Event(Runnable callback, Callable<Boolean>... conditions){
-        this.conditions.addAll(Arrays.asList(conditions));
+    public Event(Callable<Boolean> condition, Runnable callback){
+       this.condition = condition;
+       this.callback = callback;
+    }
+    public Event(Callable<Boolean> condition, Runnable callback, Runnable initCallback){
+        this.condition = condition;
+        this.callback = callback;
+        this.initCallback = initCallback;
+    }
+    public Event(String name, Callable<Boolean> condition, Runnable callback){
+        this.condition = condition;
+        this.callback = callback;
+        this.name = name;
+    }
+    public Event(String name, Callable<Boolean> condition, Runnable callback, Runnable initCallback){
+        this.condition = condition;
+        this.callback = callback;
+        this.initCallback = initCallback;
+        this.name = name;
+    }
+
+    public boolean firstTest = true;
+    public void reset(){
+        this.fulfilled = false;
+    }
+    public void test(){
+        if(fulfilled)return;
+
+        if (firstTest){
+            pInit.run();
+            initCallback.run();
+        }
+        try{
+            if(condition.call())callback.run();
+            fulfilled=true;
+        }
+        catch (Exception e){e.printStackTrace();}
+    }
+
+    public boolean isFulfilled(){
+        return fulfilled;
+    }
+    public String getName(){
+        return name;
+    }
+
+    public void setCondition(Callable<Boolean> condition){
+        this.condition = condition;
+    }
+    public void setCallback(Runnable callback){
         this.callback = callback;
     }
-    public Event(Runnable onInit,Runnable callback, Callable<Boolean>... conditions){
-        this.conditions.addAll(Arrays.asList(conditions));
-        this.callback = callback;
-        this.onInit = onInit;
+    public void setInitCallback(Runnable initCallback){
+        this.initCallback = initCallback;
     }
-
-    public Event<Ev> addCondition(Callable<Boolean> condition){
-        conditions.add(condition);
-        return this;
-    }
-    public void init(){
-        onInit.run();
-    }
-
-    public boolean testAllConditions() throws Exception {
-        for(Boolean check : conditionCheck())if(!check){
-            return false;
-        }
-        callback.run();
-        return true;
-    }
-    public boolean testEachCondition() throws Exception {
-        for(Boolean check : conditionCheck())if(check){
-            callback.run();
-            return true;
-        }
-        return false;
-    }
-    public ArrayList<Boolean> conditionCheck() throws Exception {
-        ArrayList<Boolean> checks = new ArrayList<>();
-        for(Callable<Boolean> condition : conditions)checks.add(condition.call());
-        return checks;
-    }
-
-    public boolean getRemoveOnceRun(){
-        return removeOnceRun;
-    }
-    public Event<Ev> toggleRemoveOnceRun(){
-        removeOnceRun = !removeOnceRun;
-        return this;
-    }
-    public Event<Ev> setRemoveOnceRun(boolean setter){
-        removeOnceRun = setter;
-        return this;
-    }
-
-    public Event<Ev> onInit(Runnable init){
-        this.onInit = init;
-        return this;
+    void setPInit(Runnable pInit){
+        this.pInit = pInit;
     }
 }

@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.HardwareSystems;
+package org.firstinspires.ftc.teamcode.Systems;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.ArrayList;
 
-public class MultiPositionServo extends HardwareSystem {
+public class MultiPositionServo{
 
     private int currentPos, cpos = 0;
     boolean lastInput=false;

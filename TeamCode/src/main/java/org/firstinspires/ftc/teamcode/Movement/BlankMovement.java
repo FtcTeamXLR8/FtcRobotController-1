@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.MovementAlgorithms;
+package org.firstinspires.ftc.teamcode.Movement;
 
 public class BlankMovement extends Movement {
     boolean moveMethod() {

@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.MovementAlgorithms;
+package org.firstinspires.ftc.teamcode.Movement;
 
 import org.firstinspires.ftc.teamcode.HardwareSystems.MecanumDriveTrain;
 
-public class MecanumDistanceDrive extends Movement {
+public class MecanumDriveByDistance extends Movement {
 
     MecanumDriveTrain driveTrain;
     int For = 0, Right = 0, Rotat = 0, Tol = 25;
@@ -15,12 +15,12 @@ public class MecanumDistanceDrive extends Movement {
         driveTrain.setTargetDists(For,Right,Rotat);
     }
 
-    public MecanumDistanceDrive(MecanumDriveTrain drivetrain){
+    public MecanumDriveByDistance(MecanumDriveTrain drivetrain){
         driveTrain=drivetrain;
         addPostMoveFunction(() -> driveTrain.stop());
     }
 
-    public MecanumDistanceDrive removeStop(){
+    public MecanumDriveByDistance removeStop(){
         if(postMoveFunctionList.size()==0)return this;
 
         postMoveFunctionList.remove(0);
@@ -28,7 +28,7 @@ public class MecanumDistanceDrive extends Movement {
         return this;
     }
 
-    public MecanumDistanceDrive setForward(int aFor) {
+    public MecanumDriveByDistance setForward(int aFor) {
         For = aFor;
         return this;
     }
@@ -36,7 +36,7 @@ public class MecanumDistanceDrive extends Movement {
         return For;
     }
 
-    public MecanumDistanceDrive setRightward(int aRight) {
+    public MecanumDriveByDistance setRightward(int aRight) {
         Right = aRight;
         return this;
     }
@@ -44,7 +44,7 @@ public class MecanumDistanceDrive extends Movement {
         return Right;
     }
 
-    public MecanumDistanceDrive setRotational(int aRotat) {
+    public MecanumDriveByDistance setRotational(int aRotat) {
         Rotat = aRotat;
         return this;
     }
@@ -52,7 +52,7 @@ public class MecanumDistanceDrive extends Movement {
         return Rotat;
     }
 
-    public MecanumDistanceDrive setSpeed(double aSpd) {
+    public MecanumDriveByDistance setSpeed(double aSpd) {
         Spd = aSpd;
         return this;
     }
@@ -60,7 +60,7 @@ public class MecanumDistanceDrive extends Movement {
         return Spd;
     }
 
-    public MecanumDistanceDrive setTolerance(int aTol) {
+    public MecanumDriveByDistance setTolerance(int aTol) {
         Tol = aTol;
         return this;
     }
