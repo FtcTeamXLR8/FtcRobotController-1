@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import java.util.ArrayList;
 
-public class MultiPowerMotor {
+public class SetPowerMotor {
     private int currentPow, cpow = 0;
     boolean lastInput=false;
 
@@ -18,7 +18,7 @@ public class MultiPowerMotor {
         lastInput=input;
     }
 
-    public MultiPowerMotor(DcMotor motor, double... Powers){
+    public SetPowerMotor(DcMotor motor, double... Powers){
         this.motor=motor;
         addPower(Powers);
     }
