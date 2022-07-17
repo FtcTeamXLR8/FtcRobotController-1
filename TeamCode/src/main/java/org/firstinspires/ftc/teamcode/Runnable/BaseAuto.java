@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.MovementAlgorithms.*;
+import org.firstinspires.ftc.teamcode.Movement.*;
 
 public abstract class BaseAuto extends LinearOpMode {
     public abstract void initializeMovements();

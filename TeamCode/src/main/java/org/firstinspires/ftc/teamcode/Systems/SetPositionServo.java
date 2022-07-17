@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.ArrayList;
 
-public class MultiPositionServo{
+public class SetPositionServo {
 
     boolean lastInput=false;
     int cpos = -1;
@@ -13,7 +13,7 @@ public class MultiPositionServo{
 
     private ArrayList<Double> positions = new ArrayList<Double>();
 
-    public MultiPositionServo(Servo servo, double... Pos){
+    public SetPositionServo(Servo servo, double... Pos){
         //construct with target servo and list of positions
         this.servo=servo;
         addPosition(Pos);

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import static com.qualcomm.robotcore.hardware.DcMotor.*;
 
 
-public class MecanumDriveTrain extends HardwareSystem {
+public class MecanumDriveTrain{
     DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
     DcMotor[] Motors;
     public Pid FLPid, FRPid, BLPid, BRPid = null;

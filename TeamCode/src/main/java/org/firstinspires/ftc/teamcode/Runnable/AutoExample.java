@@ -3,13 +3,12 @@ package org.firstinspires.ftc.teamcode.Runnable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.MovementAlgorithms.MoveSequence;
-import org.firstinspires.ftc.teamcode.MovementAlgorithms.Movement;
+import org.firstinspires.ftc.teamcode.Movement.Movement;
 
 import java.util.ArrayList;
 
 @Autonomous(group = "#")
-@Disabled
+//@Disabled
 public class AutoExample extends BaseAuto{
     @Override
     public void initializeMovements() {
@@ -58,10 +57,9 @@ public class AutoExample extends BaseAuto{
 
 
         // add telemetry listing currentmovement / totalmovements to each movement
-        for(Movement movement : moveSequence){
-            movement.addMoveFunction(()->{
-                    telemetry.addLine("Current Movement: "+ (moveSequence.getCurrentMovementIndex() +"/"+moveSequence.size()));
-                    telemetry.update();
-        });}
+        moveSequence.whileExecuting(()->{
+            telemetry.addLine("Current Movement: "+ (moveSequence.getCurrentMovementIndex() +"/"+moveSequence.size()));
+            telemetry.update();
+        });
     }
 }

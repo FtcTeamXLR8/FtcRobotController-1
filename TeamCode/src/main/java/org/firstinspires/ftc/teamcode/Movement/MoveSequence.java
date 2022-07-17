@@ -46,14 +46,14 @@ public class MoveSequence extends java.util.ArrayList<Movement>{
             i++;
         }
     }
-    public void addWhileMoveToEach(Runnable func){
+    public void whileExecuting(Runnable func){
         for(Movement movement : this){
-            movement.addMoveFunction(func);
+            movement.whileMoving(func);
         }
     }
-    public void addPostMoveToEach(Runnable func){
+    public void afterEachMovement(Runnable func){
         for(Movement movement : this){
-            movement.addPostMoveFunction(func);
+            movement.whileMoving(func);
         }
     }
     public void interrupt(){
