@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
 @Autonomous(group = "#CompBlue",name = "BlueStorage")
 @Disabled
-p   ublic class BlueStorageNew extends BaseAuto {
+public class BlueStorageNew extends BaseAuto {
     @Override
     public void initializeMovements() {
         // line up with carousel

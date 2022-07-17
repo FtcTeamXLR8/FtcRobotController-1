@@ -35,7 +35,7 @@ public class RedNearWarehouse extends BaseAuto {
             .setForward(-1200)
             .setRotational(-70)
             .addPreMoveFunction(()->upExtension.setPower(-0.7))
-            .createEvent(()-> upExtension.getCurrentPosition() < -455,()->upExtension.setPower(-0.03))
+            .createEvent(()-> upExtension.getCurrentPosition() < -545,()->upExtension.setPower(-0.03))
             .addPostMoveFunction(()->{
 //                teLiftL.toPosition(1);
 //                teLiftR.toPosition(1);

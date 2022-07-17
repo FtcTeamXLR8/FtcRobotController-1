@@ -55,7 +55,7 @@ public class RedWarehouseNew extends BaseAuto {
                 .setSpeed(0.45)
                 .addPreMoveFunction(()->{
                     intake.setPower(-0.7);
-                    inExtension.setPower(0.4);
+                    inExtension.setPower(0.8);
                     upExtension.setPower(0.6);
                 })
                 .addPostMoveFunction(()->intakeFlipper.toPosition(1))

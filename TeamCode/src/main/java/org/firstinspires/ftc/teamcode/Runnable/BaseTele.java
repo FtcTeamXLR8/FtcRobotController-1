@@ -53,8 +53,8 @@ public abstract class BaseTele extends OpMode {
 
         teGrabber = new MultiPositionServo(hardwareMap.servo.get("teGrabber"), 0, 1);
 //        teLift = new MultiPositionServo(hardwareMap.servo.get("teLift"),0.26,0.59);
-        teLiftL = new MultiPositionServo(hardwareMap.servo.get("teLiftL"),0.435,.84);
-        teLiftR = new MultiPositionServo(hardwareMap.servo.get("teLiftR"),0.6,.18);
+        teLiftL = new MultiPositionServo(hardwareMap.servo.get("teLiftL"),0.42,.84);
+        teLiftR = new MultiPositionServo(hardwareMap.servo.get("teLiftR"),0.61,.18);
 
         intakeFlipper =   new MultiPositionServo(hardwareMap.servo.get("intakeFlipper"), 0.36,.1);
         dumper =          new MultiPositionServo(hardwareMap.servo.get("dumper"), 1, 0.35, 0.25);

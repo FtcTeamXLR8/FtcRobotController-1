@@ -22,7 +22,7 @@ public class BlueWarehouseNew extends BaseAuto {
                 .createEvent(()->{
                             switch (cameraResults){
                                 case "LEFT": return upExtension.getCurrentPosition()<-395;
-                                case "CENTER": return upExtension.getCurrentPosition()<-740;
+                                case "CENTER": return upExtension.getCurrentPosition()<-770;
                                 case "RIGHT": return upExtension.getCurrentPosition()<-1188;
                                 default: return true;
                             }
@@ -57,7 +57,7 @@ public class BlueWarehouseNew extends BaseAuto {
                 .setRightward(-50)
                 .addPreMoveFunction(()->{
                     intake.setPower(-0.7);
-                    inExtension.setPower(0.4);
+                    inExtension.setPower(0.8);
                 })
                 .addPostMoveFunction(()->intakeFlipper.toPosition(1))
                 .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-100).dontForceCompletion())

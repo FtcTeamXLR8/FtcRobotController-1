@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Events.Event;
 import org.firstinspires.ftc.teamcode.MovementAlgorithms.MecanumDistanceDrive;
 import org.firstinspires.ftc.teamcode.Runnable.BaseAuto;
 
-@Autonomous(group = "#CompRed", name = "BlueMid")
+@Autonomous(group = "#CompBlue", name = "BlueMid")
 //@Disabled
 public class BlueMid extends BaseAuto {
     @Override
@@ -19,8 +19,8 @@ public class BlueMid extends BaseAuto {
                 .addPreMoveFunction(()->upExtension.setPower(-0.7))
                 .createEvent(()->{
                     switch (cameraResults){
-                        case "LEFT": return upExtension.getCurrentPosition()<-884;
-                        case "CENTER": return upExtension.getCurrentPosition()<-770;
+                        case "LEFT": return upExtension.getCurrentPosition()<-844;
+                        case "CENTER": return upExtension.getCurrentPosition()<-830;
                         case "RIGHT": return upExtension.getCurrentPosition()<-1188;
                         default: return true;
                     }
@@ -53,13 +53,17 @@ public class BlueMid extends BaseAuto {
 
         moveSequence.add(new MecanumDistanceDrive(driveTrain)
             .setForward(2000)
-            .addPreMoveFunction(()->sleep(9999999))
+            .addPreMoveFunction(()->sleep(999999999))
             .addEvent(new Event(()->upExtension.setPower(0),()-> upExtension.getCurrentPosition()>-70).dontForceCompletion())
         );
 
 
+        moveSequence.addWhileMoveToEach(()->{
+            telemetry.addLine(cameraResults);
+            telemetry.update();
+        });
 
-        initBlueStorageCam();
+        initRedCam();
         waitWhileScanning();
     }
 }
