@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Movement;
 
-import org.firstinspires.ftc.teamcode.HardwareSystems.MecanumDriveTrain;
+import org.firstinspires.ftc.teamcode.Systems.MecanumDriveTrain;
 
 public class MecanumDriveByDistance extends Movement {
 
@@ -17,15 +17,7 @@ public class MecanumDriveByDistance extends Movement {
 
     public MecanumDriveByDistance(MecanumDriveTrain drivetrain){
         driveTrain=drivetrain;
-        addPostMoveFunction(() -> driveTrain.stop());
-    }
-
-    public MecanumDriveByDistance removeStop(){
-        if(postMoveFunctionList.size()==0)return this;
-
-        postMoveFunctionList.remove(0);
-
-        return this;
+        afterMoving(() -> driveTrain.stop());
     }
 
     public MecanumDriveByDistance setForward(int aFor) {
