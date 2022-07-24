@@ -4,5 +4,6 @@ public class BlankMovement extends Movement {
     boolean moveMethod() {
         return true;
     }
-    void init(){};
+    void init(){}
+    void stop(){}
 }
