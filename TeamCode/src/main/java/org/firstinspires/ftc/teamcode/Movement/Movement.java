@@ -20,6 +20,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
     protected Runnable ifEndedByAlternateEndCondition = ()->{}, ifNotEndedByAlternateEndCondition = ()->{};
 
     abstract void init();
+    abstract void stop();
 
     public void execute(LinearOpMode opMode) {
         init();
@@ -49,6 +50,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
                 if (!movementComplete) {
                     if (moveMethod()) {
                         movementComplete = true;
+                        stop();
                     }
                 }
 
@@ -67,6 +69,7 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
                 }
                 if(alternateEndCondition.call()){
                     ifEndedByAlternateEndCondition.run();
+                    stop();
                     break;
                 }
             }
