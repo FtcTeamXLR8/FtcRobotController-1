@@ -72,6 +72,7 @@ public class MoveSequence extends java.util.ArrayList<Movement>{
 
     static class JumpHere extends Movement{
         void init(){}
+        void stop(){}
 
         boolean moveMethod() {
             return true;
@@ -79,6 +80,7 @@ public class MoveSequence extends java.util.ArrayList<Movement>{
     }
     static class Interrupt extends Movement {
         void init() {}
+        void stop() {}
 
         boolean moveMethod() {
             return false;

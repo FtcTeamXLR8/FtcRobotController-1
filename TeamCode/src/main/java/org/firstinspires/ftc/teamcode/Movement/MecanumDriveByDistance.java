@@ -17,7 +17,9 @@ public class MecanumDriveByDistance extends Movement {
 
     public MecanumDriveByDistance(MecanumDriveTrain drivetrain){
         driveTrain=drivetrain;
-        afterMoving(() -> driveTrain.stop());
+    }
+    void stop(){
+        driveTrain.stop();
     }
 
     public MecanumDriveByDistance setForward(int aFor) {
