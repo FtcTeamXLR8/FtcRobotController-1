@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.Runnable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+import org.firstinspires.ftc.teamcode.Events.Event;
+import org.firstinspires.ftc.teamcode.Events.TimedEvent;
+import org.firstinspires.ftc.teamcode.Movement.MecanumDriveByDistance;
 import org.firstinspires.ftc.teamcode.Movement.Movement;
 
 import java.util.ArrayList;
@@ -49,7 +52,16 @@ public class AutoExample extends BaseAuto{
 
         // create movements here //
 
+        moveSequence.add(new MecanumDriveByDistance(driveTrain)
+                .setForward(500)
+                .setRightward(120)
+                .addForcedEvent(new TimedEvent(5000,()->{}))
+        );
 
+        moveSequence.add(new MecanumDriveByDistance(driveTrain)
+                .setRotational(900)
+                .addEvent(new TimedEvent(10000,()->{telemetry.addLine("too long");telemetry.update();}))
+        );
 
 
 
