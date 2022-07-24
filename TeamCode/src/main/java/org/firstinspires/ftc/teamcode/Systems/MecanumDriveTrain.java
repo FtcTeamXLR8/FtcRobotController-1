@@ -30,10 +30,10 @@ public class MecanumDriveTrain{
         //input percentages intended for controllers and PIDs
         //sets speed for all motors in drivetrain
 
-        fls = Forward - Rotational - Rightward;
-        frs = Forward + Rotational + Rightward;
-        bls = Forward + Rotational - Rightward;
-        brs = Forward - Rotational + Rightward;
+        fls =  Forward + Rotational + Rightward;
+        frs = -Forward + Rotational + Rightward;
+        bls =  Forward + Rotational + Rightward;
+        brs = -Forward + Rotational + Rightward;
 
         FrontLeft.setPower(fls*speedScalar);
         FrontRight.setPower(frs*speedScalar);
