@@ -56,10 +56,12 @@ public abstract class Movement<MoveAlg extends Movement<MoveAlg>> {
 
                 for (Runnable runner : whileMoveList) runner.run();
 
-                for(Event event : forcedEventList){
-                    if (!event.isFulfilled()) {
-                        check = true;
-                        break;
+                if(!check) {
+                    for (Event event : forcedEventList) {
+                        if (!event.isFulfilled()) {
+                            check = true;
+                            break;
+                        }
                     }
                 }
 
