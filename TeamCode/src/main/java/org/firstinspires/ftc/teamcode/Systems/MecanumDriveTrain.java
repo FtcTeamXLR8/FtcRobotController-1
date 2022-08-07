@@ -72,10 +72,17 @@ public class MecanumDriveTrain{
     public void setTargetDists(int Forward, int Rightward, int Rotational){
         resetEncoders();
 
+<<<<<<< HEAD
         fld = Forward + Rotational + Rightward;
         frd = -Forward + Rotational + Rightward;
         bld = Forward + Rotational - Rightward;
         brd = -Forward + Rotational - Rightward;
+=======
+        fld = Forward + Rotational - Rightward;
+        frd = Forward - Rotational - Rightward;
+        bld = Forward + Rotational + Rightward;
+        brd = Forward - Rotational + Rightward;
+>>>>>>> 7c35eae (update default directions of motors in mecanum drive)
 
         FrontLeft.setTargetPosition(fld);
         FrontRight.setTargetPosition(frd);
