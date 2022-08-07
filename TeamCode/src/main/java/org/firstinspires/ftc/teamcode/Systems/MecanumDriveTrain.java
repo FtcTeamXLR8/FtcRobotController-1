@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Systems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.*;
 
@@ -20,6 +21,8 @@ public class MecanumDriveTrain{
 
         FrontLeft = FL; FrontRight = FR; BackLeft = BL; BackRight = BR;
         Motors = new DcMotor[]{FrontLeft, FrontRight, BackLeft, BackRight};
+        FrontRight.setDirection(Direction.REVERSE);
+        BackRight.setDirection(Direction.REVERSE);
 
         for(DcMotor motor : Motors)motor.setZeroPowerBehavior(ZeroPowerBehavior.BRAKE);
 
@@ -69,10 +72,17 @@ public class MecanumDriveTrain{
     public void setTargetDists(int Forward, int Rightward, int Rotational){
         resetEncoders();
 
+<<<<<<< HEAD
         fld = Forward + Rotational - Rightward;
         frd = Forward - Rotational - Rightward;
         bld = Forward + Rotational + Rightward;
         brd = Forward - Rotational + Rightward;
+=======
+        fld = Forward + Rotational + Rightward;
+        frd = -Forward + Rotational + Rightward;
+        bld = Forward + Rotational - Rightward;
+        brd = -Forward + Rotational - Rightward;
+>>>>>>> dacd5ad (roadrunner tuning)
 
         FrontLeft.setTargetPosition(fld);
         FrontRight.setTargetPosition(frd);
