@@ -72,17 +72,10 @@ public class MecanumDriveTrain{
     public void setTargetDists(int Forward, int Rightward, int Rotational){
         resetEncoders();
 
-<<<<<<< HEAD
         fld = Forward + Rotational - Rightward;
         frd = Forward - Rotational - Rightward;
         bld = Forward + Rotational + Rightward;
         brd = Forward - Rotational + Rightward;
-=======
-        fld = Forward + Rotational + Rightward;
-        frd = -Forward + Rotational + Rightward;
-        bld = Forward + Rotational - Rightward;
-        brd = -Forward + Rotational - Rightward;
->>>>>>> dacd5ad (roadrunner tuning)
 
         FrontLeft.setTargetPosition(fld);
         FrontRight.setTargetPosition(frd);
