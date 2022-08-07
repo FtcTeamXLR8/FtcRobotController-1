@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.MovementAlgorithms;
+package org.firstinspires.ftc.teamcode.Movement;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -46,14 +46,14 @@ public class MoveSequence extends java.util.ArrayList<Movement>{
             i++;
         }
     }
-    public void addWhileMoveToEach(Runnable func){
+    public void whileExecuting(Runnable func){
         for(Movement movement : this){
-            movement.addMoveFunction(func);
+            movement.whileMoving(func);
         }
     }
-    public void addPostMoveToEach(Runnable func){
+    public void afterEachMovement(Runnable func){
         for(Movement movement : this){
-            movement.addPostMoveFunction(func);
+            movement.whileMoving(func);
         }
     }
     public void interrupt(){
@@ -72,6 +72,7 @@ public class MoveSequence extends java.util.ArrayList<Movement>{
 
     static class JumpHere extends Movement{
         void init(){}
+        void stop(){}
 
         boolean moveMethod() {
             return true;
@@ -79,6 +80,7 @@ public class MoveSequence extends java.util.ArrayList<Movement>{
     }
     static class Interrupt extends Movement {
         void init() {}
+        void stop() {}
 
         boolean moveMethod() {
             return false;
