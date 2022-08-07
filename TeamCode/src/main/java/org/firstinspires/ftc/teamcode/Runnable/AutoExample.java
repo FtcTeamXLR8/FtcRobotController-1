@@ -54,8 +54,8 @@ public class AutoExample extends BaseAuto{
 
         moveSequence.add(new MecanumDriveByDistance(driveTrain)
                 .setForward(500)
-                .setRightward(120)
                 .addForcedEvent(new TimedEvent(5000,()->{}))
+
         );
 
         moveSequence.add(new MecanumDriveByDistance(driveTrain)
@@ -71,7 +71,7 @@ public class AutoExample extends BaseAuto{
         // add telemetry listing currentmovement / totalmovements to each movement
         moveSequence.whileExecuting(()->{
             telemetry.addLine("Current Movement: "+ (moveSequence.getCurrentMovementIndex() +"/"+moveSequence.size()));
-            telemetry.update();
+//            telemetry.update();
         });
     }
 }
