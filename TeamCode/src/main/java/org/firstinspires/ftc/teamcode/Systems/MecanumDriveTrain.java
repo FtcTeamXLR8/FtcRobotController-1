@@ -72,7 +72,11 @@ public class MecanumDriveTrain{
     public void setTargetDists(int Forward, int Rightward, int Rotational){
         resetEncoders();
 
+<<<<<<< Updated upstream
         fld =  -Forward + Rotational + Rightward;
+=======
+        fld = -Forward + Rotational + Rightward;
+>>>>>>> Stashed changes
         frd = -Forward - Rotational - Rightward;
         bld = -Forward + Rotational - Rightward;
         brd = -Forward - Rotational + Rightward;
