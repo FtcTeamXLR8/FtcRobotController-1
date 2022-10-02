@@ -45,8 +45,10 @@ public class Event <Ev extends Event<Ev>> {
             initCallback.run();
         }
         try{
-            if(condition.call())callback.run();
-            fulfilled=true;
+            if(condition.call()){
+                callback.run();
+                fulfilled=true;
+            }
         }
         catch (Exception e){e.printStackTrace();}
     }

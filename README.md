@@ -54,6 +54,7 @@ The readme.md file located in the [/TeamCode/src/main/java/org/firstinspires/ftc
 
 # Release Information
 
+
 ## Version 8.0 (20220907-131644)
 
 ### Breaking Changes
@@ -105,6 +106,7 @@ The readme.md file located in the [/TeamCode/src/main/java/org/firstinspires/ftc
 ## Version 7.2 (20220723-130006)
 
 ### Breaking Changes
+
 * Updates the build tooling.  For Android Studio users, this change requires Android Studio Chipmunk 2021.2.1.
 * Removes support for devices that are not competition legal, including Modern Robotics Core Control Modules, the Matrix Controller, and HiTechnic/NXT controllers and sensors.  Support remains for Modern Robotics I2C sensors.
 

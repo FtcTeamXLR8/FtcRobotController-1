@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.Runnable;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Movement.*;
+import org.firstinspires.ftc.teamcode.Systems.MecanumDriveTrain;
 
 public abstract class BaseAuto extends LinearOpMode {
     public abstract void initializeMovements();
@@ -11,14 +14,18 @@ public abstract class BaseAuto extends LinearOpMode {
         initSystems();
         initializeMovements();
         waitForStart();
+        gametime.reset();
         moveSequence.executeSequence();
         waitForEnd();
     }
 
+    ElapsedTime gametime = new ElapsedTime();
+
     MoveSequence moveSequence = new MoveSequence(this);
 
     //Declare hardware variables {{{
-    
+
+    MecanumDriveTrain driveTrain;
     
     
     
@@ -29,7 +36,13 @@ public abstract class BaseAuto extends LinearOpMode {
 	    // Initalize hardware variables {{{
 	    //    ex: FrontLeft = hardwaremap.dcmotor.get("frontleft");
 	    
-	    
+	    driveTrain = new MecanumDriveTrain(
+            hardwareMap.dcMotor.get("frontLeft"),
+            hardwareMap.dcMotor.get("frontRight"),
+            hardwareMap.dcMotor.get("backLeft"),
+            hardwareMap.dcMotor.get("backRight"),
+            1
+        );
 	    
 	    
 	    

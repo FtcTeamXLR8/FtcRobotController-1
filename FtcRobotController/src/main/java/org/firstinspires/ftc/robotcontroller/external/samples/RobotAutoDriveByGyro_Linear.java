@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -36,6 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -68,6 +70,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  *  All angles are referenced to the coordinate-frame that is set whenever resetHeading() is called.
  *  In this sample, the heading is reset when the Start button is touched on the Driver station.
  *  Note: It would be possible to reset the heading after each move, but this would accumulate steering errors.
+
  *
  *  The angle of movement/rotation is assumed to be a standardized rotation around the robot Z axis,
  *  which means that a Positive rotation is Counter Clockwise, looking down on the field.
@@ -87,6 +90,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  *
  *  Use Android Studio to Copy this Class, and Paste it into your "TeamCode" folder with a new name.
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
+
  */
 
 @Autonomous(name="Robot: Auto Drive By Gyro", group="Robot")
@@ -112,13 +116,16 @@ public class RobotAutoDriveByGyro_Linear extends LinearOpMode {
     private int     leftTarget    = 0;
     private int     rightTarget   = 0;
 
+
     // Calculate the COUNTS_PER_INCH for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
     // For external drive gearing, set DRIVE_GEAR_REDUCTION as needed.
     // For example, use a value of 2.0 for a 12-tooth spur gear driving a 24-tooth spur gear.
     // This is gearing DOWN for less speed and more torque.
     // For gearing UP, use a gear ratio less than 1.0. Note this will affect the direction of wheel rotation.
+
     static final double     COUNTS_PER_MOTOR_REV    = 537.7 ;   // eg: GoBILDA 312 RPM Yellow Jacket
+
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -136,6 +143,7 @@ public class RobotAutoDriveByGyro_Linear extends LinearOpMode {
     // Decrease these numbers if the heading does not settle on the correct value (eg: very agile robot with omni wheels)
     static final double     P_TURN_GAIN            = 0.02;     // Larger is more responsive, but also less stable
     static final double     P_DRIVE_GAIN           = 0.03;     // Larger is more responsive, but also less stable
+
 
 
     @Override
@@ -223,6 +231,7 @@ public class RobotAutoDriveByGyro_Linear extends LinearOpMode {
                               double distance,
                               double heading) {
 
+
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
@@ -234,6 +243,7 @@ public class RobotAutoDriveByGyro_Linear extends LinearOpMode {
             // Set Target FIRST, then turn on RUN_TO_POSITION
             leftDrive.setTargetPosition(leftTarget);
             rightDrive.setTargetPosition(rightTarget);
+
 
             leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -260,9 +270,9 @@ public class RobotAutoDriveByGyro_Linear extends LinearOpMode {
                 // Display drive status for the driver.
                 sendTelemetry(true);
             }
-
             // Stop all motion & Turn off RUN_TO_POSITION
             moveRobot(0, 0);
+
             leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
