@@ -9,7 +9,6 @@ import static com.qualcomm.robotcore.hardware.DcMotor.*;
 public class MecanumDriveTrain{
     DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
     DcMotor[] Motors;
-    public Pid FLPid, FRPid, BLPid, BRPid = null;
 
     int fld,frd,bld,brd;
     double fls,frs,bls,brs;
@@ -33,10 +32,10 @@ public class MecanumDriveTrain{
         //input percentages intended for controllers and PIDs
         //sets speed for all motors in drivetrain
 
-        fls =  -Forward + Rotational + Rightward;
-        frs =  -Forward - Rotational - Rightward;
-        bls =  -Forward + Rotational - Rightward;
-        brs =  -Forward - Rotational + Rightward;
+        fls =  Forward - Rotational + Rightward;
+        frs =  Forward + Rotational - Rightward;
+        bls =  Forward - Rotational - Rightward;
+        brs =  Forward + Rotational + Rightward;
 
         FrontLeft.setPower(fls*speedScalar);
         FrontRight.setPower(frs*speedScalar);
@@ -72,11 +71,7 @@ public class MecanumDriveTrain{
     public void setTargetDists(int Forward, int Rightward, int Rotational){
         resetEncoders();
 
-<<<<<<< Updated upstream
-        fld =  -Forward + Rotational + Rightward;
-=======
         fld = -Forward + Rotational + Rightward;
->>>>>>> Stashed changes
         frd = -Forward - Rotational - Rightward;
         bld = -Forward + Rotational - Rightward;
         brd = -Forward - Rotational + Rightward;
