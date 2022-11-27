@@ -102,7 +102,6 @@ public abstract class BaseAuto extends LinearOpMode {
         return pipeline.getAnalysis().name();
     }
 
-
     public void interrupt(){
         moveSequence.interrupt();
     }
