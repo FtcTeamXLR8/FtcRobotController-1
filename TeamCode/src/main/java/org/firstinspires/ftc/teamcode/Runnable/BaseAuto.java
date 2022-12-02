@@ -35,7 +35,8 @@ public abstract class BaseAuto extends LinearOpMode {
 
     MecanumDriveTrain driveTrain;
 
-    SignalScanner pipeline;
+//    SignalScanner pipeline;
+    AprilTagDetectionPipeline aprilTagDetectionPipeline;
     OpenCvWebcam webcam;
     
     
@@ -58,7 +59,7 @@ public abstract class BaseAuto extends LinearOpMode {
     public void initCam(){
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        pipeline = new SignalScanner();
+        pipeline = new CameraTestV2();
         webcam.setPipeline(pipeline);
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener(){
@@ -66,7 +67,7 @@ public abstract class BaseAuto extends LinearOpMode {
             public void onOpened()
             {
                 // Original Values: 320,240 for 1080p Logitech Webcan
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
