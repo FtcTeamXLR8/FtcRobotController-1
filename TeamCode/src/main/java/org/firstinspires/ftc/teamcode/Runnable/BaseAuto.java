@@ -169,6 +169,7 @@ public abstract class BaseAuto extends LinearOpMode {
 
         webcam.closeCameraDevice();
         // might not work, from javadocs
+        // if no work, try async closing
     }
     public void waitForEnd(){
         telemetry.addLine("Waiting for End");
