@@ -166,6 +166,9 @@ public abstract class BaseAuto extends LinearOpMode {
         if(counts[0]>Math.max(counts[1],counts[2]))cameraResults="LEFT";
         else if(counts[1]>counts[2])cameraResults="CENTER";
         else cameraResults="RIGHT";
+
+        webcam.closeCameraDevice();
+        // might not work, from javadocs
     }
     public void waitForEnd(){
         telemetry.addLine("Waiting for End");
